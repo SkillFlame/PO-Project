@@ -11,12 +11,12 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoEndInteractiveCommunication extends TerminalCommand {
 
-  DoEndInteractiveCommunication(Network context, Terminal terminal) {
-    super(Label.END_INTERACTIVE_COMMUNICATION, context, terminal, receiver -> receiver.canEndCurrentCommunication());
-  }
-  
-  @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
-  }
+	DoEndInteractiveCommunication(Network context, Terminal terminal) {
+		super(Label.END_INTERACTIVE_COMMUNICATION, context, terminal, receiver -> receiver.canEndCurrentCommunication());
+	}
+	
+	@Override
+	protected final void execute() throws CommandException {
+		//FIXME implement command
+	}
 }

@@ -10,13 +10,13 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoRemoveFriend extends TerminalCommand {
 
-  DoRemoveFriend(Network context, Terminal terminal) {
-    super(Label.REMOVE_FRIEND, context, terminal);
-    //FIXME add command fields
-  }
-  
-  @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
-  }
+	DoRemoveFriend(Network context, Terminal terminal) {
+		super(Label.REMOVE_FRIEND, context, terminal);
+		// FIXME add command fields
+	}
+
+	@Override
+	protected final void execute() throws CommandException {
+		// FIXME implement command
+	}
 }

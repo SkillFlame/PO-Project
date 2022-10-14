@@ -13,13 +13,13 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoRegisterTerminal extends Command<Network> {
 
-  DoRegisterTerminal(Network receiver) {
-    super(Label.REGISTER_TERMINAL, receiver);
-    //FIXME add command fields
-  }
+	DoRegisterTerminal(Network receiver) {
+		super(Label.REGISTER_TERMINAL, receiver);
+		// FIXME add command fields
+	}
 
-  @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
-  }
+	@Override
+	protected final void execute() throws CommandException {
+		// FIXME implement command
+	}
 }

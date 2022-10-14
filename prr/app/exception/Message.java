@@ -23,7 +23,7 @@ interface Message {
 	 * @return string with problem description.
 	 */
 	static String problemOpeningFile(Exception cause) {
-                return "Problema ao abrir ficheiro: " + cause.getMessage();
+		return "Problema ao abrir ficheiro: " + cause.getMessage();
 	}
 
 	/**

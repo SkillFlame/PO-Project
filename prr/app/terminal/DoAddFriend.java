@@ -10,13 +10,13 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoAddFriend extends TerminalCommand {
 
-  DoAddFriend(Network context, Terminal terminal) {
-    super(Label.ADD_FRIEND, context, terminal);
-    //FIXME add command fields
-  }
-  
-  @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
-  }
+	DoAddFriend(Network context, Terminal terminal) {
+		super(Label.ADD_FRIEND, context, terminal);
+		// FIXME add command fields
+	}
+
+	@Override
+	protected final void execute() throws CommandException {
+		// FIXME implement command
+	}
 }

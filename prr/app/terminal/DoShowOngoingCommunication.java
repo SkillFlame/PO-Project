@@ -10,12 +10,12 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoShowOngoingCommunication extends TerminalCommand {
 
-  DoShowOngoingCommunication(Network context, Terminal terminal) {
-    super(Label.SHOW_ONGOING_COMMUNICATION, context, terminal);
-  }
-  
-  @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
-  }
+	DoShowOngoingCommunication(Network context, Terminal terminal) {
+		super(Label.SHOW_ONGOING_COMMUNICATION, context, terminal);
+	}
+
+	@Override
+	protected final void execute() throws CommandException {
+		// FIXME implement command
+	}
 }

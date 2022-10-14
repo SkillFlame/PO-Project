@@ -11,15 +11,15 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoOpenMenuTerminalConsole extends Command<Network> {
 
-  DoOpenMenuTerminalConsole(Network receiver) {
-    super(Label.OPEN_MENU_TERMINAL, receiver);
-    //FIXME add command fields
-  }
+	DoOpenMenuTerminalConsole(Network receiver) {
+		super(Label.OPEN_MENU_TERMINAL, receiver);
+		// FIXME add command fields
+	}
 
-  @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
-    // create an instance of prr.app.terminal.Menu with the
-    // selected Terminal and open it
-  }
+	@Override
+	protected final void execute() throws CommandException {
+		// FIXME implement command
+		// create an instance of prr.app.terminal.Menu with the
+		// selected Terminal and open it
+	}
 }

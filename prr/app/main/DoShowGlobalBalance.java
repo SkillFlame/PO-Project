@@ -10,12 +10,12 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoShowGlobalBalance extends Command<Network> {
 
-  DoShowGlobalBalance(Network receiver) {
-    super(Label.SHOW_GLOBAL_BALANCE, receiver);
-  }
-  
-  @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
-  }
+	DoShowGlobalBalance(Network receiver) {
+		super(Label.SHOW_GLOBAL_BALANCE, receiver);
+	}
+	
+	@Override
+	protected final void execute() throws CommandException {
+		//FIXME implement command
+	}
 }

@@ -10,12 +10,12 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoShowAllClients extends Command<Network> {
 
-  DoShowAllClients(Network receiver) {
-    super(Label.SHOW_ALL_CLIENTS, receiver);
-  }
-  
-  @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
-  }
+	DoShowAllClients(Network receiver) {
+		super(Label.SHOW_ALL_CLIENTS, receiver);
+	}
+
+	@Override
+	protected final void execute() throws CommandException {
+		// FIXME implement command
+	}
 }

@@ -10,12 +10,12 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoShowClientsWithoutDebts extends Command<Network> {
 
-  DoShowClientsWithoutDebts(Network receiver) {
-    super(Label.SHOW_CLIENTS_WITHOUT_DEBTS, receiver);
-  }
+	DoShowClientsWithoutDebts(Network receiver) {
+		super(Label.SHOW_CLIENTS_WITHOUT_DEBTS, receiver);
+	}
 
-  @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
-  }
+	@Override
+	protected final void execute() throws CommandException {
+		// FIXME implement command
+	}
 }

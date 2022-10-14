@@ -10,13 +10,13 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoShowCommunicationsToClient extends Command<Network> {
 
-  DoShowCommunicationsToClient(Network receiver) {
-    super(Label.SHOW_COMMUNICATIONS_TO_CLIENT, receiver);
-    //FIXME add command fields
-  }
+	DoShowCommunicationsToClient(Network receiver) {
+		super(Label.SHOW_COMMUNICATIONS_TO_CLIENT, receiver);
+		// FIXME add command fields
+	}
 
-  @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
-  }
+	@Override
+	protected final void execute() throws CommandException {
+		// FIXME implement command
+	}
 }

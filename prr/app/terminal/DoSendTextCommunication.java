@@ -12,12 +12,12 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoSendTextCommunication extends TerminalCommand {
 
-  DoSendTextCommunication(Network context, Terminal terminal) {
-    super(Label.SEND_TEXT_COMMUNICATION, context, terminal, receiver -> receiver.canStartCommunication());
-  }
-  
-  @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
-  }
-} 
+	DoSendTextCommunication(Network context, Terminal terminal) {
+		super(Label.SEND_TEXT_COMMUNICATION, context, terminal, receiver -> receiver.canStartCommunication());
+	}
+
+	@Override
+	protected final void execute() throws CommandException {
+		// FIXME implement command
+	}
+}

@@ -10,7 +10,7 @@ public class FileOpenFailedException extends CommandException {
 
 	/** @param e the cause of this exception. */
 	public FileOpenFailedException(Exception e) {
-                super(Message.problemOpeningFile(e), e);
+		super(Message.problemOpeningFile(e), e);
 	}
 
 }

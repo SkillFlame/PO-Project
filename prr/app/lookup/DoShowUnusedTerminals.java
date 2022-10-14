@@ -10,12 +10,12 @@ import pt.tecnico.uilib.menus.CommandException;
  */
 class DoShowUnusedTerminals extends Command<Network> {
 
-  DoShowUnusedTerminals(Network receiver) {
-    super(Label.SHOW_UNUSED_TERMINALS, receiver);
-  }
+	DoShowUnusedTerminals(Network receiver) {
+		super(Label.SHOW_UNUSED_TERMINALS, receiver);
+	}
 
-  @Override
-  protected final void execute() throws CommandException {
-    //FIXME implement command
-  }
+	@Override
+	protected final void execute() throws CommandException {
+		//FIXME implement command
+	}
 }

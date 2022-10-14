@@ -11,15 +11,15 @@ import pt.tecnico.uilib.menus.Command;
  */
 abstract class TerminalCommand extends Command<Terminal> {
 
-  protected Network _network;
+	protected Network _network;
 
-  TerminalCommand(String label, Network network, Terminal terminal) {
-    super(label, terminal);
-    _network = network;
-  }
-  
-  TerminalCommand(String label, Network network, Terminal terminal, Predicate<Terminal> valid) {
-    super(label, terminal, valid);
-    _network = network;
-  }
+	TerminalCommand(String label, Network network, Terminal terminal) {
+		super(label, terminal);
+		_network = network;
+	}
+
+	TerminalCommand(String label, Network network, Terminal terminal, Predicate<Terminal> valid) {
+		super(label, terminal, valid);
+		_network = network;
+	}
 }
