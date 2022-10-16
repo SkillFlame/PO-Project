@@ -50,7 +50,7 @@ public class Parser {
 
 	private void checkComponentsLength(String[] components, int expectedSize, String line)
 			throws UnrecognizedEntryException {
-		if (component.length != expectedSize)
+		if (components.length != expectedSize)
 			throw new UnrecognizedEntryException("Invalid number of fields in line: " + line);
 	}
 
