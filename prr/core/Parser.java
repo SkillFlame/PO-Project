@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.ArrayList;
 
 import prr.core.exception.UnrecognizedEntryException;
+/*import prr.core.exception.NoLineSpecification; */
 import prr.core.exception.UnknownIdentifierException;
 // import more exception core classes if needed
 
@@ -60,10 +61,10 @@ public class Parser {
 
 		try {
 			int taxNumber = Integer.parseInt(components[3]);
-			_network.registerClient(components[1], components[2], taxNumber);
+			_network.registerClient(components[1], taxNumber, components[2]);
 		} catch (NumberFormatException nfe) {
 			throw new UnrecognizedEntryException("Invalid number in line " + line, nfe);
-		} catch (OtherException e) {
+		} catch (Exception e) {
 			throw new UnrecognizedEntryException("Invalid specification in line: " + line, e);
 		}
 	}
@@ -76,13 +77,13 @@ public class Parser {
 			Terminal terminal = _network.registerTerminal(components[0], components[1], components[2]);
 			switch (components[3]) {
 				case "SILENCE" -> terminal.setOnSilent();
-				case "OFF" -> terminal -> turnOff();
+				case "OFF" -> terminal.turnOff();
 				default -> {
 					if (!components[3].equals("ON"))
 						throw new UnrecognizedEntryException("Invalid specification in line: " + line);
 				}
 			}
-		} catch (SomeOtherException e) {
+		} catch (Exception e) {
 			throw new UnrecognizedEntryException("Invalid specification: " + line, e);
 		}
 	}
@@ -97,7 +98,7 @@ public class Parser {
 
 			for (String friend : friends)
 				_network.addFriend(terminal, friend);
-		} catch (OtherException e) {
+		} catch (Exception e) {
 			throw new UnrecognizedEntryException("Some message error in line:  " + line, e);
 		}
 	}
