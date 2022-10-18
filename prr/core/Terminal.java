@@ -18,6 +18,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 	private double _debt;
 	private double _payments;
 	private String _mode;
+	enum TerminalMode{BUSY, ON, SILENCE, OFF};
 
 	private String _clientID;
 	private Collection<String> _friendsID = new HashSet<String>();
@@ -45,7 +46,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 	 **/
 	public boolean canEndCurrentCommunication() {
 		// FIXME add implementation code
-		return true;
+		return false;
 	}
 
 	/**
@@ -60,13 +61,41 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 
 	public void turnOff(){
 		// FIXME Finish Metod
+		_mode = "OFF";
 	}
 	public void setOnSilent(){
 		// FIXME Finish Metod
+		_mode = "SILENT";
 	}
+
+	public void setOnIdle(){
+		_mode = "IDLE";
+	}
+
+
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
+
+	public void makeVoiceCall(Terminal terminalTo){
+
+	}
+
+	void acceptVoiceCall(Terminal terminalFrom){
+
+	}
+
+	public void makeSMS(Terminal terminalTo, String message){
+
+	}
+	
+	void acceptSMS(Terminal terminalFrom){
+		
+	}
+
+	public void endOngoingCommunication(int size){
+
+	}
 }

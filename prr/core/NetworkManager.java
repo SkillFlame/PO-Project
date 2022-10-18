@@ -1,7 +1,12 @@
 package prr.core;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+
 import pt.tecnico.uilib.forms.Form;
 import prr.app.exception.FileOpenFailedException;
 import prr.core.exception.ImportFileException;
@@ -18,9 +23,8 @@ public class NetworkManager {
 
 	/** The network itself. */
 	private Network _network = new Network();
-
+	private String _filename;
 	// FIXME addmore fields if needed
-	private Parser _parser;
 
 	public Network getNetwork() {
 		return _network;
@@ -34,9 +38,15 @@ public class NetworkManager {
 	 *                                  there is
 	 *                                  an error while processing this file.
 	 */
-	public void load(String filename) throws UnavailableFileException, IOException, UnrecognizedEntryException, FileOpenFailedException {
+	public void load(String filename) throws UnavailableFileException, IOException, UnrecognizedEntryException, FileOpenFailedException, ClassNotFoundException{
 		// FIXME throw errors
-		_parser.parseFile(_network.getFilename());
+		try(ObjectInputStream objectInput = new ObjectInputStream(new FileInputStream(filename))){
+			_network = (Network)objectInput.readObject();
+			_filename = (String)objectInput.readObject();
+		}
+		catch(IOException e){
+			throw new UnavailableFileException(filename);
+		}
 	}
 
 	/**
@@ -53,9 +63,10 @@ public class NetworkManager {
 	 */
 	public void save() throws FileNotFoundException, MissingFileAssociationException, IOException {
 		// FIXME implement serialization method
+		if(_filename == null){
+			throw new MissingFileAssociationException();}
+		}
 
-
-	}
 
 	/**
 	 * Saves the serialized application's state into the specified file. The current
@@ -72,7 +83,8 @@ public class NetworkManager {
 	 *                                         to disk.
 	 */
 	public void saveAs(String filename) throws FileNotFoundException, MissingFileAssociationException, IOException {
-		// FIXME implement serialization method
+		_filename = filename;
+		save();
 	}
 
 	/**
@@ -87,5 +99,9 @@ public class NetworkManager {
 		} catch (IOException | UnrecognizedEntryException | FileOpenFailedException | UnavailableFileException /* FIXME maybe other exceptions */ e) {
 			throw new ImportFileException(filename, e);
 		}
+	}
+
+	public String getFilename() {
+		return _filename;
 	}
 }
