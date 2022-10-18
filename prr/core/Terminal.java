@@ -59,10 +59,10 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 	}
 
 	public void turnOff(){
-		
+		// FIXME Finish Metod
 	}
 	public void setOnSilent(){
-		
+		// FIXME Finish Metod
 	}
 
 	public static long getSerialversionuid() {
