@@ -8,6 +8,7 @@ import java.io.IOException;
 import prr.app.exception.FileOpenFailedException;
 import prr.core.exception.UnavailableFileException;
 import prr.core.exception.UnrecognizedEntryException;
+import prr.core.exception.UnrecognizedTypeException;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
@@ -23,7 +24,6 @@ public class Network implements Serializable {
 
 	// FIXME define attributes
 	private List<Client> _clients = new ArrayList<>();
-	private Terminal _t;
 
 
 	// FIXME define contructor(s)
@@ -33,8 +33,14 @@ public class Network implements Serializable {
 
 	// FIXME define methods
 
-	public Terminal registerTerminal(String type, String terminalID, String clientID) {
-		Terminal terminal = new type(terminalID, clientID);
+	public Terminal registerTerminal(String type, String terminalID, String clientID) throws UnrecognizedTypeException {
+		Terminal terminal;
+		switch (type) {
+			case "BASIC" -> terminal = new BasicTerminal(terminalID, clientID);
+			case "FANCY" -> terminal = new FancyTerminal(terminalID, clientID);
+			default -> throw new UnrecognizedTypeException();
+				//FIXME finish exception
+		}
 		
 		_terminals.add(Integer.parseInt(terminalID), terminal);
 		return terminal;
