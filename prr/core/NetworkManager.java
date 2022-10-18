@@ -19,7 +19,6 @@ public class NetworkManager {
 	/** The network itself. */
 	private Network _network = new Network();
 
-	private String _filename;
 	// FIXME addmore fields if needed
 	private Parser _parser;
 
@@ -36,9 +35,8 @@ public class NetworkManager {
 	 *                                  an error while processing this file.
 	 */
 	public void load(String filename) throws UnavailableFileException, IOException, UnrecognizedEntryException, FileOpenFailedException {
-		// FIXME implement serialization method
-		
-		_parser.parseFile(filename);
+		// FIXME throw errors
+		_parser.parseFile(_network.getFilename());
 	}
 
 	/**

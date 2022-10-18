@@ -21,10 +21,9 @@ public class Network implements Serializable {
 	private static final long serialVersionUID = 202208091753L;
 
 	private List<Terminal> _terminals = new ArrayList<>();
-
-	// FIXME define attributes
 	private List<Client> _clients = new ArrayList<>();
 
+	private String _filename;
 
 	// FIXME define contructor(s)
 	public Network(){
@@ -67,6 +66,12 @@ public class Network implements Serializable {
 	 */
 	void importFile(String filename) throws UnrecognizedEntryException, IOException, FileOpenFailedException, UnavailableFileException /* FIXME maybe other exceptions */ {
 		// FIXME implement method
+		// FIXME throw errors
+		_filename = filename;
+	}
+	
+	public String getFilename() {
+		return _filename;
 	}
 
 }
