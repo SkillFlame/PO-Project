@@ -2,7 +2,7 @@ package prr.core;
 
 import java.io.IOException;
 import java.io.FileNotFoundException;
-
+import pt.tecnico.uilib.forms.Form;
 import prr.app.exception.FileOpenFailedException;
 import prr.core.exception.ImportFileException;
 import prr.core.exception.MissingFileAssociationException;
@@ -53,6 +53,8 @@ public class NetworkManager {
 	 */
 	public void save() throws FileNotFoundException, MissingFileAssociationException, IOException {
 		// FIXME implement serialization method
+
+
 	}
 
 	/**

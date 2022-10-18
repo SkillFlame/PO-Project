@@ -8,7 +8,7 @@ public class Client implements Serializable{
 	private int _taxNumber;
 	private boolean _receiveNotifications;
 	private ClientLevel _clientLevel;
-	enum ClientLevel{NORMAL,  GOLD, PLATINUM}
+	enum ClientLevel{NORMAL, GOLD, PLATINUM}
 
 	public Client(String name, int taxNumber, String key){
 		_key = key;
@@ -19,34 +19,26 @@ public class Client implements Serializable{
 
 	}
 
-	public String get_key() {
+	public String getKey() {
 		return _key;
 	}
-	public void set_key(String _key) {
-		this._key = _key;
-	}
-	public String get_name() {
+
+	public String getName() {
 		return _name;
 	}
-	public void set_name(String _name) {
-		this._name = _name;
-	}
-	public int get_taxNumber() {
+
+	public int getTaxNumber() {
 		return _taxNumber;
 	}
-	public void set_taxNumber(int _taxNumber) {
-		this._taxNumber = _taxNumber;
-	}
-	public boolean is_receiveNotifications() {
+
+	public boolean canReceiveNotifications() {
 		return _receiveNotifications;
 	}
-	public void set_receiveNotifications(boolean _receiveNotifications) {
-		this._receiveNotifications = _receiveNotifications;
-	}
+
 	public ClientLevel get_clientLevel() {
 		return _clientLevel;
 	}
-	public void set_clientLevel(ClientLevel _clientLevel) {
+	public void setClientLevel(ClientLevel _clientLevel) {
 		this._clientLevel = _clientLevel;
 	}
 

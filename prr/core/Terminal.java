@@ -29,7 +29,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 	public Terminal(String id, String clientID){
 		_id = id;
 		_clientID = clientID;
-		_mode = "Idle";
+		_mode = "IDLE";
 	}
 
 	public void addFriend(String friendID) {
