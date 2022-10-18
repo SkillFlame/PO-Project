@@ -3,6 +3,7 @@ package prr.core;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 
+import prr.app.exception.FileOpenFailedException;
 import prr.core.exception.ImportFileException;
 import prr.core.exception.MissingFileAssociationException;
 import prr.core.exception.UnavailableFileException;
@@ -20,6 +21,7 @@ public class NetworkManager {
 
 	private String _filename;
 	// FIXME addmore fields if needed
+	private Parser _parser;
 
 	public Network getNetwork() {
 		return _network;
@@ -33,8 +35,10 @@ public class NetworkManager {
 	 *                                  there is
 	 *                                  an error while processing this file.
 	 */
-	public void load(String filename) throws UnavailableFileException {
+	public void load(String filename) throws UnavailableFileException, IOException, UnrecognizedEntryException, FileOpenFailedException {
 		// FIXME implement serialization method
+		
+		_parser.parseFile(filename);
 	}
 
 	/**
@@ -80,7 +84,7 @@ public class NetworkManager {
 	public void importFile(String filename) throws ImportFileException {
 		try {
 			_network.importFile(filename);
-		} catch (IOException | UnrecognizedEntryException /* FIXME maybe other exceptions */ e) {
+		} catch (IOException | UnrecognizedEntryException | FileOpenFailedException | UnavailableFileException /* FIXME maybe other exceptions */ e) {
 			throw new ImportFileException(filename, e);
 		}
 	}

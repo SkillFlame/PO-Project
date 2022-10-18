@@ -1,7 +1,7 @@
 package prr.core.exception;
 
 /**
- * 
+ * Exception for an unavailable File
  */
 public class UnavailableFileException extends Exception {
 
