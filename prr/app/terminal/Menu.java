@@ -19,7 +19,8 @@ public final class Menu extends pt.tecnico.uilib.menus.Menu {
 				new DoShowTerminalBalance(network, terminal), //
 				new DoSendTextCommunication(network, terminal), //
 				new DoStartInteractiveCommunication(network, terminal), //
-				new DoEndInteractiveCommunication(network, terminal)//
+				new DoEndInteractiveCommunication(network, terminal),
+				new DoShowOngoingCommunication(network, terminal)//
 		);
 	}
 }
