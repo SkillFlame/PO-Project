@@ -1,6 +1,11 @@
 package prr.app.main;
 
 import prr.core.NetworkManager;
+import prr.core.exception.ImportFileException;
+import prr.core.exception.UnavailableFileException;
+
+import java.io.IOException;
+
 import prr.app.exception.FileOpenFailedException;
 import pt.tecnico.uilib.forms.Form;
 import pt.tecnico.uilib.menus.Command;
@@ -14,7 +19,7 @@ class DoOpenFile extends Command<NetworkManager> {
 
 	DoOpenFile(NetworkManager receiver) {
 		super(Label.OPEN_FILE, receiver);
-		//FIXME add command fields
+		addStringField("filename", Message.openFile());
 	}
 	
 	@Override
@@ -25,6 +30,14 @@ class DoOpenFile extends Command<NetworkManager> {
 			} catch (UnavailableFileException e) {
 				throw new FileOpenFailedException(e);
 			}
-		*/  
+		*/
+		try {
+			_receiver.importFile(stringField("filename"));
+			_receiver.load(stringField("filename"));
+		} catch (ImportFileException | UnavailableFileException e) {
+			throw new FileOpenFailedException(stringField("filename"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

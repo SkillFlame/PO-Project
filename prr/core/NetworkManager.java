@@ -2,14 +2,13 @@ package prr.core;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 
-import pt.tecnico.uilib.forms.Form;
 import prr.app.exception.FileOpenFailedException;
 import prr.core.exception.ImportFileException;
 import prr.core.exception.MissingFileAssociationException;
@@ -44,7 +43,7 @@ public class NetworkManager {
 		// FIXME throw errors
 		try(ObjectInputStream objectInput = new ObjectInputStream(new FileInputStream(filename))){
 			_network = (Network)objectInput.readObject();
-			_filename = (String)objectInput.readObject();
+			_filename = filename;
 		}
 		catch(IOException e){
 			throw new UnavailableFileException(filename);
@@ -66,17 +65,14 @@ public class NetworkManager {
 	public void save() throws FileNotFoundException, MissingFileAssociationException, IOException {
 		// FIXME implement serialization method
 		// FIXME throw errors
-		FileWriter out = new FileWriter(_filename);
-		BufferedWriter bufferedOut = new BufferedWriter(out);
-		
-		for(String line : _network.getSaveContents()) {
-			bufferedOut.write(line);
-		}
-		
-		bufferedOut.close();
-		
-		if(_filename == null){
+		if (_filename.equals("")) {
 			throw new MissingFileAssociationException();
+		}
+		try (FileOutputStream file = new FileOutputStream(_filename);
+				ObjectOutputStream out = new ObjectOutputStream(file)) {
+			out.writeObject(_network);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
