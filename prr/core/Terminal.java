@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 
+import prr.core.exception.UnrecognizedTypeException;
+
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
 /**
@@ -102,6 +104,21 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 	public void endOngoingCommunication(int size){
 
 	}
+
+
+	public boolean checkIdLenght(String id){
+		if(id.length() != 6){
+			return false;
+		}
+		return true;
+	}
+
+	public boolean checkIdType(String id) throws UnrecognizedTypeException{
+		
+		
+		return true;
+	}
+	
 
 	public String friendsToString() {
 		String output = "";
