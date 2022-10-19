@@ -13,6 +13,17 @@ public class FancyTerminal extends Terminal {
 	void acceptVideoCall(Terminal terminalFrom){
 		
 	}
-
+	
+	@Override
+	public String saveToString() {
+		String output = "FANCY" + "|" + super.saveToString();
+		return output;
+	}
+	
+	@Override
+	public String toString() {
+		String output = "FANCY" + "|" + super.toString();
+		return output;
+	}
 
 }	

@@ -67,10 +67,13 @@ public class NetworkManager {
 		// FIXME implement serialization method
 		// FIXME throw errors
 		FileWriter out = new FileWriter(_filename);
-		BufferedWriter bufferdOut = new BufferedWriter(out);
+		BufferedWriter bufferedOut = new BufferedWriter(out);
 		
-		bufferdOut.write("Writing something");
+		for(String line : _network.getSaveContents()) {
+			bufferedOut.write(line);
+		}
 		
+		bufferedOut.close();
 		
 		if(_filename == null){
 			throw new MissingFileAssociationException();

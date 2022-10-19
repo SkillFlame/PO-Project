@@ -17,7 +17,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 	private String _id;
 	private double _debt;
 	private double _payments;
-	private String _mode;
+	private String _status;
 	enum TerminalMode{BUSY, ON, SILENCE, OFF};
 
 	private String _clientID;
@@ -30,7 +30,11 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 	public Terminal(String id, String clientID){
 		_id = id;
 		_clientID = clientID;
-		_mode = "IDLE";
+		_status = "IDLE";
+	}
+
+	public String getID() {
+		return _id;
 	}
 
 	public void addFriend(String friendID) {
@@ -61,15 +65,15 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 
 	public void turnOff(){
 		// FIXME Finish Metod
-		_mode = "OFF";
+		_status = "OFF";
 	}
 	public void setOnSilent(){
 		// FIXME Finish Metod
-		_mode = "SILENT";
+		_status = "SILENT";
 	}
 
 	public void setOnIdle(){
-		_mode = "IDLE";
+		_status = "IDLE";
 	}
 
 
@@ -97,5 +101,25 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 
 	public void endOngoingCommunication(int size){
 
+	}
+
+	public String friendsToString() {
+		String output = "";
+		for(String friendID : _friendsID) {
+			output += friendID + ", ";
+		}
+		return output;
+	}
+
+	public String saveToString() {
+		//terminal-type|idTerminal|idClient|state
+		String output = _id + "|" + _clientID + "|" + _status;
+		return output;
+	}
+
+	public String toString() {
+		//terminalType|terminalId|clientId|terminalStatus|balance-paid|balance-debts|friend1,...,friend
+		String output = saveToString() + "|" + _payments + "|" + _debt + "|" + friendsToString();
+		return output;
 	}
 }

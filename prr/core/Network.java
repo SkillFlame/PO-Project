@@ -60,6 +60,20 @@ public class Network implements Serializable {
 		}	
 	}
 
+	public List<String> getSaveContents() {
+		List<String> output = new ArrayList<> ();
+		for(Client client : _clients) {
+			output.add(client.saveToString());
+		}
+		for(Terminal terminal : _terminals) {
+			output.add(terminal.saveToString());
+		}
+		for(Terminal terminal : _terminals) {
+			output.add("FRIENDS|" + terminal.getID() + "|" + terminal.friendsToString());
+		}
+		return output;
+	}
+
 	public void sendTextCommunication(Terminal terminalFrom, String keyTerminalTo, String message){
 
 	}
