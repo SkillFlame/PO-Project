@@ -54,10 +54,4 @@ public class Client implements Serializable{
 		_notifications.clear();
 	}
 
-	public String saveToString() {
-		//CLIENT|id|nome|taxId
-		String output = "CLIENT|" + _key + "|" + _name + "|" + _taxNumber;
-		return output;
-	}
-
 }

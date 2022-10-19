@@ -111,15 +111,9 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 		return output;
 	}
 
-	public String saveToString() {
-		//terminal-type|idTerminal|idClient|state
-		String output = _id + "|" + _clientID + "|" + _status;
-		return output;
-	}
-
 	public String toString() {
 		//terminalType|terminalId|clientId|terminalStatus|balance-paid|balance-debts|friend1,...,friend
-		String output = saveToString() + "|" + _payments + "|" + _debt + "|" + friendsToString();
+		String output = _id + "|" + _clientID + "|" + _status + "|" + _payments + "|" + _debt + "|" + friendsToString();
 		return output;
 	}
 }

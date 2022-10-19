@@ -15,12 +15,6 @@ public class FancyTerminal extends Terminal {
 	}
 	
 	@Override
-	public String saveToString() {
-		String output = "FANCY" + "|" + super.saveToString();
-		return output;
-	}
-	
-	@Override
 	public String toString() {
 		String output = "FANCY" + "|" + super.toString();
 		return output;
