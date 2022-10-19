@@ -23,11 +23,9 @@ public class Network implements Serializable {
 	private List<Terminal> _terminals = new ArrayList<>();
 	private List<Client> _clients = new ArrayList<>();
 
-	private String _filename;
-
 	// FIXME define contructor(s)
-	public Network(){
-		
+	public Network() {
+
 	}
 
 	// FIXME define methods
@@ -38,9 +36,9 @@ public class Network implements Serializable {
 			case "BASIC" -> terminal = new BasicTerminal(terminalID, clientID);
 			case "FANCY" -> terminal = new FancyTerminal(terminalID, clientID);
 			default -> throw new UnrecognizedTypeException();
-				//FIXME finish exception
+			// FIXME finish exception
 		}
-		
+
 		_terminals.add(Integer.parseInt(terminalID), terminal);
 		return terminal;
 	}
@@ -49,12 +47,14 @@ public class Network implements Serializable {
 		_terminals.get(Integer.parseInt(terminalID)).addFriend(friendID);
 	}
 
-	public void registerClient(String name, int taxNumber, String key){
-		Client client = new Client(key,taxNumber, name);
-		
-		_clients.add(Integer.parseInt(key),client);
+	public void registerClient(String name, int taxNumber, String key) {
+		Client client = new Client(key, taxNumber, name);
 
-		}
+		_clients.add(Integer.parseInt(key), client);
+
+	}
+
+	public 
 
 	/**
 	 * Read text input file and create corresponding domain entities.
@@ -64,14 +64,12 @@ public class Network implements Serializable {
 	 * @throws IOException                if there is an IO erro while processing
 	 *                                    the text file
 	 */
-	void importFile(String filename) throws UnrecognizedEntryException, IOException, FileOpenFailedException, UnavailableFileException /* FIXME maybe other exceptions */ {
+	void importFile(String filename) throws UnrecognizedEntryException, IOException, FileOpenFailedException,
+			UnavailableFileException /* FIXME maybe other exceptions */ {
 		// FIXME implement method
 		// FIXME throw errors
 		_filename = filename;
 	}
-	
-	public String getFilename() {
-		return _filename;
-	}
+
 
 }

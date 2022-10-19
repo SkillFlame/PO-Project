@@ -1,7 +1,12 @@
 package prr.core;
 
 import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+
 import pt.tecnico.uilib.forms.Form;
 import prr.app.exception.FileOpenFailedException;
 import prr.core.exception.ImportFileException;
@@ -22,6 +27,8 @@ public class NetworkManager {
 	// FIXME addmore fields if needed
 	private Parser _parser;
 
+	private String _filename;
+
 	public Network getNetwork() {
 		return _network;
 	}
@@ -36,7 +43,7 @@ public class NetworkManager {
 	 */
 	public void load(String filename) throws UnavailableFileException, IOException, UnrecognizedEntryException, FileOpenFailedException {
 		// FIXME throw errors
-		_parser.parseFile(_network.getFilename());
+		_parser.parseFile(filename);
 	}
 
 	/**
@@ -53,7 +60,11 @@ public class NetworkManager {
 	 */
 	public void save() throws FileNotFoundException, MissingFileAssociationException, IOException {
 		// FIXME implement serialization method
-
+		// FIXME throw errors
+		FileWriter out = new FileWriter(_network.getFilename());
+		BufferedWriter bufferdOut = new BufferedWriter(out);
+		
+		bout.write(“Writing something”);
 
 	}
 
