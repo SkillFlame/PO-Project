@@ -69,6 +69,7 @@ public class NetworkManager {
 		ObjectOutputStream out = new ObjectOutputStream(file);
 		out.writeObject(_network);
 		out.close();
+		
 	}
 
 

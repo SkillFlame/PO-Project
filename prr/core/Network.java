@@ -1,8 +1,9 @@
 package prr.core;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.Map;
 import java.io.IOException;
 
 import prr.app.exception.FileOpenFailedException;
@@ -20,15 +21,15 @@ public class Network implements Serializable {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
-	private List<Terminal> _terminals;
-	private List<Client> _clients;
-	private List<Terminal> _friends;
+	private Map<String, Terminal> _terminals;
+	private Map<String, Client> _clients;
+	private Map<Network, Terminal> _friends;
 
 	// FIXME define contructor(s)
 	public Network(){
-		_terminals = new ArrayList<>();
-		_clients = new ArrayList<>();
-		_friends = new ArrayList<>();
+		_terminals = new TreeMap<>();
+		_clients = new TreeMap<>();
+		_friends = new TreeMap<>();
 	}
 
 	// FIXME define methods
@@ -42,18 +43,18 @@ public class Network implements Serializable {
 			// FIXME finish exception
 		}
 
-		_terminals.add(Integer.parseInt(terminalID), terminal);
+		_terminals.put(terminalID, terminal);
 		return terminal;
 	}
 
 	public void addFriend(String terminalID, String friendID) {
-		_terminals.get(Integer.parseInt(terminalID)).addFriend(friendID);
+		_terminals.get(terminalID).addFriend(friendID);
 	}
 
 	public void registerClient(String name, int taxNumber, String key){
 		Client client = new Client(key,taxNumber, name);
 		try{
-			_clients.add(Integer.parseInt(key),client);
+			_clients.put(key,client);
 		}
 		catch(Exception e){
 			
@@ -67,6 +68,13 @@ public class Network implements Serializable {
 	public void startInteractiveCommunication(Terminal terminalFrom, String keyTerminalTo, String communicationType){
 		
 	}
+
+	public boolean hasClient(String clientId){
+		return _clients.containsKey(clientId);
+	}
+
+
+
 
 	/**
 	 * Read text input file and create corresponding domain entities.
