@@ -6,4 +6,13 @@ public class FancyTerminal extends Terminal {
 		super(terminalID, clientID);
 	}
 	
-}
+	public void makeVideoCall(Terminal terminalTo){
+
+	}
+
+	void acceptVideoCall(Terminal terminalFrom){
+		
+	}
+
+
+}	

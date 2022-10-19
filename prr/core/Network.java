@@ -20,12 +20,15 @@ public class Network implements Serializable {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
-	private List<Terminal> _terminals = new ArrayList<>();
-	private List<Client> _clients = new ArrayList<>();
+	private List<Terminal> _terminals;
+	private List<Client> _clients;
+	private List<Terminal> _friends;
 
 	// FIXME define contructor(s)
-	public Network() {
-
+	public Network(){
+		_terminals = new ArrayList<>();
+		_clients = new ArrayList<>();
+		_friends = new ArrayList<>();
 	}
 
 	// FIXME define methods
@@ -47,14 +50,23 @@ public class Network implements Serializable {
 		_terminals.get(Integer.parseInt(terminalID)).addFriend(friendID);
 	}
 
-	public void registerClient(String name, int taxNumber, String key) {
-		Client client = new Client(key, taxNumber, name);
+	public void registerClient(String name, int taxNumber, String key){
+		Client client = new Client(key,taxNumber, name);
+		try{
+			_clients.add(Integer.parseInt(key),client);
+		}
+		catch(Exception e){
+			
+		}	
+	}
 
-		_clients.add(Integer.parseInt(key), client);
+	public void sendTextCommunication(Terminal terminalFrom, String keyTerminalTo, String message){
 
 	}
 
-	public 
+	public void startInteractiveCommunication(Terminal terminalFrom, String keyTerminalTo, String communicationType){
+		
+	}
 
 	/**
 	 * Read text input file and create corresponding domain entities.
@@ -68,8 +80,8 @@ public class Network implements Serializable {
 			UnavailableFileException /* FIXME maybe other exceptions */ {
 		// FIXME implement method
 		// FIXME throw errors
-		_filename = filename;
+		Parser networkParser = new Parser(this);
+		networkParser.parseFile(filename);
 	}
-
 
 }

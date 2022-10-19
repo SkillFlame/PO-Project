@@ -1,8 +1,10 @@
 package prr.core;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -23,11 +25,8 @@ public class NetworkManager {
 
 	/** The network itself. */
 	private Network _network = new Network();
-
-	// FIXME addmore fields if needed
-	private Parser _parser;
-
 	private String _filename;
+	// FIXME addmore fields if needed
 
 	public Network getNetwork() {
 		return _network;
@@ -41,9 +40,15 @@ public class NetworkManager {
 	 *                                  there is
 	 *                                  an error while processing this file.
 	 */
-	public void load(String filename) throws UnavailableFileException, IOException, UnrecognizedEntryException, FileOpenFailedException {
+	public void load(String filename) throws UnavailableFileException, IOException, UnrecognizedEntryException, FileOpenFailedException, ClassNotFoundException{
 		// FIXME throw errors
-		_parser.parseFile(filename);
+		try(ObjectInputStream objectInput = new ObjectInputStream(new FileInputStream(filename))){
+			_network = (Network)objectInput.readObject();
+			_filename = (String)objectInput.readObject();
+		}
+		catch(IOException e){
+			throw new UnavailableFileException(filename);
+		}
 	}
 
 	/**
@@ -61,12 +66,17 @@ public class NetworkManager {
 	public void save() throws FileNotFoundException, MissingFileAssociationException, IOException {
 		// FIXME implement serialization method
 		// FIXME throw errors
-		FileWriter out = new FileWriter(_network.getFilename());
+		FileWriter out = new FileWriter(_filename);
 		BufferedWriter bufferdOut = new BufferedWriter(out);
 		
-		bout.write(“Writing something”);
-
+		bufferdOut.write("Writing something");
+		
+		
+		if(_filename == null){
+			throw new MissingFileAssociationException();
+		}
 	}
+
 
 	/**
 	 * Saves the serialized application's state into the specified file. The current
@@ -83,7 +93,8 @@ public class NetworkManager {
 	 *                                         to disk.
 	 */
 	public void saveAs(String filename) throws FileNotFoundException, MissingFileAssociationException, IOException {
-		// FIXME implement serialization method
+		_filename = filename;
+		save();
 	}
 
 	/**
@@ -98,5 +109,9 @@ public class NetworkManager {
 		} catch (IOException | UnrecognizedEntryException | FileOpenFailedException | UnavailableFileException /* FIXME maybe other exceptions */ e) {
 			throw new ImportFileException(filename, e);
 		}
+	}
+
+	public String getFilename() {
+		return _filename;
 	}
 }
