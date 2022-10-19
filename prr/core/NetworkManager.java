@@ -3,12 +3,9 @@ package prr.core;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-
 import prr.app.exception.FileOpenFailedException;
 import prr.core.exception.ImportFileException;
 import prr.core.exception.MissingFileAssociationException;
@@ -39,13 +36,13 @@ public class NetworkManager {
 	 *                                  there is
 	 *                                  an error while processing this file.
 	 */
-	public void load(String filename) throws UnavailableFileException, IOException, UnrecognizedEntryException, FileOpenFailedException, ClassNotFoundException{
+	public void load(String filename) throws UnavailableFileException{
 		// FIXME throw errors
 		try(ObjectInputStream objectInput = new ObjectInputStream(new FileInputStream(filename))){
 			_network = (Network)objectInput.readObject();
 			_filename = filename;
 		}
-		catch(IOException e){
+		catch(ClassNotFoundException | IOException e){
 			throw new UnavailableFileException(filename);
 		}
 	}
@@ -68,12 +65,10 @@ public class NetworkManager {
 		if (_filename.equals("")) {
 			throw new MissingFileAssociationException();
 		}
-		try (FileOutputStream file = new FileOutputStream(_filename);
-				ObjectOutputStream out = new ObjectOutputStream(file)) {
-			out.writeObject(_network);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		FileOutputStream file = new FileOutputStream(_filename);
+		ObjectOutputStream out = new ObjectOutputStream(file);
+		out.writeObject(_network);
+		out.close();
 	}
 
 
