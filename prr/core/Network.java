@@ -23,6 +23,7 @@ public class Network implements Serializable {
 	private List<Terminal> _terminals;
 	private List<Client> _clients;
 	private List<Terminal> _friends;
+	p
 
 	// FIXME define contructor(s)
 	public Network(){
