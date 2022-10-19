@@ -26,7 +26,7 @@ class DoSaveFile extends Command<NetworkManager> {
 				_receiver.save();
 			}
 		} catch (MissingFileAssociationException | IOException e) {
-			//na sei
+			// FIXME na sei
 		}
 	}
 }
