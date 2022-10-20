@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import prr.core.exception.InvalidKeyException;
-import prr.core.exception.UnrecognizedTypeException;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
@@ -125,12 +124,13 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 		return true;
 	}
 
-	public boolean checkIdType(String id) throws UnrecognizedTypeException{
-		
-
-		return true;
+	public boolean isOn() {
+		return _mode != TerminalMode.OFF;
 	}
-	
+
+	public boolean isFree() {
+		return isOn() && _mode != TerminalMode.BUSY;
+	}
 
 	public String friendsToString() {
 		String output = "";

@@ -1,7 +1,5 @@
 package prr.app.client;
 
-import javax.management.Notification;
-
 import prr.core.Network;
 import prr.core.exception.UnknownIdentifierException;
 import prr.core.exception.UnknownKeyException;

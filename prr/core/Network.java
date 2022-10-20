@@ -33,7 +33,7 @@ public class Network implements Serializable {
 	private Map<Network, Terminal> _friends;
 
 	// FIXME define contructor(s)
-	public Network(){
+	public Network() {
 		_terminals = new TreeMap<>();
 		_clients = new TreeMap<>();
 		_friends = new TreeMap<>();
@@ -41,13 +41,14 @@ public class Network implements Serializable {
 
 	// FIXME define methods
 
-	public Terminal registerTerminal(String type, String terminalID, String clientID) throws UnrecognizedTypeException, InvalidKeyException, KeyAlreadyExistsException{
+	public Terminal registerTerminal(String type, String terminalID, String clientID)
+			throws UnrecognizedTypeException, InvalidKeyException, KeyAlreadyExistsException {
 		Terminal terminal;
-		
-		if(hasTerminal(terminalID)) {
+
+		if (hasTerminal(terminalID)) {
 			throw new KeyAlreadyExistsException(terminalID);
 		}
-		
+
 		switch (type) {
 			case "BASIC" -> terminal = new BasicTerminal(terminalID, clientID);
 			case "FANCY" -> terminal = new FancyTerminal(terminalID, clientID);
@@ -62,51 +63,49 @@ public class Network implements Serializable {
 		_terminals.get(terminalID).addFriend(friendID);
 	}
 
-	public void registerClient(String key, String name, int taxNumber) throws KeyAlreadyExistsException{
-		Client client = new Client(key,taxNumber, name);
-		_clients.put(key,client);	
+	public void registerClient(String key, String name, int taxNumber) throws KeyAlreadyExistsException {
+		Client client = new Client(key, taxNumber, name);
+		_clients.put(key, client);
 	}
 
-	public void sendTextCommunication(Terminal terminalFrom, String keyTerminalTo, String message){
+	public void sendTextCommunication(Terminal terminalFrom, String keyTerminalTo, String message) {
 
 	}
 
-	public void startInteractiveCommunication(Terminal terminalFrom, String keyTerminalTo, String communicationType){
-		
+	public void startInteractiveCommunication(Terminal terminalFrom, String keyTerminalTo, String communicationType) {
+
 	}
 
-	public boolean hasClient(String clientID){
+	public boolean hasClient(String clientID) {
 		return _clients.containsKey(clientID);
 	}
 
 	public Terminal getTerminal(String terminalID) throws UnknownKeyException {
-		if(!_terminals.containsKey(terminalID)) {
+		if (!_terminals.containsKey(terminalID)) {
 			throw new UnknownKeyException(terminalID);
 		}
 		return _terminals.get(terminalID);
 	}
 
-
-	public List<Notification> getNotifications(String clientID){
+	public List<Notification> getNotifications(String clientID) {
 		Client client = _clients.get(clientID);
 		return client.getNotifications();
-		
+
 	}
 
-
-	public boolean hasTerminal(String terminalID){
+	public boolean hasTerminal(String terminalID) {
 		return _terminals.containsKey(terminalID);
 	}
-	
 
 	public List<Terminal> showAllTerminals() {
-		List<Terminal> terminals = new ArrayList<> ();
-		for(Terminal terminal : _terminals.values()) {
+		List<Terminal> terminals = new ArrayList<>();
+		for (Terminal terminal : _terminals.values()) {
 			terminals.add(terminal);
 		}
 		return terminals;
 	}
-	private static class IdentifierComparator implements Comparator<Client>{
+
+	private static class IdentifierComparator implements Comparator<Client> {
 		public int compare(Client client1, Client client2) {
 			String id1 = client1.getKey();
 			String id2 = client2.getKey();
@@ -114,22 +113,31 @@ public class Network implements Serializable {
 		}
 	}
 
-	public List<Client> getClients(){
+	public List<Client> getClients() {
 		List<Client> listed = new ArrayList<>(_clients.values());
 		Collections.sort(listed, new IdentifierComparator());
 		return listed;
 
 	}
 
-	public Client getClient(String id) throws UnknownIdentifierException, UnknownKeyException{
+	public Client getClient(String id) throws UnknownIdentifierException, UnknownKeyException {
 		Client client = _clients.get(id);
-		if(client == null){
+		if (client == null) {
 			throw new UnknownKeyException(id);
 		}
 		return client;
 	}
 
 
+	public List<Terminal> showFreeTerminals() {
+		List<Terminal> terminals = new ArrayList<> ();
+		for(Terminal terminal : _terminals.values()) {
+			if(terminal.isFree()){
+				terminals.add(terminal);
+			}
+		}
+		return terminals;
+	}
 
 	/**
 	 * Read text input file and create corresponding domain entities.
