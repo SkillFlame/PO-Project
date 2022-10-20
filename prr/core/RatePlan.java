@@ -2,7 +2,10 @@ package prr.core;
 
 import java.io.Serializable;
 
-public abstract class TariffPlan implements Serializable{
+/**
+ * RatePlan Implementation
+ */
+public abstract class RatePlan implements Serializable{
 	
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;

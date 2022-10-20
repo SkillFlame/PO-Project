@@ -16,21 +16,40 @@ import prr.core.exception.UnrecognizedEntryException;
 import prr.core.exception.UnrecognizedTypeException;
 
 /**
- * Class Store implements a store.
+ * Network class implements a Terminal Network
  */
 public class Network implements Serializable {
 
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
+	/** The Map of Terminals of one Network
+	 *  and the Map of Clients of one Network
+	 */
 	private Map<String, Terminal> _terminals;
 	private Map<String, Client> _clients;
 
+	/** Constructor of a Network */
 	public Network() {
 		_terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		_clients = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	}
 
+	
+	/** 
+	 *  Registers a Terminal on the current Network
+	 * @param terminalType either "FANCY" or "BASIC" terminal type
+	 * @param terminalID id of a terminal
+	 * @param clientID id of a client
+	 * 
+	 * @throws UnrecognizedTypeException if the given entry type is not recognized
+	 * 
+	 * @throws InvalidKeyException 	     if the given clientID is not valid
+	 * 
+	 * @throws KeyAlreadyExistsException if the given clientID is a duplicate of an existing one
+	 * 
+	 * @throws UnknownKeyException       if the given clientID is not recognized
+	 */
 	public Terminal registerTerminal(String terminalType, String terminalID, String clientID)
 			throws UnrecognizedTypeException, InvalidKeyException, KeyAlreadyExistsException, UnknownKeyException {
 		Terminal terminal;
@@ -54,6 +73,13 @@ public class Network implements Serializable {
 		return terminal;
 	}
 
+	
+	/** 
+	 *	Gets the Terminal with the desired ID from the terminal Map
+	 * @param terminalID id of the desired terminal
+	 * 
+	 * @throws UnknownKeyException if the given clientID is not recognized
+	 */
 	public Terminal getTerminal(String terminalID) throws UnknownKeyException {
 		if (!_terminals.containsKey(terminalID)) {
 			throw new UnknownKeyException(terminalID);
@@ -61,6 +87,10 @@ public class Network implements Serializable {
 		return _terminals.get(terminalID);
 	}
 
+	
+	/** 
+	 *	Gets the List of Terminals from the Terminal Map by its IDs
+	 */
 	public List<Terminal> getTerminals() {
 		List<Terminal> terminals = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
@@ -69,6 +99,10 @@ public class Network implements Serializable {
 		return terminals;
 	}
 
+	
+	/** 
+	 * Gets the UnusedTerminals from the Terminal Map by its IDs
+	 */
 	public List<Terminal> getFreeTerminals() {
 		List<Terminal> terminals = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
@@ -79,14 +113,32 @@ public class Network implements Serializable {
 		return terminals;
 	}
 
+	
+	/** 
+	 *	Checks if a Terminal with a certain ID is contained in the Terminal Map
+	 * @param terminalID id of a terminal
+	 * @return true if the terminal with the desired id exists
+	 */
 	public boolean hasTerminal(String terminalID) {
 		return _terminals.containsKey(terminalID);
 	}
 
+	
+	/** 
+	 * 	Adds a Friend Terminal to the selected Terminal
+	 * @param terminalID id of a terminal
+	 * @param friendID id of the friend terminal to be added
+	 */
 	public void addFriend(String terminalID, String friendID) {
 		_terminals.get(terminalID).addFriend(friendID);
 	}
 
+	
+	/** 
+	 * 	Checks if a Terminal Type is valid ("BASIC" or "FANCY")
+	 * @param terminalType type of a terminal
+	 * @return true if the given type is a valid terminal type
+	 */
 	public boolean isValidTerminalType(String terminalType) {
 		boolean isValid = false;
 		switch (terminalType) {
@@ -96,31 +148,64 @@ public class Network implements Serializable {
 		return isValid;
 	}
 
-	public void registerClient(String key, String name, int taxNumber) throws KeyAlreadyExistsException {
-		if (_clients.containsKey(key)) {
-			throw new KeyAlreadyExistsException(key);
+	
+	/** 
+	 * 	Registers a Client on the current Network
+	 * @param clientID clientID of a client
+	 * @param clientName name of a client
+	 * @param taxNumber tax number of a client
+	 * 
+	 * @throws KeyAlreadyExistsException if the given clientID is a duplicate of an existing one
+	 */
+	public void registerClient(String clientID, String name, int taxNumber) throws KeyAlreadyExistsException {
+		if (_clients.containsKey(clientID)) {
+			throw new KeyAlreadyExistsException(clientID);
 		}
-		Client client = new Client(name, taxNumber, key);
-		_clients.put(key, client);
+		Client client = new Client(name, taxNumber, clientID);
+		_clients.put(clientID, client);
 	}
 
-	public Client getClient(String id) throws UnknownIdentifierException, UnknownKeyException {
-		Client client = _clients.get(id);
+	
+	/** 
+	 * 	Gets the Client from the Client Map by its ID
+	 * @param clientID id of a client
+	 * 
+	 * @throws UnknownIdentifierException if the given id is not contained in the Collection
+	 * 
+	 * @throws UnknownKeyException 		  if the given clientID is not recognized
+	 */
+	public Client getClient(String clientID) throws UnknownIdentifierException, UnknownKeyException {
+		Client client = _clients.get(clientID);
 		if (client == null) {
-			throw new UnknownKeyException(id);
+			throw new UnknownKeyException(clientID);
 		}
 		return client;
 	}
 
+	
+	/** 
+	 *	Gets the List of Clients from the Client Map by its IDs
+	 */
 	public List<Client> getClients() {
 		List<Client> listed = new ArrayList<>(_clients.values());
 		return listed;
 	}
 
+	
+	/** 
+	 * 	Checks if a Client with a certain ID is contained in the Client Map
+	 * @param clientID id of a Client
+	 * @return true if the client with the desired id exists
+	 */
 	public boolean hasClient(String clientID) {
 		return _clients.containsKey(clientID);
 	}
 
+	
+	/** 
+	 * 	Gets the Notifications of a Client from the Client Map by its ID
+	 * @param clientID id of a client
+	 */
 	public List<Notification> getNotifications(String clientID) {
 		Client client = _clients.get(clientID);
 		return client.getNotifications();
@@ -131,7 +216,9 @@ public class Network implements Serializable {
 	 * Read text input file and create corresponding domain entities.
 	 * 
 	 * @param filename name of the text input file
+	 * 
 	 * @throws UnrecognizedEntryException if some entry is not correct
+	 * 
 	 * @throws IOException                if there is an IO error while processing
 	 *                                    the text file
 	 */

@@ -2,6 +2,9 @@ package prr.core;
 
 import java.io.Serializable;
 
+/**
+ *	Implementation of a Notification and its possible types
+ */
 public class Notification implements Serializable {
 
 	/** Serial number for serialization. */
@@ -10,17 +13,24 @@ public class Notification implements Serializable {
 	private NotificationType _type;
 	private String _terminalId;
 
+	/** Types of a Notification */
 	enum NotificationType {
 		O2S, O2I, B2S, B2I
 	};
 
-	public Notification(String id) {
+	public Notification(String terminalId) {
 		_type = null;
-		_terminalId = id;
+		_terminalId = terminalId;
 	}
 
+	
+	/** 
+	 *	toString implementaion of a Notification
+	 *		notificationType | idTerminal
+	 */
+	@Override
 	public String toString() {
-		// notificationType | idTerminal
+		
 		return _type + "|" + _terminalId;
 	}
 }

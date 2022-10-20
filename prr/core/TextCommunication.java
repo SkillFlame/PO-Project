@@ -1,5 +1,8 @@
 package prr.core;
 
+/**
+ * Specialization of a Communication by Text
+ */
 public class TextCommunication extends Communication {
 	
 	/** Serial number for serialization. */

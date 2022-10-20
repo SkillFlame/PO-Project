@@ -13,7 +13,7 @@ import prr.core.exception.UnavailableFileException;
 import prr.core.exception.UnrecognizedEntryException;
 
 /**
- * Manage access to network and implement load/save operations.
+ * Manage access to network and implement load/save operations
  */
 public class NetworkManager {
 
@@ -98,6 +98,9 @@ public class NetworkManager {
 		}
 	}
 
+	/**
+	 *	Gets the file name
+	 */
 	public String getFilename() {
 		return _filename;
 	}

@@ -2,6 +2,9 @@ package prr.core;
 
 import java.io.Serializable;
 
+/**
+ * Communication implementation
+ */
 public abstract class Communication implements Serializable{
 	
 	/** Serial number for serialization. */

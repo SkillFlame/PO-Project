@@ -2,6 +2,9 @@ package prr.core;
 
 import prr.core.exception.InvalidKeyException;
 
+/**
+ * Specialization of a Terminal by its type being "BASIC"
+ */
 public class BasicTerminal extends Terminal {
 
 	/** Serial number for serialization. */
@@ -11,6 +14,9 @@ public class BasicTerminal extends Terminal {
 		super(terminalID, clientID);
 	}
 
+	/**
+	 * toString implementation of a Basic Terminal
+	 */
 	@Override
 	public String toString() {
 		String output = "BASIC" + "|" + super.toString();

@@ -1,5 +1,8 @@
 package prr.core;
 
+/**
+ * Specialization of an Interactive Communication by Video
+ */
 public class VideoCommunication extends InteractiveCommunication {
 	
 	/** Serial number for serialization. */

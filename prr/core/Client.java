@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Client Implementaion
+ */
 public class Client implements Serializable {
 
 	/** Serial number for serialization. */
@@ -18,10 +21,12 @@ public class Client implements Serializable {
 	private ClientLevel _level;
 	private Notifications _activity;
 
+	/** Level of a Client */
 	enum ClientLevel {
 		NORMAL, GOLD, PLATINUM
 	};
 
+	/** Notification availability */
 	enum Notifications {
 		YES, NO
 	};
@@ -39,6 +44,10 @@ public class Client implements Serializable {
 		_activity = Notifications.YES;
 	}
 
+	
+	/** 
+	 * Puts all the Client's Notifications in a Notification List
+	 */
 	public List<Notification> getNotifications() {
 		return Collections.unmodifiableList(_notifications);
 	}
@@ -47,6 +56,7 @@ public class Client implements Serializable {
 		_notifications.clear();
 	}
 
+	
 	public Notifications getNotificationActivity() {
 		return _activity;
 	}
@@ -67,12 +77,21 @@ public class Client implements Serializable {
 		this._level = clientLevel;
 	}
 
+	
+	/** 
+	 * Adds a Terminal to the Client's Terminal List
+	 */
 	public void addTerminal(String terminalID) {
 		_terminals.add(terminalID);
 	}
 
+	
+	/** 
+	 * toString implementation of a Client
+	 * 		CLIENT|key|name|taxId|type|notifications|terminals|payments|debts
+	 */
+	@Override
 	public String toString() {
-		// CLIENT|key|name|taxId|type|notifications|terminals|payments|debts
 		String output = "CLIENT|" + _key + "|" + _name + "|" + _taxNumber + "|" + _level + "|" + _activity + "|"
 				+ _terminals.size() + "|" + _payments + "|" + _debts;
 		return output;

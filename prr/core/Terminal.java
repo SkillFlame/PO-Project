@@ -7,7 +7,7 @@ import java.util.HashSet;
 import prr.core.exception.InvalidKeyException;
 
 /**
- * Abstract terminal.
+ * Terminal implementation
  */
 abstract public class Terminal implements Serializable {
 
@@ -19,6 +19,7 @@ abstract public class Terminal implements Serializable {
 	private double _payments;
 	private TerminalMode _mode;
 
+	/** Possible Terminal Modes */
 	enum TerminalMode {
 		BUSY, IDLE, SILENCE, OFF
 	};
@@ -32,6 +33,11 @@ abstract public class Terminal implements Serializable {
 		_mode = TerminalMode.IDLE;
 	}
 
+	
+	/** 
+	 * @param id of a Terminal
+	 * @throws InvalidKeyException if the given clientID is not valid
+	 */
 	private void setID(String id) throws InvalidKeyException {
 		if (id.length() != 6) {
 			throw new InvalidKeyException(id);
@@ -44,10 +50,15 @@ abstract public class Terminal implements Serializable {
 		}
 	}
 
+
 	public String getID() {
 		return _id;
 	}
 
+	
+	/** 
+	 * Adds a Friend to the Friend List
+	 */
 	public void addFriend(String friendID) {
 		_friendsID.add(friendID);
 	}
@@ -67,7 +78,7 @@ abstract public class Terminal implements Serializable {
 	/**
 	 * Checks if this terminal can start a new communication.
 	 *
-	 * @return true if this terminal is neither off neither busy, false otherwise.
+	 * @return true if this terminal is neither off nor busy, false otherwise.
 	 **/
 	public boolean canStartCommunication() {
 		return isOn() && _mode != TerminalMode.BUSY;
@@ -88,10 +99,19 @@ abstract public class Terminal implements Serializable {
 		_mode = TerminalMode.IDLE;
 	}
 
+	
+	/** 
+	 * 	Checks if the Terminal is On
+	 * @return true if Terminal is ON
+	 */
 	public boolean isOn() {
 		return _mode != TerminalMode.OFF;
 	}
 
+	
+	/** 
+	 * Conversion of the Terminal's Friends into String
+	 */
 	public String friendsToString() {
 		if (_friendsID.isEmpty()) {
 			return "";
@@ -104,8 +124,13 @@ abstract public class Terminal implements Serializable {
 		return output;
 	}
 
+	/**
+	 *	toString implementation of a Terminal
+	 *		terminalType|terminalId|clientId|terminalStatus|balance-paid|balance-debts|friend1,...,friend
+	 */
+	@Override
 	public String toString() {
-		// terminalType|terminalId|clientId|terminalStatus|balance-paid|balance-debts|friend1,...,friend
+		
 		String output = _id + "|" + _clientID + "|" + _mode + "|" + (int) _payments + "|" + (int) _debt
 				+ friendsToString();
 		return output;
