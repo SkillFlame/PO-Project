@@ -1,26 +1,22 @@
 package prr.core;
 
 import java.io.Serializable;
-import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Comparator;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Collections;
 
 import prr.app.exception.FileOpenFailedException;
-import prr.core.exception.ClientKeyAlreadyExistsException;
+import prr.core.exception.InvalidKeyException;
+import prr.core.exception.KeyAlreadyExistsException;
 import prr.core.exception.UnavailableFileException;
 import prr.core.exception.UnknownIdentifierException;
 import prr.core.exception.UnknownKeyException;
 import prr.core.exception.UnrecognizedEntryException;
 import prr.core.exception.UnrecognizedTypeException;
-import prr.core.exception.UnknownKeyException;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
@@ -45,13 +41,17 @@ public class Network implements Serializable {
 
 	// FIXME define methods
 
-	public Terminal registerTerminal(String type, String terminalID, String clientID) throws UnrecognizedTypeException {
+	public Terminal registerTerminal(String type, String terminalID, String clientID) throws UnrecognizedTypeException, InvalidKeyException, KeyAlreadyExistsException{
 		Terminal terminal;
+		
+		if(hasTerminal(terminalID)) {
+			throw new KeyAlreadyExistsException(terminalID);
+		}
+		
 		switch (type) {
 			case "BASIC" -> terminal = new BasicTerminal(terminalID, clientID);
 			case "FANCY" -> terminal = new FancyTerminal(terminalID, clientID);
 			default -> throw new UnrecognizedTypeException();
-			// FIXME finish exception
 		}
 
 		_terminals.put(terminalID, terminal);
@@ -62,7 +62,7 @@ public class Network implements Serializable {
 		_terminals.get(terminalID).addFriend(friendID);
 	}
 
-	public void registerClient(String key, String name, int taxNumber) throws ClientKeyAlreadyExistsException{
+	public void registerClient(String key, String name, int taxNumber) throws KeyAlreadyExistsException{
 		Client client = new Client(key,taxNumber, name);
 		_clients.put(key,client);	
 	}
@@ -87,8 +87,8 @@ public class Network implements Serializable {
 	}
 
 
-	public List<Notification> getNotifications(String clientId){
-		Client client = _clients.get(clientId);
+	public List<Notification> getNotifications(String clientID){
+		Client client = _clients.get(clientID);
 		return client.getNotifications();
 		
 	}

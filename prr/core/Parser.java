@@ -61,7 +61,7 @@ public class Parser {
 
 		try {
 			int taxNumber = Integer.parseInt(components[3]);
-			_network.registerClient(components[1], taxNumber, components[2]);
+			_network.registerClient(components[1], components[2], taxNumber);
 		} catch (NumberFormatException nfe) {
 			throw new UnrecognizedEntryException("Invalid number in line " + line, nfe);
 		} catch (Exception e) {

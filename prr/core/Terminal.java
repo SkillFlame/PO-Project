@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 
+import prr.core.exception.InvalidKeyException;
 import prr.core.exception.UnrecognizedTypeException;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
@@ -29,10 +30,21 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 	// FIXME define contructor(s)
 	// FIXME define methods
 
-	public Terminal(String id, String clientID){
+	public Terminal(String id, String clientID) throws InvalidKeyException{
 		_id = id;
-		_clientID = clientID;
+		setID(id);
 		_mode = TerminalMode.IDLE;
+	}
+
+	private void setID(String id) throws InvalidKeyException{
+		if(id.length() != 6) {
+			throw new InvalidKeyException(id);
+		}
+		try {
+			Integer.parseInt(id);
+		} catch (NumberFormatException nfe) {
+			throw new InvalidKeyException(id);
+		}
 	}
 
 	public String getID() {

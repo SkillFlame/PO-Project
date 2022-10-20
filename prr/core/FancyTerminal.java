@@ -1,8 +1,10 @@
 package prr.core;
 
+import prr.core.exception.InvalidKeyException;
+
 public class FancyTerminal extends Terminal {
 
-	public FancyTerminal(String terminalID, String clientID) {
+	public FancyTerminal(String terminalID, String clientID) throws InvalidKeyException {
 		super(terminalID, clientID);
 	}
 	
