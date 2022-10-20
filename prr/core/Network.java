@@ -3,13 +3,20 @@ package prr.core;
 import java.io.Serializable;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.Comparator;
 import java.util.Map;
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import prr.app.exception.FileOpenFailedException;
+import prr.core.exception.ClientKeyAlreadyExistsException;
 import prr.core.exception.UnavailableFileException;
+import prr.core.exception.UnknownIdentifierException;
 import prr.core.exception.UnrecognizedEntryException;
 import prr.core.exception.UnrecognizedTypeException;
+import prr.core.exception.UnknownKeyException;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
@@ -51,14 +58,9 @@ public class Network implements Serializable {
 		_terminals.get(terminalID).addFriend(friendID);
 	}
 
-	public void registerClient(String name, int taxNumber, String key){
+	public void registerClient(String key, String name, int taxNumber) throws ClientKeyAlreadyExistsException{
 		Client client = new Client(key,taxNumber, name);
-		try{
-			_clients.put(key,client);
-		}
-		catch(Exception e){
-			
-		}	
+		_clients.put(key,client);	
 	}
 
 	public void sendTextCommunication(Terminal terminalFrom, String keyTerminalTo, String message){
@@ -74,8 +76,44 @@ public class Network implements Serializable {
 	}
 
 
+	private static class IdentifierComparator implements Comparator<Client>{
+		public int compare(Client client1, Client client2) {
+			String id1 = client1.getKey();
+			String id2 = client2.getKey();
+			return id1.compareToIgnoreCase(id2);
+		}
+	}
+
+	public List<Client> getClients(){
+		List<Client> listed = new ArrayList<>(_clients.values());
+		Collections.sort(listed, new IdentifierComparator());
+		return listed;
+
+	}
+
+	public Client getClient(String id) throws UnknownIdentifierException, UnknownKeyException{
+		Client client = _clients.get(id);
+		if(client == null){
+			throw new UnknownKeyException(id);
+		}
+		return client;
+	}
 
 
+	public List<Notification> getNotifications(String clientId){
+		Client client = _clients.get(clientId);
+		return client.getNotifications();
+		
+	}
+
+
+	public boolean hasTerminal(String terminalID){
+		return _terminals.containsKey(terminalID);
+	}
+	
+
+
+	public 
 	/**
 	 * Read text input file and create corresponding domain entities.
 	 * 

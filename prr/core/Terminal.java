@@ -115,7 +115,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 
 	public boolean checkIdType(String id) throws UnrecognizedTypeException{
 		
-		
+
 		return true;
 	}
 	
@@ -134,3 +134,4 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 		return output;
 	}
 }
+

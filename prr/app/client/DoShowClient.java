@@ -1,9 +1,13 @@
 package prr.app.client;
 
+import javax.management.Notification;
+
 import prr.core.Network;
-import prr.app.exception.UnknownClientKeyException;
+import prr.core.exception.UnknownIdentifierException;
+import prr.core.exception.UnknownKeyException;
+
 import pt.tecnico.uilib.menus.Command;
-import pt.tecnico.uilib.menus.CommandException;
+
 //FIXME add more imports if needed
 
 /**
@@ -18,9 +22,18 @@ class DoShowClient extends Command<Network> {
 	}
 	
 	@Override
-	protected final void execute() throws CommandException {
+	protected final void execute(){
 		//FIXME implement command
 		String key = stringField("key");
-		_display.popup(DoShowAllClients.toString(_receiver, key));
+		try {
+			_display.addLine(_receiver.getClient(key));
+			for(Object notification : _receiver.getNotifications(key)){
+				_display.addLine(notification);
+			}
+			
+		} catch (UnknownIdentifierException | UnknownKeyException e) {
+
+		}
+		_display.display();
 	}
 }
