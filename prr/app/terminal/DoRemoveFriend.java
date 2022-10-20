@@ -12,7 +12,7 @@ class DoRemoveFriend extends TerminalCommand {
 
 	DoRemoveFriend(Network context, Terminal terminal) {
 		super(Label.REMOVE_FRIEND, context, terminal);
-		// FIXME add command fields
+		addStringField("terminalID", Message.terminalKey());
 	}
 
 	@Override

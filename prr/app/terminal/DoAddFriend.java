@@ -12,7 +12,7 @@ class DoAddFriend extends TerminalCommand {
 
 	DoAddFriend(Network context, Terminal terminal) {
 		super(Label.ADD_FRIEND, context, terminal);
-		// FIXME add command fields
+		addStringField("terminalID", Message.terminalKey());
 	}
 
 	@Override
