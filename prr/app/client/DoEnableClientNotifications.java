@@ -13,7 +13,7 @@ class DoEnableClientNotifications extends Command<Network> {
 
 	DoEnableClientNotifications(Network receiver) {
 		super(Label.ENABLE_CLIENT_NOTIFICATIONS, receiver);
-		//FIXME add command fields
+		addStringField("clientKey", Message.key());
 	}
 	
 	@Override
