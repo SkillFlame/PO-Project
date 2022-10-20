@@ -3,11 +3,15 @@ package prr.core;
 import java.io.Serializable;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.io.IOException;
 
 import prr.app.exception.FileOpenFailedException;
 import prr.core.exception.UnavailableFileException;
+import prr.core.exception.UnknownKeyException;
 import prr.core.exception.UnrecognizedEntryException;
 import prr.core.exception.UnrecognizedTypeException;
 
@@ -69,11 +73,24 @@ public class Network implements Serializable {
 		
 	}
 
-	public boolean hasClient(String clientId){
-		return _clients.containsKey(clientId);
+	public boolean hasClient(String clientID){
+		return _clients.containsKey(clientID);
 	}
 
+	public Terminal getTerminal(String terminalID) throws UnknownKeyException {
+		if(!_terminals.containsKey(terminalID)) {
+			throw new UnknownKeyException(terminalID);
+		}
+		return _terminals.get(terminalID);
+	}
 
+	public List<Terminal> showAllTerminals() {
+		List<Terminal> terminals = new ArrayList<> ();
+		for(Terminal terminal : _terminals.values()) {
+			terminals.add(terminal);
+		}
+		return terminals;
+	}
 
 
 	/**

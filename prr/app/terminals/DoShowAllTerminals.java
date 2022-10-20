@@ -1,7 +1,5 @@
 package prr.app.terminals;
 
-import java.util.Collections;
-
 import prr.core.Network;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
@@ -18,6 +16,7 @@ class DoShowAllTerminals extends Command<Network> {
 
 	@Override
 	protected final void execute() throws CommandException {
-		//FIXME implement command
+		_display.addAll(_receiver.showAllTerminals());
+		_display.display();
 	}
 }
