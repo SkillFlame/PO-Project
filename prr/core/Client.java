@@ -34,7 +34,7 @@ public class Client implements Serializable {
 	private List<Notification> _notifications;
 	private List<String> _terminals;
 
-	public Client(String name, int taxNumber, String key) {
+	Client(String name, int taxNumber, String key) {
 		_key = key;
 		_name = name;
 		_taxNumber = taxNumber;
@@ -48,32 +48,32 @@ public class Client implements Serializable {
 	/** 
 	 * Puts all the Client's Notifications in a Notification List
 	 */
-	public List<Notification> getNotifications() {
+	List<Notification> getNotifications() {
 		return Collections.unmodifiableList(_notifications);
 	}
 
-	public void removeNotifications() {
+	void removeNotifications() {
 		_notifications.clear();
 	}
 
 	
-	public Notifications getNotificationActivity() {
+	Notifications getNotificationActivity() {
 		return _activity;
 	}
 
-	public void activateNotifications() {
+	void activateNotifications() {
 		this._activity = Notifications.YES;
 	}
 
-	public void deactivateNotifications() {
+	void deactivateNotifications() {
 		this._activity = Notifications.NO;
 	}
 
-	public ClientLevel getClientLevel() {
+	ClientLevel getClientLevel() {
 		return _level;
 	}
 
-	public void setClientLevel(ClientLevel clientLevel) {
+	void setClientLevel(ClientLevel clientLevel) {
 		this._level = clientLevel;
 	}
 
@@ -81,14 +81,14 @@ public class Client implements Serializable {
 	/** 
 	 * Adds a Terminal to the Client's Terminal List
 	 */
-	public void addTerminal(String terminalID) {
+	void addTerminal(String terminalID) {
 		_terminals.add(terminalID);
 	}
 
 	
 	/** 
 	 * toString implementation of a Client
-	 * 		CLIENT|key|name|taxId|type|notifications|terminals|payments|debts
+	 * CLIENT|key|name|taxId|type|notifications|terminals|payments|debts
 	 */
 	@Override
 	public String toString() {

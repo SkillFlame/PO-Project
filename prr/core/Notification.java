@@ -3,7 +3,7 @@ package prr.core;
 import java.io.Serializable;
 
 /**
- *	Implementation of a Notification and its possible types
+ * Implementation of a Notification and its possible types
  */
 public class Notification implements Serializable {
 
@@ -18,19 +18,18 @@ public class Notification implements Serializable {
 		O2S, O2I, B2S, B2I
 	};
 
-	public Notification(String terminalId) {
+	Notification(String terminalId) {
 		_type = null;
 		_terminalId = terminalId;
 	}
 
-	
-	/** 
-	 *	toString implementaion of a Notification
-	 *		notificationType | idTerminal
+	/**
+	 * toString implementaion of a Notification
+	 * notificationType | idTerminal
 	 */
 	@Override
 	public String toString() {
-		
+
 		return _type + "|" + _terminalId;
 	}
 }

@@ -10,14 +10,13 @@ public class FancyTerminal extends Terminal {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
-	public FancyTerminal(String terminalID, String clientID) throws InvalidKeyException {
+	FancyTerminal(String terminalID, String clientID) throws InvalidKeyException {
 		super(terminalID, clientID);
 	}
 
-	
-	/** 
+	/**
 	 * toString implementation of a Fancy Terminal
-	 * 
+	 * terminalType|terminalId|clientId|terminalStatus|balance-paid|balance-debts|friend1,...,friend
 	 */
 	@Override
 	public String toString() {
