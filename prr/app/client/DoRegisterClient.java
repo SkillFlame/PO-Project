@@ -15,7 +15,7 @@ class DoRegisterClient extends Command<Network> {
 		super(Label.REGISTER_CLIENT, receiver);
 		addStringField("key", Message.key());
 		addStringField("name", Message.name());
-		addStringField("taxId", Message.taxId());
+		addIntegerField("taxId", Message.taxId());
 	}
 
 	@Override
