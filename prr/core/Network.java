@@ -15,8 +15,6 @@ import prr.core.exception.UnknownKeyException;
 import prr.core.exception.UnrecognizedEntryException;
 import prr.core.exception.UnrecognizedTypeException;
 
-// FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
-
 /**
  * Class Store implements a store.
  */
@@ -28,13 +26,10 @@ public class Network implements Serializable {
 	private Map<String, Terminal> _terminals;
 	private Map<String, Client> _clients;
 
-	// FIXME define contructor(s)
 	public Network() {
 		_terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		_clients = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	}
-
-	// FIXME define methods
 
 	public Terminal registerTerminal(String terminalType, String terminalID, String clientID)
 			throws UnrecognizedTypeException, InvalidKeyException, KeyAlreadyExistsException, UnknownKeyException {
@@ -44,7 +39,7 @@ public class Network implements Serializable {
 			throw new KeyAlreadyExistsException(terminalID);
 		}
 
-		if(!hasClient(clientID)) {
+		if (!hasClient(clientID)) {
 			throw new UnknownKeyException(clientID);
 		}
 
@@ -59,39 +54,6 @@ public class Network implements Serializable {
 		return terminal;
 	}
 
-	public void addFriend(String terminalID, String friendID) {
-		_terminals.get(terminalID).addFriend(friendID);
-	}
-
-	public void registerClient(String key, String name, int taxNumber) throws KeyAlreadyExistsException {
-		if(_clients.containsKey(key)) {
-			throw new KeyAlreadyExistsException(key);
-		}
-		Client client = new Client(name, taxNumber, key);
-		_clients.put(key, client);
-	}
-
-	public boolean isValidTerminalType(String terminalType) {
-		boolean isValid = false;
-		switch (terminalType) {
-			case "BASIC", "FACY" -> isValid = true;
-		}
-		
-		return isValid;
-	}
-
-	public void sendTextCommunication(Terminal terminalFrom, String keyTerminalTo, String message) {
-
-	}
-
-	public void startInteractiveCommunication(Terminal terminalFrom, String keyTerminalTo, String communicationType) {
-
-	}
-
-	public boolean hasClient(String clientID) {
-		return _clients.containsKey(clientID);
-	}
-
 	public Terminal getTerminal(String terminalID) throws UnknownKeyException {
 		if (!_terminals.containsKey(terminalID)) {
 			throw new UnknownKeyException(terminalID);
@@ -99,17 +61,7 @@ public class Network implements Serializable {
 		return _terminals.get(terminalID);
 	}
 
-	public List<Notification> getNotifications(String clientID) {
-		Client client = _clients.get(clientID);
-		return client.getNotifications();
-
-	}
-
-	public boolean hasTerminal(String terminalID) {
-		return _terminals.containsKey(terminalID);
-	}
-
-	public List<Terminal> showAllTerminals() {
+	public List<Terminal> getTerminals() {
 		List<Terminal> terminals = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
 			terminals.add(terminal);
@@ -117,9 +69,39 @@ public class Network implements Serializable {
 		return terminals;
 	}
 
-	public List<Client> getClients() {
-		List<Client> listed = new ArrayList<>(_clients.values());
-		return listed;
+	public List<Terminal> getFreeTerminals() {
+		List<Terminal> terminals = new ArrayList<>();
+		for (Terminal terminal : _terminals.values()) {
+			if (terminal.isFree()) {
+				terminals.add(terminal);
+			}
+		}
+		return terminals;
+	}
+
+	public boolean hasTerminal(String terminalID) {
+		return _terminals.containsKey(terminalID);
+	}
+
+	public void addFriend(String terminalID, String friendID) {
+		_terminals.get(terminalID).addFriend(friendID);
+	}
+
+	public boolean isValidTerminalType(String terminalType) {
+		boolean isValid = false;
+		switch (terminalType) {
+			case "BASIC", "FACY" -> isValid = true;
+		}
+
+		return isValid;
+	}
+
+	public void registerClient(String key, String name, int taxNumber) throws KeyAlreadyExistsException {
+		if (_clients.containsKey(key)) {
+			throw new KeyAlreadyExistsException(key);
+		}
+		Client client = new Client(name, taxNumber, key);
+		_clients.put(key, client);
 	}
 
 	public Client getClient(String id) throws UnknownIdentifierException, UnknownKeyException {
@@ -130,15 +112,27 @@ public class Network implements Serializable {
 		return client;
 	}
 
+	public List<Client> getClients() {
+		List<Client> listed = new ArrayList<>(_clients.values());
+		return listed;
+	}
 
-	public List<Terminal> showFreeTerminals() {
-		List<Terminal> terminals = new ArrayList<> ();
-		for(Terminal terminal : _terminals.values()) {
-			if(terminal.isFree()){
-				terminals.add(terminal);
-			}
-		}
-		return terminals;
+	public boolean hasClient(String clientID) {
+		return _clients.containsKey(clientID);
+	}
+
+	public List<Notification> getNotifications(String clientID) {
+		Client client = _clients.get(clientID);
+		return client.getNotifications();
+
+	}
+
+	public void sendTextCommunication(Terminal terminalFrom, String keyTerminalTo, String message) {
+		// FIXME finish metod
+	}
+
+	public void startInteractiveCommunication(Terminal terminalFrom, String keyTerminalTo, String communicationType) {
+		// FIXME finish metod
 	}
 
 	/**

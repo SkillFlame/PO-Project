@@ -12,7 +12,7 @@ public class UnavailableFileException extends Exception {
 	String _filename;
 
 	/**
-	 * @param filename
+	 * @param filename name of the unavailable file
 	 */
 	public UnavailableFileException(String filename) {
 		super("Erro a processar ficheiro " + filename);

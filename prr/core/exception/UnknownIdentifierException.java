@@ -1,8 +1,9 @@
 package prr.core.exception;
 
-/*Exception for Unknown identifiers on a List */
-
-public class UnknownIdentifierException extends Exception{
+/**
+ * Exception for Unknown identifiers on a List
+ */
+public class UnknownIdentifierException extends Exception {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
@@ -31,6 +32,4 @@ public class UnknownIdentifierException extends Exception{
 	public int getIdSpecification() {
 		return _idNotFound;
 	}
-
-	//FIXME Finish this
 }

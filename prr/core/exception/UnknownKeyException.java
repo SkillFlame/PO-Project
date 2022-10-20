@@ -1,5 +1,8 @@
 package prr.core.exception;
 
+/**
+ * Exception for unrecognized key entries.
+ */
 public class UnknownKeyException extends Exception{
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
@@ -12,6 +15,9 @@ public class UnknownKeyException extends Exception{
 		_key = key;
 	}
 
+	/**
+	 * @return the requested key
+	 */
 	public String getKey() {
 		return _key;
 	}

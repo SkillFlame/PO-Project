@@ -90,13 +90,6 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 		_mode = TerminalMode.IDLE;
 	}
 
-
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-
 	public void makeVoiceCall(Terminal terminalTo){
 
 	}

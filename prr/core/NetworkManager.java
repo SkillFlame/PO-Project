@@ -12,8 +12,6 @@ import prr.core.exception.MissingFileAssociationException;
 import prr.core.exception.UnavailableFileException;
 import prr.core.exception.UnrecognizedEntryException;
 
-//FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
-
 /**
  * Manage access to network and implement load/save operations.
  */
@@ -22,7 +20,6 @@ public class NetworkManager {
 	/** The network itself. */
 	private Network _network = new Network();
 	private String _filename;
-	// FIXME addmore fields if needed
 
 	public Network getNetwork() {
 		return _network;
@@ -36,13 +33,12 @@ public class NetworkManager {
 	 *                                  there is
 	 *                                  an error while processing this file.
 	 */
-	public void load(String filename) throws UnavailableFileException{
+	public void load(String filename) throws UnavailableFileException {
 		// FIXME throw errors
-		try(ObjectInputStream objectInput = new ObjectInputStream(new FileInputStream(filename))){
-			_network = (Network)objectInput.readObject();
+		try (ObjectInputStream objectInput = new ObjectInputStream(new FileInputStream(filename))) {
+			_network = (Network) objectInput.readObject();
 			_filename = filename;
-		}
-		catch(ClassNotFoundException | IOException e){
+		} catch (ClassNotFoundException | IOException e) {
 			throw new UnavailableFileException(filename);
 		}
 	}
@@ -60,8 +56,6 @@ public class NetworkManager {
 	 *                                         to disk.
 	 */
 	public void save() throws FileNotFoundException, MissingFileAssociationException, IOException {
-		// FIXME implement serialization method
-		// FIXME throw errors
 		if (_filename == null) {
 			throw new MissingFileAssociationException();
 		}
@@ -69,9 +63,8 @@ public class NetworkManager {
 		ObjectOutputStream out = new ObjectOutputStream(file);
 		out.writeObject(_network);
 		out.close();
-		
-	}
 
+	}
 
 	/**
 	 * Saves the serialized application's state into the specified file. The current
@@ -101,7 +94,12 @@ public class NetworkManager {
 	public void importFile(String filename) throws ImportFileException {
 		try {
 			_network.importFile(filename);
-		} catch (IOException | UnrecognizedEntryException | FileOpenFailedException | UnavailableFileException /* FIXME maybe other exceptions */ e) {
+		} catch (IOException | UnrecognizedEntryException | FileOpenFailedException | UnavailableFileException /*
+																												 * FIXME
+																												 * maybe
+																												 * other
+																												 * exceptions
+																												 */ e) {
 			throw new ImportFileException(filename, e);
 		}
 	}
