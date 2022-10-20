@@ -26,6 +26,7 @@ public class Client implements Serializable{
 		_receiveNotifications = false;
 		_clientLevel = ClientLevel.NORMAL;
 		_notifications = new ArrayList<>();
+		_clientTerminals = new ArrayList<>();
 		_activity = Notifications.NO;
 	}
 

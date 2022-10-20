@@ -116,7 +116,6 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 
 	}
 
-
 	public boolean isOn() {
 		return _mode != TerminalMode.OFF;
 	}
