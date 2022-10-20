@@ -30,13 +30,11 @@ public class Network implements Serializable {
 
 	private Map<String, Terminal> _terminals;
 	private Map<String, Client> _clients;
-	private Map<Network, Terminal> _friends;
 
 	// FIXME define contructor(s)
 	public Network() {
-		_terminals = new TreeMap<>();
-		_clients = new TreeMap<>();
-		_friends = new TreeMap<>();
+		_terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		_clients = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	}
 
 	// FIXME define methods
@@ -122,19 +120,9 @@ public class Network implements Serializable {
 		return terminals;
 	}
 
-	private static class IdentifierComparator implements Comparator<Client> {
-		public int compare(Client client1, Client client2) {
-			String id1 = client1.getKey();
-			String id2 = client2.getKey();
-			return id1.compareToIgnoreCase(id2);
-		}
-	}
-
 	public List<Client> getClients() {
 		List<Client> listed = new ArrayList<>(_clients.values());
-		Collections.sort(listed, new IdentifierComparator());
 		return listed;
-
 	}
 
 	public Client getClient(String id) throws UnknownIdentifierException, UnknownKeyException {
