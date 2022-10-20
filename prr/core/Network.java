@@ -41,20 +41,25 @@ public class Network implements Serializable {
 
 	// FIXME define methods
 
-	public Terminal registerTerminal(String type, String terminalID, String clientID)
-			throws UnrecognizedTypeException, InvalidKeyException, KeyAlreadyExistsException {
+	public Terminal registerTerminal(String terminalType, String terminalID, String clientID)
+			throws UnrecognizedTypeException, InvalidKeyException, KeyAlreadyExistsException, UnknownKeyException {
 		Terminal terminal;
 
 		if (hasTerminal(terminalID)) {
 			throw new KeyAlreadyExistsException(terminalID);
 		}
 
-		switch (type) {
+		if(!hasClient(clientID)) {
+			throw new UnknownKeyException(clientID);
+		}
+
+		switch (terminalType) {
 			case "BASIC" -> terminal = new BasicTerminal(terminalID, clientID);
 			case "FANCY" -> terminal = new FancyTerminal(terminalID, clientID);
 			default -> throw new UnrecognizedTypeException();
 		}
 
+		_clients.get(clientID).addTerminal(terminalID);
 		_terminals.put(terminalID, terminal);
 		return terminal;
 	}
@@ -64,8 +69,20 @@ public class Network implements Serializable {
 	}
 
 	public void registerClient(String key, String name, int taxNumber) throws KeyAlreadyExistsException {
-		Client client = new Client(key, taxNumber, name);
+		if(_clients.containsKey(key)) {
+			throw new KeyAlreadyExistsException(key);
+		}
+		Client client = new Client(name, taxNumber, key);
 		_clients.put(key, client);
+	}
+
+	public boolean isValidTerminalType(String terminalType) {
+		boolean isValid = false;
+		switch (terminalType) {
+			case "BASIC", "FACY" -> isValid = true;
+		}
+		
+		return isValid;
 	}
 
 	public void sendTextCommunication(Terminal terminalFrom, String keyTerminalTo, String message) {

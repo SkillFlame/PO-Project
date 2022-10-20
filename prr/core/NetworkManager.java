@@ -62,7 +62,7 @@ public class NetworkManager {
 	public void save() throws FileNotFoundException, MissingFileAssociationException, IOException {
 		// FIXME implement serialization method
 		// FIXME throw errors
-		if (_filename.equals("")) {
+		if (_filename == null) {
 			throw new MissingFileAssociationException();
 		}
 		FileOutputStream file = new FileOutputStream(_filename);

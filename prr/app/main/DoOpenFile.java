@@ -22,9 +22,8 @@ class DoOpenFile extends Command<NetworkManager> {
 	@Override
 	protected final void execute() throws CommandException {
 		try {
-			_receiver.importFile(stringField("filename"));
 			_receiver.load(stringField("filename"));
-		} catch (ImportFileException | UnavailableFileException e) {
+		} catch (UnavailableFileException e) {
 			throw new FileOpenFailedException(e);
 		}
 	}

@@ -45,7 +45,7 @@ public class Parser {
 			case "CLIENT" -> parseClient(components, line);
 			case "BASIC", "FANCY" -> parseTerminal(components, line);
 			case "FRIENDS" -> parseFriends(components, line);
-			default -> throw new UnrecognizedEntryException("Line with wong type: " + components[0]);
+			default -> throw new UnrecognizedEntryException("Line with wrong type: " + components[0]);
 		}
 	}
 

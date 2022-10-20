@@ -1,5 +1,6 @@
 package prr.app.client;
 
+import prr.app.exception.UnknownClientKeyException;
 import prr.core.Network;
 import prr.core.exception.UnknownIdentifierException;
 import prr.core.exception.UnknownKeyException;
@@ -20,7 +21,7 @@ class DoShowClient extends Command<Network> {
 	}
 	
 	@Override
-	protected final void execute(){
+	protected final void execute() throws UnknownClientKeyException{
 		//FIXME implement command
 		String key = stringField("key");
 		try {
@@ -30,7 +31,7 @@ class DoShowClient extends Command<Network> {
 			}
 			
 		} catch (UnknownIdentifierException | UnknownKeyException e) {
-
+			throw new UnknownClientKeyException(key);
 		}
 		_display.display();
 	}

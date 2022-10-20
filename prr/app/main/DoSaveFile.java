@@ -1,5 +1,6 @@
 package prr.app.main;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import prr.core.NetworkManager;
@@ -19,14 +20,13 @@ class DoSaveFile extends Command<NetworkManager> {
 
 	@Override
 	protected final void execute() {
-		try {
-			if (_receiver.getFilename() == null) {
+		try { 
+			_receiver.save();
+		} catch (MissingFileAssociationException | IOException mfae) {
+			try {
 				_receiver.saveAs(Form.requestString(Message.newSaveAs()));
-			} else {
-				_receiver.save();
+			} catch (MissingFileAssociationException | IOException e) {
 			}
-		} catch (MissingFileAssociationException | IOException e) {
-			// FIXME na sei
-		}
+		} 
 	}
 }

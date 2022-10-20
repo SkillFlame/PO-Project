@@ -30,8 +30,8 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 	// FIXME define methods
 
 	public Terminal(String id, String clientID) throws InvalidKeyException{
-		_id = id;
 		setID(id);
+		_clientID = clientID;
 		_mode = TerminalMode.IDLE;
 	}
 
@@ -41,6 +41,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 		}
 		try {
 			Integer.parseInt(id);
+			_id = id;
 		} catch (NumberFormatException nfe) {
 			throw new InvalidKeyException(id);
 		}
@@ -125,6 +126,10 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 	}
 
 	public String friendsToString() {
+		if(_friendsID.isEmpty()) {
+			return "";
+		}
+		
 		String output = "";
 		for(String friendID : _friendsID) {
 			output += friendID + ", ";
@@ -134,7 +139,7 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 
 	public String toString() {
 		//terminalType|terminalId|clientId|terminalStatus|balance-paid|balance-debts|friend1,...,friend
-		String output = _id + "|" + _clientID + "|" + _mode + "|" + _payments + "|" + _debt + "|" + friendsToString();
+		String output = _id + "|" + _clientID + "|" + _mode + "|" + (int)_payments + "|" + (int)_debt + friendsToString();
 		return output;
 	}
 }
