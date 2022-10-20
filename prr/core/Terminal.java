@@ -117,13 +117,6 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 	}
 
 
-	public boolean checkIdLenght(String id){
-		if(id.length() != 6){
-			return false;
-		}
-		return true;
-	}
-
 	public boolean isOn() {
 		return _mode != TerminalMode.OFF;
 	}

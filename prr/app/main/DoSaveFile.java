@@ -20,7 +20,7 @@ class DoSaveFile extends Command<NetworkManager> {
 	@Override
 	protected final void execute() {
 		try {
-			if (_receiver.getFilename().equals("")) {
+			if (_receiver.getFilename() == null) {
 				_receiver.saveAs(Form.requestString(Message.newSaveAs()));
 			} else {
 				_receiver.save();
