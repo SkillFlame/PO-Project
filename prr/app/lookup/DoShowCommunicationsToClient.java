@@ -12,7 +12,7 @@ class DoShowCommunicationsToClient extends Command<Network> {
 
 	DoShowCommunicationsToClient(Network receiver) {
 		super(Label.SHOW_COMMUNICATIONS_TO_CLIENT, receiver);
-		// FIXME add command fields
+		addStringField("key", Message.clientKey());
 	}
 
 	@Override
