@@ -1,17 +1,10 @@
 package prr.core;
 
-import java.io.Reader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
 
-import java.util.Collection;
-import java.util.ArrayList;
-
 import prr.core.exception.UnrecognizedEntryException;
-/*import prr.core.exception.NoLineSpecification; */
-import prr.core.exception.UnknownIdentifierException;
-// import more exception core classes if needed
 
 /* 
  * A concretização desta classe depende da funcionalidade suportada pelas entidades do core:

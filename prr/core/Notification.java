@@ -1,6 +1,12 @@
 package prr.core;
 
-public class Notification {
+import java.io.Serializable;
+
+public class Notification implements Serializable {
+	
+	/** Serial number for serialization. */
+	private static final long serialVersionUID = 202208091753L;
+	
 	private NotificationType _type;
 	private String _terminalId;
 	enum NotificationType{O2S, O2I, B2S, B2I};

@@ -5,6 +5,7 @@ package prr.core.exception;
  */
 public class ImportFileException extends Exception {
 
+	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
 	private static final String ERROR_MESSAGE = "Erro a processar ficheiro de import: ";

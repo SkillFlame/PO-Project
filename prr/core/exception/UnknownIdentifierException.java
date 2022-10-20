@@ -3,6 +3,7 @@ package prr.core.exception;
 /*Exception for Unknown identifiers on a List */
 
 public class UnknownIdentifierException extends Exception{
+	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
 	/** Bad bad id specification. */
