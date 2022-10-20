@@ -1,9 +1,7 @@
 package prr.app.client;
 
-
 import prr.core.Network;
 import pt.tecnico.uilib.menus.Command;
-//FIXME add more imports if needed
 
 /**
  * Show all clients.
@@ -15,8 +13,7 @@ class DoShowAllClients extends Command<Network> {
 	}
 
 	@Override
-	protected final void execute(){
-		// FIXME implement command
+	protected final void execute() {
 		_display.addAll(_receiver.getClients());
 		_display.display();
 	}

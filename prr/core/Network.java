@@ -72,7 +72,7 @@ public class Network implements Serializable {
 	public List<Terminal> getFreeTerminals() {
 		List<Terminal> terminals = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
-			if (terminal.isFree()) {
+			if (terminal.canStartCommunication()) {
 				terminals.add(terminal);
 			}
 		}
@@ -90,7 +90,7 @@ public class Network implements Serializable {
 	public boolean isValidTerminalType(String terminalType) {
 		boolean isValid = false;
 		switch (terminalType) {
-			case "BASIC", "FACY" -> isValid = true;
+			case "BASIC", "FANCY" -> isValid = true;
 		}
 
 		return isValid;
@@ -127,26 +127,16 @@ public class Network implements Serializable {
 
 	}
 
-	public void sendTextCommunication(Terminal terminalFrom, String keyTerminalTo, String message) {
-		// FIXME finish metod
-	}
-
-	public void startInteractiveCommunication(Terminal terminalFrom, String keyTerminalTo, String communicationType) {
-		// FIXME finish metod
-	}
-
 	/**
 	 * Read text input file and create corresponding domain entities.
 	 * 
 	 * @param filename name of the text input file
 	 * @throws UnrecognizedEntryException if some entry is not correct
-	 * @throws IOException                if there is an IO erro while processing
+	 * @throws IOException                if there is an IO error while processing
 	 *                                    the text file
 	 */
 	void importFile(String filename) throws UnrecognizedEntryException, IOException, FileOpenFailedException,
-			UnavailableFileException /* FIXME maybe other exceptions */ {
-		// FIXME implement method
-		// FIXME throw errors
+			UnavailableFileException {
 		Parser networkParser = new Parser(this);
 		networkParser.parseFile(filename);
 	}

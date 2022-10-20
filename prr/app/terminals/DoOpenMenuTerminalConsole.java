@@ -5,7 +5,6 @@ import prr.core.exception.UnknownKeyException;
 import prr.app.exception.UnknownTerminalKeyException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add mode import if needed
 
 /**
  * Open a specific terminal's menu.
@@ -23,6 +22,7 @@ class DoOpenMenuTerminalConsole extends Command<Network> {
 			(new prr.app.terminal.Menu(_receiver, _receiver.getTerminal(stringField("terminalKey")))).open();
 		} catch (UnknownKeyException uke) {
 			throw new UnknownTerminalKeyException(uke.getKey());
-		};
+		}
+		;
 	}
 }

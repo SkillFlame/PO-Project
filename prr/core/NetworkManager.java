@@ -34,7 +34,6 @@ public class NetworkManager {
 	 *                                  an error while processing this file.
 	 */
 	public void load(String filename) throws UnavailableFileException {
-		// FIXME throw errors
 		try (ObjectInputStream objectInput = new ObjectInputStream(new FileInputStream(filename))) {
 			_network = (Network) objectInput.readObject();
 			_filename = filename;
@@ -94,12 +93,7 @@ public class NetworkManager {
 	public void importFile(String filename) throws ImportFileException {
 		try {
 			_network.importFile(filename);
-		} catch (IOException | UnrecognizedEntryException | FileOpenFailedException | UnavailableFileException /*
-																												 * FIXME
-																												 * maybe
-																												 * other
-																												 * exceptions
-																												 */ e) {
+		} catch (IOException | UnrecognizedEntryException | FileOpenFailedException | UnavailableFileException e) {
 			throw new ImportFileException(filename, e);
 		}
 	}

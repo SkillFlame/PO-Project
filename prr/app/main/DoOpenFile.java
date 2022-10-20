@@ -1,7 +1,6 @@
 package prr.app.main;
 
 import prr.core.NetworkManager;
-import prr.core.exception.ImportFileException;
 import prr.core.exception.UnavailableFileException;
 
 import prr.app.exception.FileOpenFailedException;
