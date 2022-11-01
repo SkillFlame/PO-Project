@@ -24,18 +24,18 @@ abstract public class Terminal implements Serializable {
 		BUSY, IDLE, SILENCE, OFF
 	};
 
-	private String _clientID;
-	private Collection<String> _friendsID = new HashSet<String>();
+	private String _clientId;
+	private Collection<String> _friendsId = new HashSet<String>();
 
-	Terminal(String id, String clientID) throws InvalidKeyException {
+	Terminal(String id, String clientId) throws InvalidKeyException {
 		setID(id);
-		_clientID = clientID;
+		_clientId = clientId;
 		_mode = TerminalMode.IDLE;
 	}
 
 	/**
 	 * @param id of a Terminal
-	 * @throws InvalidKeyException if the given clientID is not valid
+	 * @throws InvalidKeyException if the given clientId is not valid
 	 */
 	private void setID(String id) throws InvalidKeyException {
 		if (id.length() != 6) {
@@ -49,15 +49,15 @@ abstract public class Terminal implements Serializable {
 		}
 	}
 
-	String getID() {
+	String getId() {
 		return _id;
 	}
 
 	/**
 	 * Adds a Friend to the Friend List
 	 */
-	void addFriend(String friendID) {
-		_friendsID.add(friendID);
+	void addFriend(String friendId) {
+		_friendsId.add(friendId);
 	}
 
 	/**
@@ -109,13 +109,13 @@ abstract public class Terminal implements Serializable {
 	 * Conversion of the Terminal's Friends into String
 	 */
 	public String friendsToString() {
-		if (_friendsID.isEmpty()) {
+		if (_friendsId.isEmpty()) {
 			return "";
 		}
 
 		String output = "";
-		for (String friendID : _friendsID) {
-			output += friendID + ", ";
+		for (String friendId : _friendsId) {
+			output += friendId + ", ";
 		}
 		return output;
 	}
@@ -127,7 +127,7 @@ abstract public class Terminal implements Serializable {
 	@Override
 	public String toString() {
 
-		String output = _id + "|" + _clientID + "|" + _mode + "|" + (int) _payments + "|" + (int) _debt
+		String output = _id + "|" + _clientId + "|" + _mode + "|" + (int) _payments + "|" + (int) _debt
 				+ friendsToString();
 		return output;
 	}

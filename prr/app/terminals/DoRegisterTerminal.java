@@ -28,6 +28,7 @@ class DoRegisterTerminal extends Command<Network> {
 		try {
 			_receiver.registerTerminal(optionField("terminalType"), stringField("terminalID"), stringField("clientID"));
 		} catch (UnrecognizedTypeException e) {
+			System.out.println("");
 		} catch (InvalidKeyException ike) {
 			throw new InvalidTerminalKeyException(ike.getKey());
 		} catch (KeyAlreadyExistsException kaee) {
