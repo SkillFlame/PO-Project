@@ -115,16 +115,6 @@ public class Network implements Serializable {
 		return terminals;
 	}
 
-	
-	/** 
-	 *	Checks if a Terminal with a certain ID is contained in the Terminal Map
-	 * @param terminalID id of a terminal
-	 * @return true if the terminal with the desired id exists
-	 */
-	public boolean hasTerminal(String terminalID) {
-		return _terminals.containsKey(terminalID);
-	}
-
 	public boolean hasFriend(String friendID) {
 		for(Terminal terminal : _terminals.values()){
 			if(terminal.getFriends().contains(friendID)){
@@ -134,11 +124,6 @@ public class Network implements Serializable {
 		return false;
 	}
 
-	/** 
-	 * 	Adds a Friend Terminal to the selected Terminal
-	 * @param terminalID id of a terminal
-	 * @param friendID id of the friend terminal to be added
-	 */
 	public void addFriend(String terminalID, String friendID) {
 		if(!hasFriend(friendID)){
 			_terminals.get(terminalID).addFriend(friendID);
@@ -149,14 +134,17 @@ public class Network implements Serializable {
 		_terminals.get(terminalID).removeFriend(friendID);
 	}
 
-	public void pay(int communicationId){
-		//FIXME finish method
+	/** 
+	 *	Checks if a Terminal with a certain ID is contained in the Terminal Map
+	 * @param terminalID id of a terminal
+	 * @return true if the terminal with the desired id exists
+	 */
+	public boolean hasTerminal(String terminalID) {
+		return _terminals.containsKey(terminalID);
 	}
 
-	public double getTerminalBalance(Terminal terminal){
-		return terminal.getPayments() - terminal.getDebt();
-	}
-	
+
+
 	/** 
 	 * 	Checks if a Terminal Type is valid ("BASIC" or "FANCY")
 	 * @param terminalType type of a terminal
@@ -244,6 +232,14 @@ public class Network implements Serializable {
 		return balance;
 	}
 
+	public double getClientBalance(String clientId){
+		double clientBalance = 0;
+		Client client = _clients.get(clientId);
+		clientBalance = client.getClientBalance();
+		return clientBalance;
+	}
+
+
 	public void activateFailedContactReception(String clientId){
 		// FIXME add implementation code
 	}
@@ -252,9 +248,13 @@ public class Network implements Serializable {
 		// FIXME add implementation code
 	}
 
-	// public List<Communication> getCommunications(){
-		// FIXME add implementation code
-	// }
+	public List<Communication> getCommunications(){
+		List<Communication> communications = new ArrayList<>();
+		for(Terminal terminal : _terminals.values()){
+			communications.addAll(terminal.getCommunications());
+		}
+		return communications;
+	}
 
 	public List<Communication> getCommunicationsMadeByClient(String clientId){
 		List<Communication> madeCommunications = new ArrayList<>();
@@ -297,36 +297,6 @@ public class Network implements Serializable {
 			}
 		}
 		return terminals;
-	}
-
-	public void setTerminalOnIdle(Terminal terminal){
-		terminal.setOnIdle();
-	}
-
-	public void turnTerminalOff(Terminal terminal){
-		terminal.turnOff();
-	}
-
-	public void silenceTerminal(Terminal terminal){
-		terminal.setOnSilent();
-	}
-
-	public void sendTextCommunication(Terminal terminalTo, String message){
-		// FIXME add implementation code
-
-	}
-
-	public void startInteractiveCommunication(Terminal selectedTerminal, String communicationType){
-		// FIXME add implementation code
-	}
-
-
-	public void endInteractiveCommunication(Terminal selectedTerminal){
-		// FIXME add implementation code
-	}
-
-	public void getOngoingCommunication(Terminal selectedTerminal){
-		// FIXME add implementation code
 	}
 
 	/**

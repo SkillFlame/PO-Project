@@ -45,7 +45,7 @@ public abstract class Communication implements Serializable{
 	 */
 	@Override 
 	public String toString() {
-		String output = _id + "|" + "idSender" + "|" + "idReciever" + "|" + getSize() + "|" + _price + "|" + getStatus();
+		String output = _id + "|" + terminalFrom.getId() + "|" + terminalTo.getId() + "|" + getSize() + "|" + _price + "|" + getStatus();
 		return output;
 	}
 }

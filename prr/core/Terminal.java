@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.ArrayList;
 
 import prr.core.exception.InvalidKeyException;
@@ -23,13 +25,12 @@ abstract public class Terminal implements Serializable {
 
 	private String _clientId;
 	private Collection<String> _friendsId = new HashSet<String>();
-	private List<Communication> _communications;
+	private Map<Integer, Communication> _communications = new TreeMap<>();
 
 	Terminal(String id, String clientId) throws InvalidKeyException {
 		setID(id);
 		_clientId = clientId;
 		_mode = new IdleMode();
-		_communications = new ArrayList<>();
 	}
 
 	/**
@@ -64,8 +65,8 @@ abstract public class Terminal implements Serializable {
 		return _friendsId;
 	}
 
-	List<Communication> getCommunications(){
-		return _communications;
+	Collection<Communication> getCommunications(){
+		return _communications.values();
 	}
 
 	/**
@@ -155,8 +156,10 @@ abstract public class Terminal implements Serializable {
 	}
 
 
-	void pay(Communication communication){
-		
+	void pay(int communicationId){
+		if(_communications.keySet().contains(communicationId)){
+			
+		}
 	}
 
 
@@ -171,6 +174,11 @@ abstract public class Terminal implements Serializable {
 	String getClientId(){
 		return _clientId;
 	}
+
+	public double getTerminalBalance(){
+		return getPayments() - getDebt();
+	}
+	
 
 
 	/**
