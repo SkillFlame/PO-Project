@@ -10,8 +10,44 @@ public abstract class Communication implements Serializable{
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 	
-	private int _id;
-	private boolean _isPaid;
-	private double _cost;
-	private boolean _isOngoing;
+	private static int _id;
+	boolean _isPaid;
+	private double _price;
+	boolean _isOngoing;
+	Terminal terminalFrom;
+	Terminal terminalTo;
+
+	abstract double computeCost(RatePlan ratePlan);
+	abstract int getSize();
+	
+
+	String getStatus(){
+		if(_isOngoing){
+			return "ONGOING";
+		}
+		return "FINISHED";
+	}
+
+	int getId(){
+		return _id;
+	}
+
+
+
+	void setPriceAtZero(){
+		if(_isOngoing){
+			_price = 0;
+		}
+	}
+
+
+	/**
+	 * toString implementation of a Communication
+	 * type|idCommunication|idSender|idReceiver|units|price|status
+	 */
+	@Override 
+	public String toString() {
+		String output = _id + "|" + "idSender" + "|" + "idReciever" + "|" + getSize() + "|" + _price + "|" + getStatus();
+		return output;
+	}
 }

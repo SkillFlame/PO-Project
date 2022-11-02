@@ -28,11 +28,13 @@ public class Network implements Serializable {
 	 */
 	private Map<String, Terminal> _terminals;
 	private Map<String, Client> _clients;
+	private List<Communication> _communications;
 
 	/** Constructor of a Network */
 	public Network() {
 		_terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		_clients = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		_communications = new ArrayList<>();
 	}
 
 	
@@ -123,16 +125,37 @@ public class Network implements Serializable {
 		return _terminals.containsKey(terminalID);
 	}
 
-	
+	public boolean hasFriend(String friendID) {
+		for(Terminal terminal : _terminals.values()){
+			if(terminal._friendsId.contains(friendID)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/** 
 	 * 	Adds a Friend Terminal to the selected Terminal
 	 * @param terminalID id of a terminal
 	 * @param friendID id of the friend terminal to be added
 	 */
 	public void addFriend(String terminalID, String friendID) {
-		_terminals.get(terminalID).addFriend(friendID);
+		if(!hasFriend(friendID)){
+			_terminals.get(terminalID).addFriend(friendID);
+		}
 	}
 
+	public void removeFriend(String terminalID, String friendID){
+		_terminals.get(terminalID).removeFriend(friendID);
+	}
+
+	public void pay(int communicationId){
+		// FIXME add implementation code
+	}
+
+	public double getTerminalBalance(Terminal terminal){
+		return terminal.getPayments() - terminal.getDebt();
+	}
 	
 	/** 
 	 * 	Checks if a Terminal Type is valid ("BASIC" or "FANCY")
@@ -210,6 +233,100 @@ public class Network implements Serializable {
 		Client client = _clients.get(clientID);
 		return client.getNotifications();
 
+	}
+
+
+	public int getGlobalPaymentsAndDebts(){
+		int balance = 0;
+		for(Client client : _clients.values()){
+			balance += client.getClientBalance();
+		}
+		return balance;
+	}
+
+	public void activateFailedContactReception(String clientId){
+		// FIXME add implementation code
+	}
+
+	public void deactivateFailedContactReception(String clientId){
+		// FIXME add implementation code
+	}
+
+	public List<Communication> getCommunications(){
+		return _communications;
+	}
+
+	public List<Communication> getCommunicationsMadeByClient(String clientId){
+		List<Communication> madeCommunications = new ArrayList<>();
+		// FIXME add implementation code
+		return madeCommunications;
+	}
+
+	public List<Communication> getCommunicationsRecievedByClient(String clientId){
+		List<Communication> recievedCommunications = new ArrayList<>();
+		// FIXME add implementation code
+		return recievedCommunications;
+	}
+
+	public List<Client> getClientsWithoutDebt(){
+		List<Client> clientsWithoutDebt = new ArrayList<>(_clients.values());
+		for(Client client: clientsWithoutDebt){
+			if(client._clientDebts != 0){
+				clientsWithoutDebt.remove(client);
+			}
+		}
+		return clientsWithoutDebt;
+	}
+
+	public List<Client> getClientsWithDebt(){
+		List<Client> clientsWithoutDebt = new ArrayList<>(_clients.values());
+		for(Client client: clientsWithoutDebt){
+			if(client._clientDebts == 0){
+				clientsWithoutDebt.remove(client);
+			}
+			// FIXME add implementation code
+		}
+		return clientsWithoutDebt;
+	}
+
+	public List<Terminal> getPositiveBalanceTerminals(){
+		List<Terminal> terminals = new ArrayList<>();
+		for (Terminal terminal : _terminals.values()){
+			if (terminal.getPayments() - terminal.getDebt() > 0){
+				terminals.add(terminal);
+			}
+		}
+		return terminals;
+	}
+
+	public void setTerminalOnIdle(Terminal terminal){
+		terminal.setOnIdle();
+	}
+
+	public void turnTerminalOff(Terminal terminal){
+		terminal.turnOff();
+	}
+
+	public void silenceTerminal(Terminal terminal){
+		terminal.setOnSilent();
+	}
+
+	public void sendTextCommunication(Terminal terminalTo, String message){
+		// FIXME add implementation code
+
+	}
+
+	public void startInteractiveCommunication(Terminal selectedTerminal, String communicationType){
+		// FIXME add implementation code
+	}
+
+
+	public void endInteractiveCommunication(Terminal selectedTerminal){
+		// FIXME add implementation code
+	}
+
+	public void getOngoingCommunication(Terminal selectedTerminal){
+		// FIXME add implementation code
 	}
 
 	/**

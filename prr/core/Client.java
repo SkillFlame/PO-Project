@@ -16,15 +16,11 @@ public class Client implements Serializable {
 	private String _key;
 	private String _name;
 	private int _taxNumber;
-	private int _payments;
-	private int _debts;
-	private ClientLevel _level;
+	private int _clientPayments;
+	int _clientDebts;
 	private Notifications _activity;
+	RatePlan _ratePlan;
 
-	/** Level of a Client */
-	enum ClientLevel {
-		NORMAL, GOLD, PLATINUM
-	};
 
 	/** Notification availability */
 	enum Notifications {
@@ -38,7 +34,7 @@ public class Client implements Serializable {
 		_key = key;
 		_name = name;
 		_taxNumber = taxNumber;
-		_level = ClientLevel.NORMAL;
+		_ratePlan = new BasicRatePlan();
 		_notifications = new ArrayList<>();
 		_terminals = new ArrayList<>();
 		_activity = Notifications.YES;
@@ -68,15 +64,6 @@ public class Client implements Serializable {
 	void deactivateNotifications() {
 		this._activity = Notifications.NO;
 	}
-
-	ClientLevel getClientLevel() {
-		return _level;
-	}
-
-	void setClientLevel(ClientLevel clientLevel) {
-		this._level = clientLevel;
-	}
-
 	
 	/** 
 	 * Adds a Terminal to the Client's Terminal List
@@ -86,14 +73,31 @@ public class Client implements Serializable {
 	}
 
 	
+	void updateClientBalance(Terminal clientTerminal){
+		for(String id : _terminals){
+			if(id == clientTerminal.getId()){
+				_clientPayments += clientTerminal.getPayments();
+				_clientDebts += clientTerminal.getDebt();
+			}
+		}
+	}
+
+	double getClientBalance(){
+		return _clientPayments - _clientDebts;
+	}
+
+	double getClientDebts(){
+		return _clientDebts;
+	}
+
 	/** 
 	 * toString implementation of a Client
 	 * CLIENT|key|name|taxId|type|notifications|terminals|payments|debts
 	 */
-	@Override
+	@Override //A TRATAR: O LEVEL DO CLIENT MIGHT NOT WORK (_ratePlan.toStringRatePlan())
 	public String toString() {
-		String output = "CLIENT|" + _key + "|" + _name + "|" + _taxNumber + "|" + _level + "|" + _activity + "|"
-				+ _terminals.size() + "|" + _payments + "|" + _debts;
+		String output = "CLIENT|" + _key + "|" + _name + "|" + _taxNumber + "|" + _ratePlan.toStringRatePlan() + "|" + _activity + "|"
+				+ _terminals.size() + "|" + _clientPayments + "|" + _clientDebts;
 		return output;
 	}
 

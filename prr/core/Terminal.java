@@ -17,15 +17,15 @@ abstract public class Terminal implements Serializable {
 	private String _id;
 	private double _debt;
 	private double _payments;
-	private TerminalMode _mode;
-
+	TerminalMode _mode;
+	
 	/** Possible Terminal Modes */
 	enum TerminalMode {
 		BUSY, IDLE, SILENCE, OFF
 	};
 
 	private String _clientId;
-	private Collection<String> _friendsId = new HashSet<String>();
+	Collection<String> _friendsId = new HashSet<String>();
 
 	Terminal(String id, String clientId) throws InvalidKeyException {
 		setID(id);
@@ -57,7 +57,15 @@ abstract public class Terminal implements Serializable {
 	 * Adds a Friend to the Friend List
 	 */
 	void addFriend(String friendId) {
-		_friendsId.add(friendId);
+		if(friendId != _id){
+			_friendsId.add(friendId);
+		}
+	}
+
+	void removeFriend(String friendID){
+		if(_friendsId.contains(friendID)){
+			_friendsId.remove(friendID);
+		}
 	}
 
 	/**
@@ -119,6 +127,25 @@ abstract public class Terminal implements Serializable {
 		}
 		return output;
 	}
+
+
+	double getPayments(){
+		return _payments;
+	}
+
+	double getDebt(){
+		return _debt;
+	}
+
+	String getClientId(){
+		return _clientId;
+	}
+
+	abstract public void makeSMS(Terminal terminalTo, String message);
+	abstract void acceptSMS(Terminal terminalFrom);
+	abstract public void makeVoiceCall(Terminal terminalTo);
+	abstract void acceptVoiceCall(Terminal terminalFrom);
+
 
 	/**
 	 * toString implementation of a Terminal

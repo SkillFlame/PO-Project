@@ -1,14 +1,13 @@
 package prr.core;
-
-import java.io.Serializable;
-
 /**
- * RatePlan Implementation
+ * RatePlan interface
  */
-public abstract class RatePlan implements Serializable{
+public interface RatePlan {
+	double computeCost(Client client, TextCommunication communication);
+	double computeCost(Client client, VoiceCommunication communication);
+	double computeCost(Client client, VideoCommunication communication);
+	String toStringRatePlan();
+	void promote(Client client);
+	void demote(Client client);
 	
-	/** Serial number for serialization. */
-	private static final long serialVersionUID = 202208091753L;
-
-	private String _name;
 }
