@@ -28,13 +28,13 @@ public class Network implements Serializable {
 	 */
 	private Map<String, Terminal> _terminals;
 	private Map<String, Client> _clients;
-	private List<Communication> _communications;
+	
 
 	/** Constructor of a Network */
 	public Network() {
 		_terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		_clients = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-		_communications = new ArrayList<>();
+		
 	}
 
 	
@@ -127,7 +127,7 @@ public class Network implements Serializable {
 
 	public boolean hasFriend(String friendID) {
 		for(Terminal terminal : _terminals.values()){
-			if(terminal._friendsId.contains(friendID)){
+			if(terminal.getFriends().contains(friendID)){
 				return true;
 			}
 		}
@@ -150,7 +150,7 @@ public class Network implements Serializable {
 	}
 
 	public void pay(int communicationId){
-		// FIXME add implementation code
+		//FIXME finish method
 	}
 
 	public double getTerminalBalance(Terminal terminal){
@@ -252,9 +252,9 @@ public class Network implements Serializable {
 		// FIXME add implementation code
 	}
 
-	public List<Communication> getCommunications(){
-		return _communications;
-	}
+	// public List<Communication> getCommunications(){
+		// FIXME add implementation code
+	// }
 
 	public List<Communication> getCommunicationsMadeByClient(String clientId){
 		List<Communication> madeCommunications = new ArrayList<>();
@@ -271,7 +271,7 @@ public class Network implements Serializable {
 	public List<Client> getClientsWithoutDebt(){
 		List<Client> clientsWithoutDebt = new ArrayList<>(_clients.values());
 		for(Client client: clientsWithoutDebt){
-			if(client._clientDebts != 0){
+			if(client.getClientDebts() != 0){
 				clientsWithoutDebt.remove(client);
 			}
 		}
@@ -281,7 +281,7 @@ public class Network implements Serializable {
 	public List<Client> getClientsWithDebt(){
 		List<Client> clientsWithoutDebt = new ArrayList<>(_clients.values());
 		for(Client client: clientsWithoutDebt){
-			if(client._clientDebts == 0){
+			if(client.getClientDebts() == 0){
 				clientsWithoutDebt.remove(client);
 			}
 			// FIXME add implementation code

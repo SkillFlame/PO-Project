@@ -24,37 +24,9 @@ public class FancyTerminal extends Terminal {
 		return output;
 	}
 
-	@Override
-	public void makeSMS(Terminal terminalTo, String message) {
-		if(_mode != TerminalMode.OFF || _mode != TerminalMode.BUSY){
-
-		}
-		
-	}
-
-	@Override
-	void acceptSMS(Terminal terminalFrom) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void makeVoiceCall(Terminal terminalTo) {
-		if(_mode != TerminalMode.OFF || _mode != TerminalMode.BUSY){
-
-		}
-		
-	}
-
-	@Override
-	void acceptVoiceCall(Terminal terminalFrom) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	
 	public void makeVideoCall(Terminal terminalTo) {
-		if(_mode != TerminalMode.OFF || _mode != TerminalMode.BUSY){
+		if( terminalTo.getMode() != OffMode.getMode() || terminalTo.getMode() != BusyMode.getMode()){
 
 		}
 		

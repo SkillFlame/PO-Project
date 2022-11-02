@@ -17,9 +17,9 @@ public class Client implements Serializable {
 	private String _name;
 	private int _taxNumber;
 	private int _clientPayments;
-	int _clientDebts;
+	private int _clientDebts;
 	private Notifications _activity;
-	RatePlan _ratePlan;
+	private RatePlan _ratePlan;
 
 
 	/** Notification availability */
@@ -88,6 +88,10 @@ public class Client implements Serializable {
 
 	double getClientDebts(){
 		return _clientDebts;
+	}
+
+	RatePlan getRatePlan(){
+		return _ratePlan;
 	}
 
 	/** 

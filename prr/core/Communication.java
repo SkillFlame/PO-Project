@@ -32,8 +32,6 @@ public abstract class Communication implements Serializable{
 		return _id;
 	}
 
-
-
 	void setPriceAtZero(){
 		if(_isOngoing){
 			_price = 0;

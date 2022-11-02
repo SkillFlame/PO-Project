@@ -3,6 +3,8 @@ package prr.core;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 
 import prr.core.exception.InvalidKeyException;
 
@@ -17,24 +19,17 @@ abstract public class Terminal implements Serializable {
 	private String _id;
 	private double _debt;
 	private double _payments;
-<<<<<<< HEAD
-	TerminalMode _mode;
-	
-	/** Possible Terminal Modes */
-	enum TerminalMode {
-		BUSY, IDLE, SILENCE, OFF
-	};
-=======
 	private TerminalMode _mode;
->>>>>>> ad69197ea37ab0ed63d19417b9ad8d6054041320
 
 	private String _clientId;
-	Collection<String> _friendsId = new HashSet<String>();
+	private Collection<String> _friendsId = new HashSet<String>();
+	private List<Communication> _communications;
 
 	Terminal(String id, String clientId) throws InvalidKeyException {
 		setID(id);
 		_clientId = clientId;
 		_mode = new IdleMode();
+		_communications = new ArrayList<>();
 	}
 
 	/**
@@ -59,6 +54,18 @@ abstract public class Terminal implements Serializable {
 
 	void setMode(TerminalMode mode) {
 		_mode = mode;
+	}
+
+	TerminalMode getMode(){
+		return _mode;
+	}
+
+	Collection<String> getFriends(){
+		return _friendsId;
+	}
+
+	List<Communication> getCommunications(){
+		return _communications;
 	}
 
 	/**
@@ -94,42 +101,42 @@ abstract public class Terminal implements Serializable {
 	 * @return true if this terminal is neither off nor busy, false otherwise.
 	 **/
 	public boolean canStartCommunication() {
-		return isOn() && _mode != TerminalMode.BUSY;
+		return _mode != OffMode.getMode() && _mode != BusyMode.getMode();
 	}
 
 	public void turnOff() {
 		// FIXME Finish Method
-		_mode = TerminalMode.OFF;
+		_mode = OffMode.getMode();
 	}
 
 	public void setOnSilent() {
 		// FIXME Finish Method
-		_mode = TerminalMode.SILENCE;
+		_mode = SilenceMode.getMode();
 	}
 
 	public void setOnIdle() {
 		// FIXME Finish Method
-		_mode = TerminalMode.IDLE;
+		_mode = IdleMode.getMode();
 	}
 
 	void makeSMS(Terminal receiver, String Message) {
-
+		// FIXME Finish Method
 	}
 
 	void acceptSMS(Terminal sender) {
-
+		// FIXME Finish Method
 	}
 
 	void MakeVoiceCall(Terminal receiver) {
-
+		// FIXME Finish Method
 	}
 
 	void acceptVoiceCall(Terminal sender) {
-
+		// FIXME Finish Method
 	}
 
 	void endOngoingCommunication(int size) {
-		
+		// FIXME Finish Method
 	}
 
 	/**
@@ -148,6 +155,11 @@ abstract public class Terminal implements Serializable {
 	}
 
 
+	void pay(Communication communication){
+		
+	}
+
+
 	double getPayments(){
 		return _payments;
 	}
@@ -159,11 +171,6 @@ abstract public class Terminal implements Serializable {
 	String getClientId(){
 		return _clientId;
 	}
-
-	abstract public void makeSMS(Terminal terminalTo, String message);
-	abstract void acceptSMS(Terminal terminalFrom);
-	abstract public void makeVoiceCall(Terminal terminalTo);
-	abstract void acceptVoiceCall(Terminal terminalFrom);
 
 
 	/**

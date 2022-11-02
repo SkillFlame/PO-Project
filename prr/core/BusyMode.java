@@ -6,9 +6,9 @@ public class BusyMode implements TerminalMode, Serializable {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
-	final TerminalMode _mode = new BusyMode();
+	final static TerminalMode _mode = new BusyMode();
 
-	public TerminalMode getMode() {
+	public static TerminalMode getMode() {
 		return _mode;
 	}
 

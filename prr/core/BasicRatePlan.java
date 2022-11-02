@@ -37,7 +37,8 @@ public class BasicRatePlan implements RatePlan, Serializable {
 	@Override
 	public void promote(Client client) {
 		if(client.getClientBalance() > 500.0){
-			client._ratePlan = new GoldRatePlan();
+			RatePlan ratePlan = client.getRatePlan();
+			ratePlan = new GoldRatePlan();
 		}
 	}
 
