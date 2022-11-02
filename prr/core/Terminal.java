@@ -19,18 +19,13 @@ abstract public class Terminal implements Serializable {
 	private double _payments;
 	private TerminalMode _mode;
 
-	/** Possible Terminal Modes */
-	enum TerminalMode {
-		BUSY, IDLE, SILENCE, OFF
-	};
-
 	private String _clientId;
 	private Collection<String> _friendsId = new HashSet<String>();
 
 	Terminal(String id, String clientId) throws InvalidKeyException {
 		setID(id);
 		_clientId = clientId;
-		_mode = TerminalMode.IDLE;
+		_mode = new IdleMode();
 	}
 
 	/**
@@ -51,6 +46,10 @@ abstract public class Terminal implements Serializable {
 
 	String getId() {
 		return _id;
+	}
+
+	void setMode(TerminalMode mode) {
+		_mode = mode;
 	}
 
 	/**
@@ -96,13 +95,24 @@ abstract public class Terminal implements Serializable {
 		_mode = TerminalMode.IDLE;
 	}
 
-	/**
-	 * Checks if the Terminal is On
-	 * 
-	 * @return true if Terminal is ON
-	 */
-	boolean isOn() {
-		return _mode != TerminalMode.OFF;
+	void makeSMS(Terminal receiver, String Message) {
+
+	}
+
+	void acceptSMS(Terminal sender) {
+
+	}
+
+	void MakeVoiceCall(Terminal receiver) {
+
+	}
+
+	void acceptVoiceCall(Terminal sender) {
+
+	}
+
+	void endOngoingCommunication(int size) {
+		
 	}
 
 	/**
