@@ -6,9 +6,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import javax.swing.plaf.nimbus.State;
+
 import java.util.ArrayList;
 
 import prr.core.exception.InvalidKeyException;
+import prr.core.exception.TerminalStateAlreadySetException;
+import prr.core.exception.UnknownIdentifierException;
 
 /**
  * Terminal implementation
@@ -24,6 +29,7 @@ abstract public class Terminal implements Serializable {
 	private TerminalMode _mode;
 
 	private String _clientId;
+	private Client _owner;
 	private Collection<String> _friendsId = new HashSet<String>();
 	private Map<Integer, Communication> _communications = new TreeMap<>();
 
@@ -65,6 +71,10 @@ abstract public class Terminal implements Serializable {
 		return _friendsId;
 	}
 
+	Client getOwner(){
+		return _owner;
+	}
+
 	Collection<Communication> getCommunications(){
 		return _communications.values();
 	}
@@ -73,7 +83,7 @@ abstract public class Terminal implements Serializable {
 	 * Adds a Friend to the Friend List
 	 */
 	void addFriend(String friendId) {
-		if(friendId != _id){
+		if(friendId != _id && !_friendsId.contains(friendId)){
 			_friendsId.add(friendId);
 		}
 	}
@@ -102,41 +112,45 @@ abstract public class Terminal implements Serializable {
 	 * @return true if this terminal is neither off nor busy, false otherwise.
 	 **/
 	public boolean canStartCommunication() {
-		return _mode != OffMode.getMode() && _mode != BusyMode.getMode();
+		return _mode != OffMode.getMode() || _mode != BusyMode.getMode();
 	}
 
-	public void turnOff() {
+	public void turnOff() throws TerminalStateAlreadySetException{
 		// FIXME Finish Method
 		_mode = OffMode.getMode();
 	}
 
-	public void setOnSilent() {
+	public void setOnSilent() throws TerminalStateAlreadySetException{
 		// FIXME Finish Method
 		_mode = SilenceMode.getMode();
 	}
 
-	public void setOnIdle() {
+	public void setOnIdle() throws TerminalStateAlreadySetException{
 		// FIXME Finish Method
 		_mode = IdleMode.getMode();
 	}
 
-	void makeSMS(Terminal receiver, String Message) {
-		// FIXME Finish Method
+	public void makeSMS(String idReceiver, String Message) {
+		if(canStartCommunication()){
+		
+		}
 	}
 
 	void acceptSMS(Terminal sender) {
 		// FIXME Finish Method
 	}
 
-	void MakeVoiceCall(Terminal receiver) {
-		// FIXME Finish Method
+	public void makeVoiceCall(Terminal receiver) {
+		if(canStartCommunication()){
+
+		}
 	}
 
 	void acceptVoiceCall(Terminal sender) {
 		// FIXME Finish Method
 	}
 
-	void endOngoingCommunication(int size) {
+	public void endOngoingCommunication(int size) {
 		// FIXME Finish Method
 	}
 
@@ -156,10 +170,17 @@ abstract public class Terminal implements Serializable {
 	}
 
 
-	void pay(int communicationId){
+	void pay(int communicationId) throws UnknownIdentifierException{
 		if(_communications.keySet().contains(communicationId)){
-			
+			Communication communication = _communications.get(communicationId);
+			if(!communication.getPaymentState()){
+				double cost = communication.computeCost(_owner.getRatePlan());
+				_payments += cost;
+				_debt -= cost;
+
+			}
 		}
+		// throw new InvalidCommunicationException;
 	}
 
 

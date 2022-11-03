@@ -11,15 +11,18 @@ public abstract class Communication implements Serializable{
 	private static final long serialVersionUID = 202208091753L;
 	
 	private static int _id;
-	boolean _isPaid;
-	private double _price;
+	private boolean _isPaid;
+	double _price;
 	boolean _isOngoing;
-	Terminal terminalFrom;
-	Terminal terminalTo;
+	private Terminal _sender;
+	private Terminal _reciever;
 
 	abstract double computeCost(RatePlan ratePlan);
 	abstract int getSize();
 	
+	public Communication(){
+		_id += 1;
+	}
 
 	String getStatus(){
 		if(_isOngoing){
@@ -32,10 +35,22 @@ public abstract class Communication implements Serializable{
 		return _id;
 	}
 
+	boolean getPaymentState(){
+		return _isPaid;
+	}
+
 	void setPriceAtZero(){
 		if(_isOngoing){
 			_price = 0;
 		}
+	}
+
+	Terminal getTerminalSender(){
+		return _sender;
+	}
+
+	Terminal getTerminalReciever(){
+		return _reciever;
 	}
 
 
@@ -45,7 +60,7 @@ public abstract class Communication implements Serializable{
 	 */
 	@Override 
 	public String toString() {
-		String output = _id + "|" + terminalFrom.getId() + "|" + terminalTo.getId() + "|" + getSize() + "|" + _price + "|" + getStatus();
+		String output = _id + "|" + _sender.getId() + "|" + _reciever.getId() + "|" + getSize() + "|" + _price + "|" + getStatus();
 		return output;
 	}
 }

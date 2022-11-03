@@ -12,15 +12,18 @@ public class Notification implements Serializable {
 
 	private NotificationType _type;
 	private String _terminalId;
+	private boolean _hasNotified;
 
-	/** Types of a Notification */
-	enum NotificationType {
-		O2S, O2I, B2S, B2I
-	};
 
-	Notification(String terminalId) {
-		_type = null;
+	
+
+	Notification(String terminalId, NotificationType type){
+		_type = type;
 		_terminalId = terminalId;
+	}
+
+	NotificationType getType(){
+		return _type;
 	}
 
 	/**
@@ -30,6 +33,6 @@ public class Notification implements Serializable {
 	@Override
 	public String toString() {
 
-		return _type + "|" + _terminalId;
+		return _type.typeToString() + "|" + _terminalId;
 	}
 }
