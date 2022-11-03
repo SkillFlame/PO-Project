@@ -235,10 +235,9 @@ public class Network implements Serializable {
 	}
 
 	public double getClientBalance(String clientId){
-		double clientBalance = 0;
 		Client client = _clients.get(clientId);
-		clientBalance = client.getClientBalance();
-		return clientBalance;
+		return client.getClientBalance();
+		
 	}
 
 
