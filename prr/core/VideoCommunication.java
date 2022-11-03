@@ -10,8 +10,11 @@ public class VideoCommunication extends InteractiveCommunication {
 
 	@Override
 	double computeCost(RatePlan ratePlan) {
-		// TODO Auto-generated method stub
-		return 0;
+		_price = ratePlan.computeCost(getTerminalSender().getOwner(), this);
+		if(getTerminalSender().getFriends().contains(getTerminalReciever().getId())){
+			_price *= 0.5;
+		}
+		return _price;
 	}
 
 	/**

@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 import prr.core.exception.InvalidKeyException;
+import prr.core.exception.TerminalStateAlreadySetException;
+import prr.core.exception.UnknownIdentifierException;
 
 /**
  * Terminal implementation
@@ -21,6 +23,7 @@ abstract public class Terminal implements Serializable {
 	private TerminalMode _mode;
 
 	private String _clientId;
+	private Client _owner;
 	private Collection<String> _friendsId = new HashSet<String>();
 	private Map<Integer, Communication> _communications = new TreeMap<>();
 
@@ -62,6 +65,10 @@ abstract public class Terminal implements Serializable {
 		return _friendsId;
 	}
 
+	Client getOwner(){
+		return _owner;
+	}
+
 	Collection<Communication> getCommunications(){
 		return _communications.values();
 	}
@@ -70,7 +77,7 @@ abstract public class Terminal implements Serializable {
 	 * Adds a Friend to the Friend List
 	 */
 	void addFriend(String friendId) {
-		if(friendId != _id){
+		if(friendId != _id && !_friendsId.contains(friendId)){
 			_friendsId.add(friendId);
 		}
 	}
@@ -149,10 +156,17 @@ abstract public class Terminal implements Serializable {
 	}
 
 
-	void pay(int communicationId){
+	void pay(int communicationId) throws UnknownIdentifierException{
 		if(_communications.keySet().contains(communicationId)){
-			
+			Communication communication = _communications.get(communicationId);
+			if(!communication.getPaymentState()){
+				double cost = communication.computeCost(_owner.getRatePlan());
+				_payments += cost;
+				_debt -= cost;
+
+			}
 		}
+		// throw new InvalidCommunicationException;
 	}
 
 

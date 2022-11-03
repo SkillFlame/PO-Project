@@ -9,6 +9,8 @@ import java.io.IOException;
 import prr.app.exception.FileOpenFailedException;
 import prr.core.exception.InvalidKeyException;
 import prr.core.exception.KeyAlreadyExistsException;
+import prr.core.exception.NotificationsAlreadyDisabledException;
+import prr.core.exception.NotificationsAlreadyEnabledException;
 import prr.core.exception.UnavailableFileException;
 import prr.core.exception.UnknownIdentifierException;
 import prr.core.exception.UnknownKeyException;
@@ -240,12 +242,22 @@ public class Network implements Serializable {
 	}
 
 
-	public void activateFailedContactReception(String clientId){
+	public void activateNotificationReception(String clientId) throws NotificationsAlreadyEnabledException{
 		// FIXME add implementation code
+		Client client = _clients.get(clientId);
+		if(client.getNotificationActivity()){
+			throw new NotificationsAlreadyEnabledException();
+		}
+		client.activateNotifications();
 	}
 
-	public void deactivateFailedContactReception(String clientId){
+	public void deactivateNotificationReception(String clientId) throws NotificationsAlreadyDisabledException{
 		// FIXME add implementation code
+		Client client = _clients.get(clientId);
+		if(!client.getNotificationActivity()){
+			throw new NotificationsAlreadyDisabledException();
+		}
+		client.deactivateNotifications();
 	}
 
 	public List<Communication> getCommunications(){

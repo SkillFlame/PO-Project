@@ -1,18 +1,17 @@
 package prr.core.exception;
 
-import prr.core.TerminalMode;
 
-public class StateAlreadySetException extends Exception{
+public class TerminalStateAlreadySetException extends Exception{
 
     /** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
-	private TerminalMode _mode;
+	private String _mode;
     
     /**
 	 * @param state the duplicated state
 	 */
-	public StateAlreadySetException(TerminalMode mode) {
+	public TerminalStateAlreadySetException(String mode) {
 		super("State already set:" + mode);
 		_mode = mode;
 	}
@@ -20,7 +19,7 @@ public class StateAlreadySetException extends Exception{
     /**
 	 * @return the requested state
 	 */
-	public TerminalMode getState() {
+	public String getState() {
 		return _mode;
 	}
 }

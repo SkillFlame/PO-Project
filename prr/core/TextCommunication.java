@@ -1,5 +1,7 @@
 package prr.core;
 
+import org.w3c.dom.Text;
+
 /**
  * Specialization of a Communication by Text
  */
@@ -10,10 +12,8 @@ public class TextCommunication extends Communication {
 	
 	private String _message;
 
-	@Override
-	double computeCost(RatePlan ratePlan) {
-		// TODO Auto-generated method stub
-		return 0;
+	public TextCommunication(String message){
+		_message = message;
 	}
 	
 	@Override
@@ -22,6 +22,12 @@ public class TextCommunication extends Communication {
 			return 0;
 		}
 		return _message.length(); 
+	}
+
+	@Override
+	double computeCost(RatePlan ratePlan) {
+		_price = ratePlan.computeCost(getTerminalSender().getOwner(), this);
+		return _price;
 	}
 
 	/**
@@ -33,4 +39,6 @@ public class TextCommunication extends Communication {
 		String output = "TEXT" + "|" + super.toString();
 		return output;
 	}
+
+	
 }

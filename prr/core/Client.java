@@ -53,8 +53,11 @@ public class Client implements Serializable {
 	}
 
 	
-	Notifications getNotificationActivity() {
-		return _activity;
+	boolean getNotificationActivity() {
+		if(_activity == Notifications.YES){
+			return true;
+		}
+		return false;
 	}
 
 	void activateNotifications() {
