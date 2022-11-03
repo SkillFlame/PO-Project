@@ -3,11 +3,8 @@ package prr.core;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.ArrayList;
-
 import prr.core.exception.InvalidKeyException;
 
 /**
@@ -92,8 +89,7 @@ abstract public class Terminal implements Serializable {
 	 *         it was the originator of this communication.
 	 **/
 	public boolean canEndCurrentCommunication() {
-		// FIXME add implementation code
-		return false;
+		return getMode().canEndCurrentCommunication();
 	}
 
 	/**
@@ -102,42 +98,39 @@ abstract public class Terminal implements Serializable {
 	 * @return true if this terminal is neither off nor busy, false otherwise.
 	 **/
 	public boolean canStartCommunication() {
-		return _mode != OffMode.getMode() && _mode != BusyMode.getMode();
+		return getMode().canStartCommunication();
 	}
 
 	public void turnOff() {
-		// FIXME Finish Method
-		_mode = OffMode.getMode();
+		getMode().turnOff(this);
 	}
 
 	public void setOnSilent() {
-		// FIXME Finish Method
-		_mode = SilenceMode.getMode();
+		getMode().setOnSilent(this);
 	}
 
 	public void setOnIdle() {
-		// FIXME Finish Method
-		_mode = IdleMode.getMode();
+		getMode().setOnIdle(this);
 	}
 
 	void makeSMS(Terminal receiver, String Message) {
-		// FIXME Finish Method
+		getMode().makeSMS(receiver, Message);
 	}
 
 	void acceptSMS(Terminal sender) {
-		// FIXME Finish Method
+		getMode().acceptSMS(sender);
 	}
 
-	void MakeVoiceCall(Terminal receiver) {
-		// FIXME Finish Method
+	void makeVoiceCall(Terminal receiver) {
+		getMode().makeVoiceCall(receiver);
 	}
 
 	void acceptVoiceCall(Terminal sender) {
-		// FIXME Finish Method
+		getMode().acceptVoiceCall(sender);
 	}
 
 	void endOngoingCommunication(int size) {
-		// FIXME Finish Method
+		getMode().endOngoingCommunication(size);
 	}
 
 	/**

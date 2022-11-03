@@ -14,7 +14,6 @@ public class OffMode implements TerminalMode, Serializable {
 
 	@Override
 	public boolean canEndCurrentCommunication() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -38,6 +37,34 @@ public class OffMode implements TerminalMode, Serializable {
 
 	@Override
 	public void turnOff(Terminal terminal) {
+	}
+
+	@Override
+	public void makeSMS(Terminal receiver, String Message) {
+	}
+
+	@Override
+	public void acceptSMS(Terminal sender) {		
+	}
+
+	@Override
+	public void makeVoiceCall(Terminal receiver) {
+	}
+
+	@Override
+	public void acceptVoiceCall(Terminal sender) {
+	}
+
+	@Override
+	public void endOngoingCommunication(int size) {
+	}
+
+	@Override
+	public void makeVideoCall(Terminal terminalTo) {
+	}
+
+	@Override
+	public void acceptVideoCall(Terminal terminalFrom) {	
 	}
 
 }

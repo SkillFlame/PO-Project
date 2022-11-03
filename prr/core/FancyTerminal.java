@@ -26,15 +26,11 @@ public class FancyTerminal extends Terminal {
 
 	
 	public void makeVideoCall(Terminal terminalTo) {
-		if( terminalTo.getMode() != OffMode.getMode() || terminalTo.getMode() != BusyMode.getMode()){
-
-		}
-		
+		super.getMode().makeVideoCall(terminalTo);
 	}
 
 	void acceptVideoCall(Terminal terminalFrom) {
-		// TODO Auto-generated method stub
-		
+		super.getMode().acceptVideoCall(terminalFrom);
 	}
 
 }
