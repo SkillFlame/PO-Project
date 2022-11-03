@@ -37,10 +37,6 @@ public abstract class Communication implements Serializable{
 		return _id;
 	}
 
-	boolean getCommunicationState(){
-		return _isOngoing;
-	}
-
 	double getPrice(){
 		return _price;
 	}
