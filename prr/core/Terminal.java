@@ -96,7 +96,7 @@ abstract public class Terminal implements Serializable {
 	 *         it was the originator of this communication.
 	 **/
 	public boolean canEndCurrentCommunication() {
-		return getMode().canEndCurrentCommunication();
+		return getMode().canEndCurrentCommunication(this);
 	}
 
 	/**
@@ -121,7 +121,7 @@ abstract public class Terminal implements Serializable {
 	}
 
 	void makeSMS(Terminal receiver, String Message) {
-		getMode().makeSMS(receiver, Message);
+		getMode().makeSMS(this, receiver, Message);
 	}
 
 	void acceptSMS(Terminal sender) {
@@ -129,7 +129,7 @@ abstract public class Terminal implements Serializable {
 	}
 
 	void makeVoiceCall(Terminal receiver) {
-		getMode().makeVoiceCall(receiver);
+		getMode().makeVoiceCall(this, receiver);
 	}
 
 	void acceptVoiceCall(Terminal sender) {

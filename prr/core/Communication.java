@@ -12,16 +12,18 @@ public abstract class Communication implements Serializable{
 	
 	private static int _id;
 	private boolean _isPaid;
-	double _price;
-	boolean _isOngoing;
+	private double _price;
+	private boolean _isOngoing;
 	private Terminal _sender;
-	private Terminal _reciever;
+	private Terminal _receiver;
 
 	abstract double computeCost(RatePlan ratePlan);
 	abstract int getSize();
 	
-	public Communication(){
+	public Communication(Terminal sender, Terminal receiver){
 		_id += 1;
+		_sender = sender;
+		_receiver = receiver;
 	}
 
 	String getStatus(){
@@ -39,18 +41,20 @@ public abstract class Communication implements Serializable{
 		return _isPaid;
 	}
 
-	void setPriceAtZero(){
-		if(_isOngoing){
-			_price = 0;
-		}
+	void setPrice(double price) {
+		_price = price;
+	}
+
+	boolean getIsOngoing() {
+		return _isOngoing;
 	}
 
 	Terminal getTerminalSender(){
 		return _sender;
 	}
 
-	Terminal getTerminalReciever(){
-		return _reciever;
+	Terminal getTerminalReceiver(){
+		return _receiver;
 	}
 
 
@@ -60,7 +64,7 @@ public abstract class Communication implements Serializable{
 	 */
 	@Override 
 	public String toString() {
-		String output = _id + "|" + _sender.getId() + "|" + _reciever.getId() + "|" + getSize() + "|" + _price + "|" + getStatus();
+		String output = _id + "|" + _sender.getId() + "|" + _receiver.getId() + "|" + getSize() + "|" + _price + "|" + getStatus();
 		return output;
 	}
 }

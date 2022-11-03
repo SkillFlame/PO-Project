@@ -25,8 +25,8 @@ public class FancyTerminal extends Terminal {
 	}
 
 	
-	public void makeVideoCall(Terminal terminalTo) {
-		super.getMode().makeVideoCall(terminalTo);
+	public void makeVideoCall(Terminal receiver) {
+		super.getMode().makeVideoCall(this, receiver);
 	}
 
 	void acceptVideoCall(Terminal terminalFrom) {

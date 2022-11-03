@@ -13,7 +13,7 @@ public class BusyMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public boolean canEndCurrentCommunication() {
+	public boolean canEndCurrentCommunication(Terminal terminal) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -25,14 +25,10 @@ public class BusyMode implements TerminalMode, Serializable {
 
 	@Override
 	public void setOnIdle(Terminal terminal) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void setOnSilent(Terminal terminal) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -44,45 +40,37 @@ public class BusyMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public void makeSMS(Terminal receiver, String Message) {
-		// TODO Auto-generated method stub
-		
+	public Communication makeSMS(Terminal sender, Terminal receiver, String Message) {
+		return null;
 	}
 
 	@Override
 	public void acceptSMS(Terminal sender) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void makeVoiceCall(Terminal receiver) {
-		// TODO Auto-generated method stub
-		
+	public Communication makeVoiceCall(Terminal sender, Terminal receiver) {
+		return null;
 	}
 
 	@Override
 	public void acceptVoiceCall(Terminal sender) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public void endOngoingCommunication(int size) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void makeVideoCall(Terminal terminalTo) {
-		// TODO Auto-generated method stub
-		
+	public Communication makeVideoCall(Terminal sender, Terminal receiver) {
+		return null;
 	}
 
 	@Override
 	public void acceptVideoCall(Terminal terminalFrom) {
-		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public void endOngoingCommunication(int size) {
+		// TODO Finish
 	}
 
 }

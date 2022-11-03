@@ -1,7 +1,7 @@
 package prr.core;
 
 public interface TerminalMode {
-	public boolean canEndCurrentCommunication();
+	public boolean canEndCurrentCommunication(Terminal terminal);
 
 	public boolean canStartCommunication();
 
@@ -13,17 +13,17 @@ public interface TerminalMode {
 
 	public void turnOff(Terminal terminal);
 
-	void makeSMS(Terminal receiver, String Message);
+	Communication makeSMS(Terminal sender, Terminal receiver, String Message);
 
 	void acceptSMS(Terminal sender);
 
-	void makeVoiceCall(Terminal receiver);
+	Communication makeVoiceCall(Terminal sender, Terminal receiver);
 
 	void acceptVoiceCall(Terminal sender);
 
-	void endOngoingCommunication(int size);
-
-	public void makeVideoCall(Terminal terminalTo);
+	Communication makeVideoCall(Terminal sender, Terminal receiver);
 
 	void acceptVideoCall(Terminal terminalFrom);
+
+	void endOngoingCommunication(int size);
 }

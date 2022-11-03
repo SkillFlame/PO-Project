@@ -13,7 +13,7 @@ public class SilenceMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public boolean canEndCurrentCommunication() {
+	public boolean canEndCurrentCommunication(Terminal terminal) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -44,45 +44,39 @@ public class SilenceMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public void makeSMS(Terminal receiver, String Message) {
-		// TODO Auto-generated method stub
-		
+	public Communication makeSMS(Terminal sender, Terminal receiver, String Message) {
+		Communication SMS = new TextCommunication(sender, receiver, Message);
+		return SMS;
 	}
 
 	@Override
 	public void acceptSMS(Terminal sender) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void makeVoiceCall(Terminal receiver) {
-		// TODO Auto-generated method stub
-		
+	public Communication makeVoiceCall(Terminal sender, Terminal receiver) {
+		Communication call = new VoiceCommunication(sender, receiver);
+		return call;
 	}
 
 	@Override
 	public void acceptVoiceCall(Terminal sender) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public void endOngoingCommunication(int size) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void makeVideoCall(Terminal terminalTo) {
-		// TODO Auto-generated method stub
-		
+	public Communication makeVideoCall(Terminal sender, Terminal receiver) {
+		Communication call = new VideoCommunication(sender, receiver);
+		return call;
 	}
 
 	@Override
 	public void acceptVideoCall(Terminal terminalFrom) {
-		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public void endOngoingCommunication(int size) {
 	}
 
 }

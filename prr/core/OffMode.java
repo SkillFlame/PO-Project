@@ -13,7 +13,7 @@ public class OffMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public boolean canEndCurrentCommunication() {
+	public boolean canEndCurrentCommunication(Terminal terminal) {
 		return false;
 	}
 
@@ -40,7 +40,8 @@ public class OffMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public void makeSMS(Terminal receiver, String Message) {
+	public Communication makeSMS(Terminal sender, Terminal receiver, String Message) {
+		return null;
 	}
 
 	@Override
@@ -48,7 +49,8 @@ public class OffMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public void makeVoiceCall(Terminal receiver) {
+	public Communication makeVoiceCall(Terminal sender, Terminal receiver) {
+		return null;
 	}
 
 	@Override
@@ -60,7 +62,8 @@ public class OffMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public void makeVideoCall(Terminal terminalTo) {
+	public Communication makeVideoCall(Terminal sender, Terminal receiver) {
+		return null;
 	}
 
 	@Override
