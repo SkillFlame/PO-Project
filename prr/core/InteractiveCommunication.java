@@ -12,7 +12,7 @@ public abstract class InteractiveCommunication extends Communication{
 
 	@Override
 	int getSize() {
-		if(_isOngoing){
+		if(getCommunicationState()){
 			return 0;
 		}
 		return _duration;

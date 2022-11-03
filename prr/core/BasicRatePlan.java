@@ -44,7 +44,6 @@ public class BasicRatePlan implements RatePlan, Serializable {
 
 	@Override
 	public void demote(Client client) {
-		//nao e possível
-
+		// Not possible
 	}	
 }

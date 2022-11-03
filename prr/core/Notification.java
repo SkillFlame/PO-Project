@@ -10,21 +10,24 @@ public class Notification implements Serializable {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
-	private NotificationType _type;
-	private String _terminalId;
-	private boolean _hasNotified;
+	private NotificationDelivery _method;
+	private Terminal _target;
+	private String _type;
 
-
-	
-
-	Notification(String terminalId, NotificationType type){
+	Notification(Terminal target, NotificationDelivery method, String type){
+		_method = method;
+		_target = target;
 		_type = type;
-		_terminalId = terminalId;
 	}
 
-	NotificationType getType(){
+	NotificationDelivery getMethod(){
+		return _method;
+	}
+
+	String getType(){
 		return _type;
 	}
+
 
 	/**
 	 * toString implementaion of a Notification
@@ -33,6 +36,6 @@ public class Notification implements Serializable {
 	@Override
 	public String toString() {
 
-		return _type.typeToString() + "|" + _terminalId;
+		return _type + "|" + _target.getId();
 	}
 }

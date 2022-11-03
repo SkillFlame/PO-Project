@@ -12,8 +12,8 @@ public abstract class Communication implements Serializable{
 	
 	private static int _id;
 	private boolean _isPaid;
-	double _price;
-	boolean _isOngoing;
+	private double _price;
+	private boolean _isOngoing;
 	private Terminal _sender;
 	private Terminal _reciever;
 
@@ -33,6 +33,14 @@ public abstract class Communication implements Serializable{
 
 	int getId(){
 		return _id;
+	}
+
+	boolean getCommunicationState(){
+		return _isOngoing;
+	}
+
+	double getPrice(){
+		return _price;
 	}
 
 	boolean getPaymentState(){

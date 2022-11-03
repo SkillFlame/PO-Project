@@ -11,11 +11,12 @@ public class VoiceCommunication extends InteractiveCommunication {
 
 	@Override
 	double computeCost(RatePlan ratePlan) {
-		_price = ratePlan.computeCost(getTerminalSender().getOwner(), this);
+		double price = getPrice();
+		price = ratePlan.computeCost(getTerminalSender().getOwner(), this);
 		if(getTerminalSender().getFriends().contains(getTerminalReciever().getId())){
-			_price *= 0.5;
+			price *= 0.5;
 		}
-		return _price;
+		return price;
 	}
 
 	/**

@@ -60,6 +60,10 @@ public class Client implements Serializable {
 		return false;
 	}
 
+	void addNotification(Notification notification){
+		_notifications.add(notification);
+	}
+
 	void activateNotifications() {
 		this._activity = Notifications.YES;
 	}

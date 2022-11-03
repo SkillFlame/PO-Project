@@ -18,7 +18,7 @@ public class TextCommunication extends Communication {
 	
 	@Override
 	int getSize(){ 
-		if(_isOngoing){
+		if(getCommunicationState()){
 			return 0;
 		}
 		return _message.length(); 
@@ -26,8 +26,9 @@ public class TextCommunication extends Communication {
 
 	@Override
 	double computeCost(RatePlan ratePlan) {
-		_price = ratePlan.computeCost(getTerminalSender().getOwner(), this);
-		return _price;
+		double price = getPrice();
+		price = ratePlan.computeCost(getTerminalSender().getOwner(), this);
+		return price;
 	}
 
 	/**
