@@ -9,7 +9,6 @@ public class BusyMode implements TerminalMode, Serializable {
 	private static final long serialVersionUID = 202208091753L;
 
 	final static TerminalMode _mode = new BusyMode();
-	private NotificationDeliveryMethod _method;
 
 	
 	public static TerminalMode getMode() {
@@ -125,13 +124,8 @@ public class BusyMode implements TerminalMode, Serializable {
 	 * @param terminal the terminal of the interactive communication made
 	 */
 	@Override
-<<<<<<< HEAD
-	public void endOngoingCommunication(int duration, Terminal terminal) {
-		terminal.setMode(terminal.getLastTerminalMode());
-=======
 	public void endOngoingCommunication(Terminal terminal) {
-		terminal.setMode(IdleMode.getMode());
->>>>>>> 366c652e27b4e02aa0ee4594bf5ab702094d98d9
+		terminal.setMode(terminal.getLastTerminalMode());
 	}
 
 	
@@ -143,10 +137,14 @@ public class BusyMode implements TerminalMode, Serializable {
 		return "BUSY";
 	}
 
+	/**
+	 * Handles failed Communications of the Terminal
+	 * 
+	 * @param terminal 
+	 */
 	@Override
 	public void handleFailedCommunication(Terminal terminal) {
 		terminal.setMode(IdleMode.getMode());
-		_method.notifyTerminalB2I(terminal);
 	}
 
 }

@@ -249,11 +249,6 @@ abstract public class Terminal implements Serializable {
 		addMadeCommunication(communication);
 		setLastCommunicationMade(communication);
 		setLastInteractiveCommunication(communication);
-<<<<<<< HEAD
-		
-		
-=======
->>>>>>> 366c652e27b4e02aa0ee4594bf5ab702094d98d9
 		try {
 			receiver.acceptVoiceCall(this);
 		} catch (ReceiverIsOffException rioe) {

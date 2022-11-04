@@ -47,14 +47,12 @@ public class OffMode implements TerminalMode, Serializable {
 	@Override
 	public void setOnIdle(Terminal terminal) {
 		terminal.setMode(IdleMode.getMode());
-		_method.notifyTerminalO2I(terminal);
 	}
 
 	
 	@Override
 	public void setOnSilent(Terminal terminal) {
 		terminal.setMode(SilenceMode.getMode());
-		_method.notifyTerminalO2S(terminal);
 	}
 
 	
