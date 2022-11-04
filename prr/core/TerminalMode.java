@@ -21,7 +21,7 @@ public interface TerminalMode {
 
 	Communication acceptVoiceCall(Terminal sender);
 
-	Communication makeVIdeoCall(Terminal sender, Terminal receiver);
+	Communication makeVideoCall(Terminal sender, Terminal receiver);
 
 	Communication acceptVideoCall(Terminal sender);
 

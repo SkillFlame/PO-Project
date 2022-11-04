@@ -158,12 +158,11 @@ abstract public class Terminal implements Serializable {
 		throw new 
 	}
 
-	void endOngoingCommunication(int duration) {
-		getMode().endOngoingCommunication(duration);
+	void acceptVideoCall(Terminal sender) {
 	}
 
-	void addCommunication(Communication communication) {
-		_communications.put(communication.getId(), communication);
+	void endOngoingCommunication(int duration) {
+		getMode().endOngoingCommunication(duration);
 	}
 
 

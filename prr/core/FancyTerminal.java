@@ -29,8 +29,8 @@ public class FancyTerminal extends Terminal {
 		addMadeCommunication(getMode().makeVideoCall(this, receiver));
 	}
 	@Override
-	void acceptVideoCall(Terminal terminalFrom) {
-		addReceivedCommunication(getMode().acceptVideoCall(terminalFrom));
+	void acceptVideoCall(Terminal sender) {
+		addReceivedCommunication(getMode().acceptVideoCall(sender));
 	}
 
 }

@@ -70,13 +70,13 @@ public class IdleMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public Communication makeVIdeoCall(Terminal sender, Terminal receiver) {
+	public Communication makeVideoCall(Terminal sender, Terminal receiver) {
 		Communication call = new VideoCommunication(sender, receiver);
 		return call;
 	}
 
 	@Override
-	public Communication acceptVideoCall(Terminal terminalFrom) {
+	public Communication acceptVideoCall(Terminal sender) {
 		// TODO Auto-generated method stub
 		return null;
 
