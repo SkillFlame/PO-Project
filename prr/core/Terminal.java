@@ -240,19 +240,17 @@ abstract public class Terminal implements Serializable {
 		addMadeCommunication(communication);
 		setLastCommunicationMade(communication);
 		setLastInteractiveCommunication(communication);
+		
 		try {
 			receiver.acceptVoiceCall(this);
 		} catch (ReceiverIsOffException rioe) {
-			getMode().handleFailedCommunication(this);
-			communication.setIsOngoing(false);
+			handleFailedCommunication();
 			throw new ReceiverIsOffException();
 		} catch (ReceiverIsBusyException ribe) {
-			getMode().handleFailedCommunication(this);
-			communication.setIsOngoing(false);
+			handleFailedCommunication();
 			throw new ReceiverIsBusyException();
 		} catch (ReceiverIsSilentException rise) {
-			getMode().handleFailedCommunication(this);
-			communication.setIsOngoing(false);
+			handleFailedCommunication();
 			throw new ReceiverIsSilentException();
 		}
 	}
@@ -347,6 +345,11 @@ abstract public class Terminal implements Serializable {
 		communication.setSize(duration);
 		communication.computeCost(getOwner().getRatePlan());
 		_debt += getOngoingCommunication().getPrice();
+	}
+
+	void handleFailedCommunication() {
+		getMode().handleFailedCommunication(this);
+		getLastCommunicationMade().setIsOngoing(false);
 	}
 
 	/**
