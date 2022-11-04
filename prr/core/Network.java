@@ -11,7 +11,12 @@ import prr.core.exception.InvalidKeyException;
 import prr.core.exception.KeyAlreadyExistsException;
 import prr.core.exception.NotificationsAlreadyDisabledException;
 import prr.core.exception.NotificationsAlreadyEnabledException;
+import prr.core.exception.ReceiverIsBusyException;
 import prr.core.exception.ReceiverIsNotIdleException;
+import prr.core.exception.ReceiverIsOffException;
+import prr.core.exception.ReceiverIsSilentException;
+import prr.core.exception.ReceiverTerminalDoesNotSupportCommunicationException;
+import prr.core.exception.SenderTerminalDoesNotSupportCommunicationException;
 import prr.core.exception.TerminalStateAlreadySetException;
 import prr.core.exception.UnavailableFileException;
 import prr.core.exception.UnknownIdentifierException;
@@ -91,21 +96,6 @@ public class Network implements Serializable {
 	public boolean hasTerminal(String terminalId) {
 		return _terminals.containsKey(terminalId);
 	}
-
-	/** TEM DE SER VISTO ----------------------------------------------------------------------------------------------------------------------
-	 * Checks if a Terminal Type is valid ("BASIC" or "FANCY")
-	 * 
-	 * @param terminalType type of a terminal
-	 * @return true if the given type is a valid terminal type
-	 */
-	//public boolean isValidTerminalType(String terminalType) {
-	//	boolean isValid = false;
-	//	switch (terminalType) {
-	//		case "BASIC", "FANCY" -> isValid = true;
-	//	}
-
-	//	return isValid;
-	//}
 
 	/**
 	 * Gets the Terminal with the desired ID from the terminal Map
@@ -190,9 +180,23 @@ public class Network implements Serializable {
 		terminal.setOnSilent();
 	}
 
-	public String getTerminalId(Terminal terminal){
+	public String getTerminalId(Terminal terminal) {
 		return terminal.getId();
 	}
+
+	/**
+	 * Checks if a Terminal Type is valId ("BASIC" or "FANCY")
+	 * 
+	 * @param terminalType type of a terminal
+	 * @return true if the given type is a valId terminal type
+	 */
+	//public boolean isValIdTerminalType(String terminalType) {
+	//	boolean isValId = false;
+	//	switch (terminalType) {
+	//		case "BASIC", "FANCY" -> isValId = true;
+	//	}
+	//	return isValId;
+	//}
 
 	
 	// CLIENTS
@@ -337,10 +341,10 @@ public class Network implements Serializable {
 		return clientsWithDebt;
 	}
 
-	public List<Client> getClientsWithoutDebt(){
+	public List<Client> getClientsWithoutDebt() {
 		List<Client> clientsWithoutDebt = new ArrayList<>(_clients.values());
-		for(Client client : clientsWithoutDebt){
-			if(client.getClientDebt() == 0){
+		for (Client client : clientsWithoutDebt) {
+			if (client.getClientDebt() == 0) {
 				clientsWithoutDebt.remove(client);
 			}
 		}
@@ -373,29 +377,10 @@ public class Network implements Serializable {
 		return communications;
 	}
 
-	public long getCommunicationCost(Terminal terminal) {
-		return (long) terminal.getLastInteractiveCommunicationCost();
-	}
-
-	public List<Communication> getCommunicationsMadeByClient(String clientId) throws UnknownKeyException {
-		List<Communication> madeCommunications = new ArrayList<>();
-		for (Terminal terminal : _terminals.values()) {
-			madeCommunications.addAll(terminal.getCommunicationsMade());
-		}
-		return madeCommunications;
-	}
-
-	public List<Communication> getCommunicationsRecievedByClient(String clientId) throws UnknownKeyException{
-		List<Communication> receivedCommunications = new ArrayList<>();
-		for (Terminal terminal : _terminals.values()) {
-			receivedCommunications.addAll(terminal.getCommunicationsReceived());
-
-		}
-		return receivedCommunications;
-	}
-
 	public void startInteractiveCommunication(Terminal terminal, String receiverId, String type)
-			throws UnknownKeyException {
+			throws UnknownKeyException, SenderTerminalDoesNotSupportCommunicationException,
+			ReceiverTerminalDoesNotSupportCommunicationException, ReceiverIsBusyException, ReceiverIsOffException,
+			ReceiverIsSilentException {
 		switch (type) {
 			case "VIDEO" -> terminal.makeVideoCall(getTerminal(receiverId));
 
@@ -416,6 +401,27 @@ public class Network implements Serializable {
 
 	public Communication showOngoingCommunication(Terminal terminal) throws ReceiverIsNotIdleException {
 		return terminal.getOngoingCommunication();
+	}
+
+	public long getCommunicationCost(Terminal terminal) {
+		return (long) terminal.getLastInteractiveCommunicationCost();
+	}
+
+	public List<Communication> getCommunicationsMadeByClient(String clientId) throws UnknownKeyException {
+		List<Communication> madeCommunications = new ArrayList<>();
+		for (Terminal terminal : _terminals.values()) {
+			madeCommunications.addAll(terminal.getCommunicationsMade());
+		}
+		return madeCommunications;
+	}
+
+	public List<Communication> getCommunicationsRecievedByClient(String clientId) throws UnknownKeyException{
+		List<Communication> receivedCommunications = new ArrayList<>();
+		for (Terminal terminal : _terminals.values()) {
+			receivedCommunications.addAll(terminal.getCommunicationsReceived());
+
+		}
+		return receivedCommunications;
 	}
 
 	public void performPayment(Terminal terminal, int communicationId) throws UnknownIdentifierException {

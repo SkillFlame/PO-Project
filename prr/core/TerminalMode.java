@@ -1,5 +1,9 @@
 package prr.core;
 
+import prr.core.exception.ReceiverIsBusyException;
+import prr.core.exception.ReceiverIsOffException;
+import prr.core.exception.ReceiverIsSilentException;
+
 public interface TerminalMode {
 	public boolean canEndCurrentCommunication(Terminal terminal);
 
@@ -19,11 +23,11 @@ public interface TerminalMode {
 
 	Communication makeVoiceCall(Terminal sender, Terminal receiver);
 
-	Communication acceptVoiceCall(Terminal sender);
+	Communication acceptVoiceCall(Terminal sender) throws ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException;
 
 	Communication makeVideoCall(Terminal sender, Terminal receiver);
 
-	Communication acceptVideoCall(Terminal sender);
+	Communication acceptVideoCall(Terminal sender) throws ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException;
 
 	void endOngoingCommunication(int duration);
 }

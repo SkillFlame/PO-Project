@@ -6,10 +6,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 
-import prr.core.exception.InvalidCommunicationException;
 import prr.core.exception.InvalidKeyException;
+import prr.core.exception.ReceiverIsBusyException;
 import prr.core.exception.ReceiverIsNotIdleException;
-import prr.core.exception.ReceiverIsNotIdleException;
+import prr.core.exception.ReceiverIsOffException;
+import prr.core.exception.ReceiverIsSilentException;
+import prr.core.exception.ReceiverTerminalDoesNotSupportCommunicationException;
+import prr.core.exception.SenderTerminalDoesNotSupportCommunicationException;
 import prr.core.exception.TerminalStateAlreadySetException;
 import prr.core.exception.UnknownIdentifierException;
 
@@ -31,7 +34,7 @@ abstract public class Terminal implements Serializable {
 	private Collection<String> _friendsId = new HashSet<String>();
 	private Map<Integer, Communication> _communicationsMade = new TreeMap<>();
 	private Map<Integer, Communication> _communicationsReceived = new TreeMap<>();
-	private Communication _lastInteractiveCommunication; //FIXME add implementation
+	private Communication _lastInteractiveCommunication; // FIXME add implementation
 
 	Terminal(String id, String clientId) throws InvalidKeyException {
 		setId(id);
@@ -75,21 +78,21 @@ abstract public class Terminal implements Serializable {
 		return _owner;
 	}
 
-	Collection<Communication> getCommunicationsMade(){
+	Collection<Communication> getCommunicationsMade() {
 		return _communicationsMade.values();
 	}
 
-	Collection<Communication> getCommunicationsReceived(){
+	Collection<Communication> getCommunicationsReceived() {
 		return _communicationsReceived.values();
 	}
 
 	void addMadeCommunication(Communication communication) {
-        _communicationsMade.put(communication.getId(), communication);
-    }
+		_communicationsMade.put(communication.getId(), communication);
+	}
 
 	void addReceivedCommunication(Communication communication) {
-        _communicationsReceived.put(communication.getId(), communication);
-    }
+		_communicationsReceived.put(communication.getId(), communication);
+	}
 
 	/**
 	 * Adds a Friend to the Friend List
@@ -126,50 +129,57 @@ abstract public class Terminal implements Serializable {
 		return getMode().canStartCommunication();
 	}
 
-	public void turnOff() throws TerminalStateAlreadySetException{
+	public void turnOff() throws TerminalStateAlreadySetException {
 		getMode().turnOff(this);
 	}
 
-	public void setOnSilent() throws TerminalStateAlreadySetException{
+	public void setOnSilent() throws TerminalStateAlreadySetException {
 		getMode().setOnSilent(this);
 	}
 
-	public void setOnIdle() throws TerminalStateAlreadySetException{
+	public void setOnIdle() throws TerminalStateAlreadySetException {
 		getMode().setOnIdle(this);
 	}
 
 	void makeSMS(Terminal receiver, String Message) {
 		addMadeCommunication(getMode().makeSMS(this, receiver, Message));
+		receiver.acceptSMS(this);
 	}
 
 	void acceptSMS(Terminal sender) {
 		addReceivedCommunication(getMode().acceptSMS(sender));
 	}
 
-	void makeVoiceCall(Terminal receiver) {
+	void makeVoiceCall(Terminal receiver)
+			throws ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
 		addMadeCommunication(getMode().makeVoiceCall(this, receiver));
+		receiver.acceptVoiceCall(this);
 	}
 
-	void acceptVoiceCall(Terminal sender) {
+	void acceptVoiceCall(Terminal sender)
+			throws ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
 		addReceivedCommunication(getMode().acceptVoiceCall(sender));
 	}
 
-	void makeVideoCall(Terminal receiver) {
-		addMadeCommunication(getMode().makeVideoCall(this, receiver));
+	void makeVideoCall(Terminal receiver) throws SenderTerminalDoesNotSupportCommunicationException,
+			ReceiverTerminalDoesNotSupportCommunicationException, ReceiverIsBusyException, ReceiverIsOffException,
+			ReceiverIsSilentException {
+		throw new SenderTerminalDoesNotSupportCommunicationException(getId(), "VIDEO");
 	}
 
-	void acceptVideoCall(Terminal sender) {
+	void acceptVideoCall(Terminal sender) throws ReceiverTerminalDoesNotSupportCommunicationException,
+			ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
+		throw new ReceiverTerminalDoesNotSupportCommunicationException(getId(), "VIDEO");
 	}
 
 	void endOngoingCommunication(int duration) {
 		getMode().endOngoingCommunication(duration);
 	}
 
-
-	void pay(int communicationId) throws UnknownIdentifierException{
-		if(_communicationsMade.keySet().contains(communicationId)){
+	void pay(int communicationId) throws UnknownIdentifierException {
+		if (_communicationsMade.keySet().contains(communicationId)) {
 			Communication communication = _communicationsMade.get(communicationId);
-			if(!communication.getPaymentState()){
+			if (!communication.getPaymentState()) {
 				double cost = communication.computeCost(_owner.getRatePlan());
 				_payments += cost;
 				_debt -= cost;
@@ -200,7 +210,7 @@ abstract public class Terminal implements Serializable {
 	}
 
 	public Communication getOngoingCommunication() throws ReceiverIsNotIdleException {
-		if(!canEndCurrentCommunication()) {
+		if (!canEndCurrentCommunication()) {
 			throw new ReceiverIsNotIdleException();
 		}
 		return _lastInteractiveCommunication;
