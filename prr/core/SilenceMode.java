@@ -59,7 +59,6 @@ public class SilenceMode implements TerminalMode, Serializable {
 	
 	@Override
 	public void setOnBusy(Terminal terminal) {
-		// TODO Auto-generated method stub
 	}
 
 	

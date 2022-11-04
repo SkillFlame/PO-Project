@@ -61,8 +61,6 @@ public class IdleMode implements TerminalMode, Serializable {
 	 */
 	@Override
 	public void setOnBusy(Terminal terminal) {
-		// TODO Auto-generated method stub
-
 	}
 
 	

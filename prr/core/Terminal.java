@@ -33,8 +33,9 @@ abstract public class Terminal implements Serializable {
 	private Collection<String> _friendsId = new HashSet<String>();
 	private Map<Integer, Communication> _communicationsMade = new TreeMap<>();
 	private Map<Integer, Communication> _communicationsReceived = new TreeMap<>();
-	private Communication _lastInteractiveCommunication; // FIXME add implementation
+	private Communication _lastInteractiveCommunication;
 	private Communication _lastCommunicationMade;
+	private TerminalMode _lastMode;
 
 	Terminal(String id, Client client) throws InvalidKeyException {
 		setId(id);
