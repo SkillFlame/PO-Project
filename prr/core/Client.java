@@ -3,7 +3,6 @@ package prr.core;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Client Implementaion
@@ -18,11 +17,11 @@ public class Client implements Serializable {
 	private int _taxNumber;
 	private int _clientPayments;
 	private int _clientDebt;
-	private Notifications _activity;
+	private NotificationsAreAcceptable _acceptance;
 	private RatePlan _ratePlan;
 
-	/** Notification availability */
-	enum Notifications {
+	/** Notification acceptability */
+	enum NotificationsAreAcceptable {
 		YES, NO
 	};
 
@@ -36,12 +35,9 @@ public class Client implements Serializable {
 		_ratePlan = new BasicRatePlan();
 		_notifications = new ArrayList<>();
 		_terminals = new ArrayList<>();
-		_activity = Notifications.YES;
+		_acceptance = NotificationsAreAcceptable.YES;
 	}
 
-	/**
-	 * Puts all the Client's Notifications in an unmodifiable Notification List
-	 */
 	List<Notification> getNotifications() {
 		return _notifications;
 	}
@@ -56,10 +52,10 @@ public class Client implements Serializable {
 	/**
 	 * Gets the activity of the Client's Notifications
 	 * 
-	 * @return true if the client can receive notifications
+	 * @return true if the client can receive notifications, false otherwise
 	 */
 	boolean getNotificationActivity() {
-		if (_activity == Notifications.YES) {
+		if (_acceptance == NotificationsAreAcceptable.YES) {
 			return true;
 		}
 		return false;
@@ -78,14 +74,14 @@ public class Client implements Serializable {
 	 * Activates the Client's ability of receiving notifications
 	 */
 	void activateNotifications() {
-		this._activity = Notifications.YES;
+		this._acceptance = NotificationsAreAcceptable.YES;
 	}
 
 	/**
 	 * Deactivates the Client's ability of receiving notifications
 	 */
 	void deactivateNotifications() {
-		this._activity = Notifications.NO;
+		this._acceptance = NotificationsAreAcceptable.NO;
 	}
 
 	/**
@@ -144,10 +140,10 @@ public class Client implements Serializable {
 	 * toString implementation of a Client
 	 * CLIENT|key|name|taxId|type|notifications|terminals|payments|debts
 	 */
-	@Override // A TRATAR: O LEVEL DO CLIENT MIGHT NOT WORK (_ratePlan.toStringRatePlan())
+	@Override
 	public String toString() {
 		String output = "CLIENT|" + _key + "|" + _name + "|" + _taxNumber + "|" + _ratePlan.toStringRatePlan() + "|"
-				+ _activity + "|"
+				+ _acceptance + "|"
 				+ _terminals.size() + "|" + _clientPayments + "|" + _clientDebt;
 		return output;
 	}

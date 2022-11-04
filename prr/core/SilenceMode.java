@@ -51,7 +51,9 @@ public class SilenceMode implements TerminalMode, Serializable {
 		terminal.getOwner().addNotification(new Notification(terminal, new NotificationDeliveryMethod(), "S2I"));
 	}
 
-	
+	/**
+	 * @throws TerminalStateAlreadySetException since the terminal is already Silent
+	 */
 	@Override
 	public void setOnSilent(Terminal terminal) throws TerminalStateAlreadySetException {
 		throw new TerminalStateAlreadySetException();

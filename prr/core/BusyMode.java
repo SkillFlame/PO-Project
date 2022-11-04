@@ -20,7 +20,7 @@ public class BusyMode implements TerminalMode, Serializable {
 	 * Checks if the Terminal can end the current ongoing Communication
 	 * 
 	 * @param terminal 
-	 * @return false since communication cannot be ended in this mode
+	 * @return false if there is no communication made from the terminal, true if there is
 	 */
 	@Override
 	public boolean canEndCurrentCommunication(Terminal terminal) {
@@ -108,6 +108,7 @@ public class BusyMode implements TerminalMode, Serializable {
 	
 	/** 
 	 * Video Communication cannot be made
+	 * 
 	 * @throws ReceiverIsBusyException because terminal is in Busy state
 	 */
 	@Override
@@ -117,9 +118,9 @@ public class BusyMode implements TerminalMode, Serializable {
 
 	
 	/** 
-	 * Ends the current ongoing Communication
+	 * Ends the current ongoing Communication and notifies client
 	 * 
-	 * @param terminal the terminal of the interactive communication made
+	 * @param terminal the terminal that made the interactive communication
 	 */
 	@Override
 	public void endOngoingCommunication(Terminal terminal) {

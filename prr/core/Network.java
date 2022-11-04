@@ -271,7 +271,7 @@ public class Network implements Serializable {
 	 * @param clientId Id of a client
 	 * 
 	 * @throws UnknownIdentifierException if the given id is not contained in the
-	 *                                    Collection
+	 *                                    Client Collection
 	 * 
 	 * @throws UnknownKeyException        if the given clientId is not recognized
 	 */
@@ -354,8 +354,7 @@ public class Network implements Serializable {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Clears the notifications of a Client
 	 */
 	public void clearNotifications(String clientId) {
 		_clients.get(clientId).removeNotifications();
@@ -533,6 +532,8 @@ public class Network implements Serializable {
 	 * 
 	 * @param terminal the chosen terminal
 	 * @param duration the duration of the interactive communication
+	 * 
+	 * @throws NoOngoingCommunicationException if there is no current ongoing interactive communication
 	 */
 	public void endInteractiveCommunication(Terminal terminal, int duration) throws NoOngoingCommunicationException {
 		terminal.endOngoingCommunication(duration);
@@ -562,7 +563,7 @@ public class Network implements Serializable {
 	 * 
 	 * @param terminal the chosen terminal
 	 * 
-	 * @throws NoOngoingCommunicationException if there no ongoing communication on
+	 * @throws NoOngoingCommunicationException if there no ongoing interactive communication on
 	 *                                         the chosen terminal
 	 */
 	public Communication showOngoingCommunication(Terminal terminal) throws NoOngoingCommunicationException {
@@ -631,6 +632,10 @@ public class Network implements Serializable {
 	 * 
 	 * @throws IOException                if there is an IO error while processing
 	 *                                    the text file
+	 * 
+	 * @throws FileOpenFailedException if the file could not be opened
+	 * 
+	 * @throws UnavailableFileException if the file is not available
 	 */
 	void importFile(String filename) throws UnrecognizedEntryException, IOException, FileOpenFailedException,
 			UnavailableFileException {

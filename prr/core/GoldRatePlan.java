@@ -61,11 +61,12 @@ public class GoldRatePlan implements RatePlan, Serializable {
 	
 	/** 
 	 * Promotes a Client from this Rateplan to a Platinum Rateplan
+	 * 
 	 * @param client the client that has this Rateplan
 	 */
 	@Override
 	public void promote(Client client) {
-		if (client.getBalance() > 0 && true) { // true = cliente realizou 5 comunicacoes de video consecutivas, a 5a conta como gold
+		if (client.getBalance() > 0) { 
 			client.setRatePlan(_nextPlan);
 		}
 
@@ -74,6 +75,7 @@ public class GoldRatePlan implements RatePlan, Serializable {
 	
 	/** 
 	 * Demotes a Client from this Rateplan to a Basic Rateplan
+	 * 
 	 * @param client the client that has this Rateplan
 	 */
 	@Override

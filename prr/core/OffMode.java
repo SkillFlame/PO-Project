@@ -40,7 +40,7 @@ public class OffMode implements TerminalMode, Serializable {
 
 	
 	/** 
-	 * Sets the terminal from Off state to Idle state
+	 * Sets the terminal from Off state to Idle state and notifies client
 	 * 
 	 * @param terminal
 	 */
@@ -50,7 +50,11 @@ public class OffMode implements TerminalMode, Serializable {
 		terminal.getOwner().addNotification(new Notification(terminal, new NotificationDeliveryMethod(), "O2I"));
 	}
 
-	
+	/** 
+	 * Sets the terminal from Off state to Silent state and notifies client
+	 * 
+	 * @param terminal
+	 */
 	@Override
 	public void setOnSilent(Terminal terminal) {
 		terminal.setMode(SilenceMode.getMode());
@@ -58,7 +62,9 @@ public class OffMode implements TerminalMode, Serializable {
 	}
 
 
-
+	/**
+	 * @throws TerminalStateAlreadySetException because terminal is already Off
+	 */
 	@Override
 	public void turnOff(Terminal terminal) throws TerminalStateAlreadySetException {
 		throw new TerminalStateAlreadySetException();

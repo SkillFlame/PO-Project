@@ -18,25 +18,10 @@ public class FancyTerminal extends Terminal {
 		super(terminalId, client);
 	}
 
-	/**
-	 * toString implementation of a Fancy Terminal
-	 * terminalType|terminalId|clientId|terminalStatus|balance-paId|balance-debts|friend1,...,friend
-	 */
-	@Override
-	public String toString() {
-		String output = "FANCY" + "|" + super.toString();
-		return output;
-	}
-
-	
-	
 	/** 
 	 * Creates a Video Communication and adds it to the Map of made Communications
 	 * 
 	 * @param receiver the terminal that receives the communication
-	 * 
-	 * @throws SenderTerminalDoesNotSupportCommunicationException if the sender terminal does not support a
-	 * 															Video Communication
 	 * 
 	 * @throws ReceiverTerminalDoesNotSupportCommunicationException if the receiver terminal does not support
 	 * 															a Video Communication
@@ -48,7 +33,8 @@ public class FancyTerminal extends Terminal {
 	 * @throws ReceiverIsSilentException if the receiver terminal is in Silent state
 	 */
 	@Override
-	public void makeVideoCall(Terminal receiver) throws ReceiverTerminalDoesNotSupportCommunicationException, ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
+	public void makeVideoCall(Terminal receiver) throws ReceiverTerminalDoesNotSupportCommunicationException,
+		 ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
 		Communication communication = getMode().makeVideoCall(this, receiver);
 		addMadeCommunication(communication);
 		setLastCommunicationMade(communication);
@@ -74,9 +60,6 @@ public class FancyTerminal extends Terminal {
 	 * 
 	 * @param sender the terminal that sends the communication
 	 * 
-	 * @throws ReceiverTerminalDoesNotSupportCommunicationException if the receiver terminal does not support
-	 * 																a Video Communication
-	 * 
 	 * @throws ReceiverIsBusyException if the receiver terminal is in Busy state
 	 * 
 	 * @throws ReceiverIsOffException if the receiver terminal is in Off state
@@ -86,6 +69,16 @@ public class FancyTerminal extends Terminal {
 	@Override
 	void acceptVideoCall(Terminal sender) throws ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
 		addReceivedCommunication(getMode().acceptVideoCall(sender));
+	}
+
+	/**
+	 * toString implementation of a Fancy Terminal
+	 * terminalType|terminalId|clientId|terminalStatus|balance-paId|balance-debts|friend1,...,friend
+	 */
+	@Override
+	public String toString() {
+		String output = "FANCY" + "|" + super.toString();
+		return output;
 	}
 
 }

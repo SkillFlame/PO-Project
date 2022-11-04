@@ -24,7 +24,6 @@ public class IdleMode implements TerminalMode, Serializable {
 	 */
 	@Override
 	public boolean canEndCurrentCommunication(Terminal terminal) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -39,7 +38,9 @@ public class IdleMode implements TerminalMode, Serializable {
 		return true;
 	}
 
-	
+	/**
+	 * @throws TerminalStateAlreadySetException since the terminal is already Idle
+	 */
 	@Override
 	public void setOnIdle(Terminal terminal) throws TerminalStateAlreadySetException {
 		throw new TerminalStateAlreadySetException();
