@@ -86,4 +86,8 @@ public class IdleMode implements TerminalMode, Serializable {
 	public String toString() {
 		return "IDLE";
 	}
+
+	@Override
+	public void handleFailedCommunication(Terminal terminal) {
+	}
 }

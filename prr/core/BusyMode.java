@@ -80,4 +80,9 @@ public class BusyMode implements TerminalMode, Serializable {
 		return "BUSY";
 	}
 
+	@Override
+	public void handleFailedCommunication(Terminal terminal) {
+		terminal.setMode(IdleMode.getMode());
+	}
+
 }

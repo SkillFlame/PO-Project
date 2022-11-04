@@ -86,4 +86,8 @@ public class SilenceMode implements TerminalMode, Serializable {
 	public String toString() {
 		return "SILENCE";
 	}
+
+	@Override
+	public void handleFailedCommunication(Terminal terminal) {	
+	}
 }
