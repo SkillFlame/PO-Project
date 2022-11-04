@@ -75,12 +75,7 @@ public class BusyMode implements TerminalMode, Serializable {
 	 */
 	@Override
 	public Communication acceptSMS(Terminal sender) {
-<<<<<<< HEAD
-		// TODO Auto-generated method stub
-		return null;
-=======
 		return sender.getLastCommunicationMade();
->>>>>>> 080155909e3a02384cc62f59fdfb164b276ecaa7
 	}
 
 	
