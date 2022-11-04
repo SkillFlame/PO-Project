@@ -53,7 +53,19 @@ public class FancyTerminal extends Terminal {
 		addMadeCommunication(communication);
 		setLastCommunicationMade(communication);
 		setLastInteractiveCommunication(communication);
-		receiver.acceptVideoCall(this);
+		
+		try {
+			receiver.acceptVideoCall(this);
+		} catch (ReceiverIsOffException rioe) {
+			handleFailedCommunication();
+			throw new ReceiverIsOffException();
+		} catch (ReceiverIsBusyException ribe) {
+			handleFailedCommunication();
+			throw new ReceiverIsBusyException();
+		} catch (ReceiverIsSilentException rise) {
+			handleFailedCommunication();
+			throw new ReceiverIsSilentException();
+		}
 	}
 	
 	/** 
