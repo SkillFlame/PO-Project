@@ -8,7 +8,7 @@ import java.util.TreeMap;
 
 import prr.core.exception.InvalidKeyException;
 import prr.core.exception.ReceiverIsBusyException;
-import prr.core.exception.ReceiverIsNotIdleException;
+import prr.core.exception.NoOngoingCommunicationException;
 import prr.core.exception.ReceiverIsOffException;
 import prr.core.exception.ReceiverIsSilentException;
 import prr.core.exception.ReceiverTerminalDoesNotSupportCommunicationException;
@@ -209,9 +209,9 @@ abstract public class Terminal implements Serializable {
 		return _lastInteractiveCommunication.getPrice();
 	}
 
-	public Communication getOngoingCommunication() throws ReceiverIsNotIdleException {
+	public Communication getOngoingCommunication() throws NoOngoingCommunicationException {
 		if (!canEndCurrentCommunication()) {
-			throw new ReceiverIsNotIdleException();
+			throw new NoOngoingCommunicationException();
 		}
 		return _lastInteractiveCommunication;
 	}

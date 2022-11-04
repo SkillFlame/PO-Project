@@ -12,7 +12,7 @@ import prr.core.exception.KeyAlreadyExistsException;
 import prr.core.exception.NotificationsAlreadyDisabledException;
 import prr.core.exception.NotificationsAlreadyEnabledException;
 import prr.core.exception.ReceiverIsBusyException;
-import prr.core.exception.ReceiverIsNotIdleException;
+import prr.core.exception.NoOngoingCommunicationException;
 import prr.core.exception.ReceiverIsOffException;
 import prr.core.exception.ReceiverIsSilentException;
 import prr.core.exception.ReceiverTerminalDoesNotSupportCommunicationException;
@@ -241,7 +241,7 @@ public class Network implements Serializable {
 		terminal.makeSMS(_terminals.get(receiverId), message);
 	}
 
-	public Communication showOngoingCommunication(Terminal terminal) throws ReceiverIsNotIdleException {
+	public Communication showOngoingCommunication(Terminal terminal) throws NoOngoingCommunicationException {
 		return terminal.getOngoingCommunication();
 	}
 	// CLIENTS

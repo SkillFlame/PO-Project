@@ -2,7 +2,7 @@ package prr.app.terminal;
 
 import prr.core.Network;
 import prr.core.Terminal;
-import prr.core.exception.ReceiverIsNotIdleException;
+import prr.core.exception.NoOngoingCommunicationException;
 import pt.tecnico.uilib.menus.CommandException;
 //FIXME add more imports if needed
 
@@ -19,7 +19,7 @@ class DoShowOngoingCommunication extends TerminalCommand {
 	protected final void execute() throws CommandException {
 		try {
 			_network.showOngoingCommunication(_receiver);
-		} catch (ReceiverIsNotIdleException rinie) {
+		} catch (NoOngoingCommunicationException noce) {
 			_display.popup(Message.noOngoingCommunication());
 		}
 	}
