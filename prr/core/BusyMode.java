@@ -53,11 +53,6 @@ public class BusyMode implements TerminalMode, Serializable {
 
 
 	@Override
-	public void setOnBusy(Terminal terminal) {
-	}
-
-
-	@Override
 	public void turnOff(Terminal terminal) {
 	}
 
@@ -129,6 +124,7 @@ public class BusyMode implements TerminalMode, Serializable {
 	@Override
 	public void endOngoingCommunication(Terminal terminal) {
 		terminal.setMode(terminal.getLastTerminalMode());
+		terminal.getOwner().addNotification(new Notification(terminal, new NotificationDeliveryMethod(), "B2I"));
 	}
 
 	

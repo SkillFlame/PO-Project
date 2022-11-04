@@ -43,7 +43,7 @@ public class Client implements Serializable {
 	 * Puts all the Client's Notifications in an unmodifiable Notification List
 	 */
 	List<Notification> getNotifications() {
-		return Collections.unmodifiableList(_notifications);
+		return _notifications;
 	}
 
 	/**

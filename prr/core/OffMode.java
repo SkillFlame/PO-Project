@@ -47,18 +47,16 @@ public class OffMode implements TerminalMode, Serializable {
 	@Override
 	public void setOnIdle(Terminal terminal) {
 		terminal.setMode(IdleMode.getMode());
+		terminal.getOwner().addNotification(new Notification(terminal, new NotificationDeliveryMethod(), "O2I"));
 	}
 
 	
 	@Override
 	public void setOnSilent(Terminal terminal) {
 		terminal.setMode(SilenceMode.getMode());
+		terminal.getOwner().addNotification(new Notification(terminal, new NotificationDeliveryMethod(), "O2S"));
 	}
 
-	
-	@Override
-	public void setOnBusy(Terminal terminal) {
-	}
 
 
 	@Override

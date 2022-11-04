@@ -48,6 +48,7 @@ public class SilenceMode implements TerminalMode, Serializable {
 	@Override
 	public void setOnIdle(Terminal terminal) {
 		terminal.setMode(IdleMode.getMode());
+		terminal.getOwner().addNotification(new Notification(terminal, new NotificationDeliveryMethod(), "S2I"));
 	}
 
 	
@@ -56,10 +57,6 @@ public class SilenceMode implements TerminalMode, Serializable {
 		throw new TerminalStateAlreadySetException();
 	}
 
-	
-	@Override
-	public void setOnBusy(Terminal terminal) {
-	}
 
 	
 	/** 

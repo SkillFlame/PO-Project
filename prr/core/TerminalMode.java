@@ -14,8 +14,6 @@ public interface TerminalMode {
 
 	public void setOnSilent(Terminal terminal) throws TerminalStateAlreadySetException;
 
-	public void setOnBusy(Terminal terminal);
-
 	public void turnOff(Terminal terminal) throws TerminalStateAlreadySetException;
 
 	Communication makeSMS(Terminal sender, Terminal receiver, String Message);

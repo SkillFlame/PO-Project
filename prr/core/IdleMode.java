@@ -57,15 +57,6 @@ public class IdleMode implements TerminalMode, Serializable {
 	}
 
 	
-	/** 
-	 * Sets the terminal from Idle state to Busy state
-	 * 
-	 * @param terminal
-	 */
-	@Override
-	public void setOnBusy(Terminal terminal) {
-	}
-
 	
 	/** 
 	 * Sets the terminal from Idle state to Off state
