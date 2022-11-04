@@ -26,11 +26,11 @@ public class FancyTerminal extends Terminal {
 
 	
 	public void makeVideoCall(Terminal receiver) {
-		super.getMode().makeVideoCall(this, receiver);
+		addMadeCommunication(getMode().makeVideoCall(this, receiver));
 	}
 
 	void acceptVideoCall(Terminal terminalFrom) {
-		super.getMode().acceptVideoCall(terminalFrom);
+		addReceivedCommunication(getMode().acceptVideoCall(terminalFrom));
 	}
 
 }

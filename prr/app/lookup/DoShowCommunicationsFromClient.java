@@ -12,11 +12,12 @@ class DoShowCommunicationsFromClient extends Command<Network> {
 
 	DoShowCommunicationsFromClient(Network receiver) {
 		super(Label.SHOW_COMMUNICATIONS_FROM_CLIENT, receiver);
-		addStringField("key", Message.clientKey());
+		addStringField("clientKey", Message.clientKey());
 	}
 
 	@Override
 	protected final void execute() throws CommandException {
-		// FIXME implement command
+		_display.addAll(_receiver.getCommunicationsMadeByClient("clientKey"));
+		_display.display();
 	}
 }

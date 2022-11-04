@@ -16,6 +16,7 @@ class DoShowClientsWithDebts extends Command<Network> {
 
 	@Override
 	protected final void execute() throws CommandException {
-		// FIXME implement command
+		_display.addAll(_receiver.getClientsWithDebt());
+		_display.display();
 	}
 }

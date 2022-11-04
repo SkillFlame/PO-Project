@@ -36,10 +36,10 @@ public class PlatinumRatePlan implements RatePlan, Serializable {
     @Override
     public void demote(Client client) {
         RatePlan ratePlan = client.getRatePlan();
-        if(client.getClientBalance() < 0 && true){ // true = saldo do cliente apos realizar uma comunicacao
+        if(client.getBalance() < 0 && true){ // true = saldo do cliente apos realizar uma comunicacao
             ratePlan = new BasicRatePlan();
         }
-        else if(client.getClientBalance() > 0 && true){ // true = cliente realizou 2 textcommunication consecutivas, a 2a conta como platinum
+        else if(client.getBalance() > 0 && true){ // true = cliente realizou 2 textcommunication consecutivas, a 2a conta como platinum
             ratePlan = new GoldRatePlan();
         }        
     }
