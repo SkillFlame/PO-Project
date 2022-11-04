@@ -21,7 +21,6 @@ public class Client implements Serializable {
 	private Notifications _activity;
 	private RatePlan _ratePlan;
 
-
 	/** Notification availability */
 	enum Notifications {
 		YES, NO
@@ -40,8 +39,7 @@ public class Client implements Serializable {
 		_activity = Notifications.YES;
 	}
 
-	
-	/** 
+	/**
 	 * Puts all the Client's Notifications in a Notification List
 	 */
 	List<Notification> getNotifications() {
@@ -52,15 +50,14 @@ public class Client implements Serializable {
 		_notifications.clear();
 	}
 
-	
 	boolean getNotificationActivity() {
-		if(_activity == Notifications.YES){
+		if (_activity == Notifications.YES) {
 			return true;
 		}
 		return false;
 	}
 
-	void addNotification(Notification notification){
+	void addNotification(Notification notification) {
 		_notifications.add(notification);
 	}
 
@@ -71,49 +68,55 @@ public class Client implements Serializable {
 	void deactivateNotifications() {
 		this._activity = Notifications.NO;
 	}
-	
-	/** 
+
+	/**
 	 * Adds a Terminal to the Client's Terminal List
 	 */
 	void addTerminal(String terminalId) {
 		_terminals.add(terminalId);
 	}
 
-	List<String> getClientTerminals(){
+	List<String> getClientTerminals() {
 		return _terminals;
 	}
-	void updateClientBalance(Terminal clientTerminal){
-		for(String Id : _terminals){
-			if(Id == clientTerminal.getId()){
+
+	void updateClientBalance(Terminal clientTerminal) {
+		for (String Id : _terminals) {
+			if (Id == clientTerminal.getId()) {
 				_clientPayments += clientTerminal.getPayments();
 				_clientDebt += clientTerminal.getDebt();
 			}
 		}
 	}
 
-	double getBalance(){
+	double getBalance() {
 		return _clientPayments - _clientDebt;
 	}
 
-	double getClientPayments(){
+	double getClientPayments() {
 		return _clientPayments;
 	}
 
-	double getClientDebt(){
+	double getClientDebt() {
 		return _clientDebt;
 	}
 
-	RatePlan getRatePlan(){
+	RatePlan getRatePlan() {
 		return _ratePlan;
 	}
 
-	/** 
+	void setRatePlan(RatePlan ratePlan) {
+		_ratePlan = ratePlan;
+	}
+
+	/**
 	 * toString implementation of a Client
 	 * CLIENT|key|name|taxId|type|notifications|terminals|payments|debts
 	 */
-	@Override //A TRATAR: O LEVEL DO CLIENT MIGHT NOT WORK (_ratePlan.toStringRatePlan())
+	@Override // A TRATAR: O LEVEL DO CLIENT MIGHT NOT WORK (_ratePlan.toStringRatePlan())
 	public String toString() {
-		String output = "CLIENT|" + _key + "|" + _name + "|" + _taxNumber + "|" + _ratePlan.toStringRatePlan() + "|" + _activity + "|"
+		String output = "CLIENT|" + _key + "|" + _name + "|" + _taxNumber + "|" + _ratePlan.toStringRatePlan() + "|"
+				+ _activity + "|"
 				+ _terminals.size() + "|" + _clientPayments + "|" + _clientDebt;
 		return output;
 	}

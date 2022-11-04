@@ -4,46 +4,46 @@ import java.io.Serializable;
 
 public class GoldRatePlan implements RatePlan, Serializable {
 
-    @Override
-    public double computeCost(Client client, TextCommunication communication) {
-        if(communication.getSize() >= 0 && communication.getSize() < 100){
+	private static RatePlan _previousPlan = new BasicRatePlan();
+	private static RatePlan _nextPlan = new PlatinumRatePlan();
+
+	@Override
+	public double computeCost(Client client, TextCommunication communication) {
+		if (communication.getSize() >= 0 && communication.getSize() < 100) {
 			return 10.0;
 		}
 		return 2 * communication.getSize();
-    }
+	}
 
-    @Override
-    public double computeCost(Client client, VoiceCommunication communication) {
-        return 10.0;
-    }
+	@Override
+	public double computeCost(Client client, VoiceCommunication communication) {
+		return 10.0;
+	}
 
-    @Override
-    public double computeCost(Client client, VideoCommunication communication) {
-        return 20.0;
-    }
+	@Override
+	public double computeCost(Client client, VideoCommunication communication) {
+		return 20.0;
+	}
 
-    @Override
-    public String toStringRatePlan() {
-        return "GOLD";
-    }
+	@Override
+	public String toStringRatePlan() {
+		return "GOLD";
+	}
 
-    @Override
-    public void promote(Client client) {
-        if(client.getBalance() > 0 && true){ // true = cliente realizou 5 comunicacoes de video consecutivas, a 5a conta como gold
-            RatePlan ratePlan = client.getRatePlan();
-            ratePlan = new PlatinumRatePlan();
-        }
-        
-    }
+	@Override
+	public void promote(Client client) {
+		if (client.getBalance() > 0 && true) { // true = cliente realizou 5 comunicacoes de video consecutivas, a 5a
+												// conta como gold
+			client.setRatePlan(_nextPlan);
+		}
 
-    @Override
-    public void demote(Client client) {
-        if(client.getBalance() < 0 && true){ // true = saldo do cliente apos realizar 1a chamada
-            RatePlan ratePlan = client.getRatePlan();
-            ratePlan = new BasicRatePlan();
-        }
-    }
+	}
 
-    
-    
+	@Override
+	public void demote(Client client) {
+		if (client.getBalance() < 0 && true) { // true = saldo do cliente apos realizar 1a chamada
+			client.setRatePlan(_previousPlan);
+		}
+	}
+
 }

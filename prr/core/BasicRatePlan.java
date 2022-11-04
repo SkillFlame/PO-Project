@@ -7,6 +7,8 @@ import java.io.Serializable;
  */
 public class BasicRatePlan implements RatePlan, Serializable {
 
+	private static RatePlan _nextPlan = new GoldRatePlan();
+
 	@Override
 	public double computeCost(Client client, TextCommunication communication) {
 		if(communication.getSize() < 50){
@@ -37,8 +39,7 @@ public class BasicRatePlan implements RatePlan, Serializable {
 	@Override
 	public void promote(Client client) {
 		if(client.getBalance() > 500.0){
-			RatePlan ratePlan = client.getRatePlan();
-			ratePlan = new GoldRatePlan();
+			client.setRatePlan(_nextPlan);
 		}
 	}
 
