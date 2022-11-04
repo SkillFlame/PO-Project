@@ -9,7 +9,7 @@ public class SilenceMode implements TerminalMode, Serializable {
 	private static final long serialVersionUID = 202208091753L;
 
 	final static TerminalMode _mode = new SilenceMode();
-
+	private NotificationDeliveryMethod _method;
 	
 	public static TerminalMode getMode() {
 		return _mode;
@@ -48,6 +48,7 @@ public class SilenceMode implements TerminalMode, Serializable {
 	@Override
 	public void setOnIdle(Terminal terminal) {
 		terminal.setMode(IdleMode.getMode());
+		_method.notifyTerminalS2I(terminal);
 	}
 
 	
@@ -58,7 +59,6 @@ public class SilenceMode implements TerminalMode, Serializable {
 	
 	@Override
 	public void setOnBusy(Terminal terminal) {
-		// TODO Auto-generated method stub
 	}
 
 	
