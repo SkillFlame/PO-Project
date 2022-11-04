@@ -2,6 +2,8 @@ package prr.core;
 
 import java.io.Serializable;
 
+import prr.core.exception.ReceiverIsOffException;
+
 public class OffMode implements TerminalMode, Serializable {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
@@ -55,8 +57,8 @@ public class OffMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public Communication acceptVoiceCall(Terminal sender) {
-		return null;
+	public Communication acceptVoiceCall(Terminal sender) throws ReceiverIsOffException {
+		throw new ReceiverIsOffException();
 	}
 
 	@Override
@@ -65,16 +67,16 @@ public class OffMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public Communication acceptVideoCall(Terminal sender) {
-		return null;
-	}
-
-	@Override
-	public void endOngoingCommunication(int duration) {
+	public Communication acceptVideoCall(Terminal sender) throws ReceiverIsOffException {
+		throw new ReceiverIsOffException();
 	}
 
 	@Override
 	public String toString() {
 		return "OFF";
+	}
+
+	@Override
+	public void endOngoingCommunication(int duration) {
 	}
 }

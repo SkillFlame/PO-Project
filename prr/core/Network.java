@@ -11,7 +11,12 @@ import prr.core.exception.InvalidKeyException;
 import prr.core.exception.KeyAlreadyExistsException;
 import prr.core.exception.NotificationsAlreadyDisabledException;
 import prr.core.exception.NotificationsAlreadyEnabledException;
+import prr.core.exception.ReceiverIsBusyException;
 import prr.core.exception.ReceiverIsNotIdleException;
+import prr.core.exception.ReceiverIsOffException;
+import prr.core.exception.ReceiverIsSilentException;
+import prr.core.exception.ReceiverTerminalDoesNotSupportCommunicationException;
+import prr.core.exception.SenderTerminalDoesNotSupportCommunicationException;
 import prr.core.exception.TerminalStateAlreadySetException;
 import prr.core.exception.UnavailableFileException;
 import prr.core.exception.UnknownIdentifierException;
@@ -195,7 +200,7 @@ public class Network implements Serializable {
 		terminal.setOnSilent();
 	}
 
-	public String getTerminalId(Terminal terminal){
+	public String getTerminalId(Terminal terminal) {
 		return terminal.getId();
 	}
 
@@ -215,7 +220,9 @@ public class Network implements Serializable {
 	}
 
 	public void startInteractiveCommunication(Terminal terminal, String receiverId, String type)
-			throws UnknownKeyException {
+			throws UnknownKeyException, SenderTerminalDoesNotSupportCommunicationException,
+			ReceiverTerminalDoesNotSupportCommunicationException, ReceiverIsBusyException, ReceiverIsOffException,
+			ReceiverIsSilentException {
 		switch (type) {
 			case "VIDEO" -> terminal.makeVideoCall(getTerminal(receiverId));
 
@@ -385,10 +392,10 @@ public class Network implements Serializable {
 		return clientsWithDebt;
 	}
 
-	public List<Client> getClientsWithoutDebt(){
+	public List<Client> getClientsWithoutDebt() {
 		List<Client> clientsWithoutDebt = new ArrayList<>(_clients.values());
-		for(Client client : clientsWithoutDebt){
-			if(client.getClientDebt() == 0){
+		for (Client client : clientsWithoutDebt) {
+			if (client.getClientDebt() == 0) {
 				clientsWithoutDebt.remove(client);
 			}
 		}
