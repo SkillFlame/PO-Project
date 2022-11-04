@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
+
+import prr.core.exception.InvalidCommunicationException;
 import prr.core.exception.InvalidKeyException;
 import prr.core.exception.ReceiverIsNotIdleException;
 import prr.core.exception.ReceiverIsNotIdleException;
@@ -27,7 +29,8 @@ abstract public class Terminal implements Serializable {
 	private String _clientId;
 	private Client _owner;
 	private Collection<String> _friendsId = new HashSet<String>();
-	private Map<Integer, Communication> _communications = new TreeMap<>();
+	private Map<Integer, Communication> _communicationsMade = new TreeMap<>();
+	private Map<Integer, Communication> _communicationsReceived = new TreeMap<>();
 	private Communication _lastInteractiveCommunication; //FIXME add implementation
 
 	Terminal(String Id, String clientId) throws InvalidKeyException {
@@ -72,9 +75,21 @@ abstract public class Terminal implements Serializable {
 		return _owner;
 	}
 
-	Collection<Communication> getCommunications() {
-		return _communications.values();
+	Collection<Communication> getCommunicationsMade(){
+		return _communicationsMade.values();
 	}
+
+	Collection<Communication> getCommunicationsReceived(){
+		return _communicationsReceived.values();
+	}
+
+	void addMadeCommunication(Communication communication) {
+        _communicationsMade.put(communication.getId(), communication);
+    }
+
+	void addReceivedCommunication(Communication communication) {
+        _communicationsReceived.put(communication.getId(), communication);
+    }
 
 	/**
 	 * Adds a Friend to the Friend List
@@ -111,32 +126,32 @@ abstract public class Terminal implements Serializable {
 		return getMode().canStartCommunication();
 	}
 
-	public void turnOff() {
+	public void turnOff() throws TerminalStateAlreadySetException{
 		getMode().turnOff(this);
 	}
 
-	public void setOnSilent() {
+	public void setOnSilent() throws TerminalStateAlreadySetException{
 		getMode().setOnSilent(this);
 	}
 
-	public void setOnIdle() {
+	public void setOnIdle() throws TerminalStateAlreadySetException{
 		getMode().setOnIdle(this);
 	}
 
 	void makeSMS(Terminal receiver, String Message) {
-		addCommunication(getMode().makeSMS(this, receiver, Message));
+		addMadeCommunication(getMode().makeSMS(this, receiver, Message));
 	}
 
 	void acceptSMS(Terminal sender) {
-		getMode().acceptSMS(sender);
+		addReceivedCommunication(getMode().acceptSMS(sender));
 	}
 
 	void makeVoiceCall(Terminal receiver) {
-		addCommunication(getMode().makeVoiceCall(this, receiver));
+		addMadeCommunication(getMode().makeVoiceCall(this, receiver));
 	}
 
 	void acceptVoiceCall(Terminal sender) {
-		getMode().acceptVoiceCall(sender);
+		addReceivedCommunication(getMode().acceptVoiceCall(sender));
 	}
 
 	void makeVideoCall(Terminal receiver) {
@@ -151,17 +166,18 @@ abstract public class Terminal implements Serializable {
 		_communications.put(communication.getId(), communication);
 	}
 
-	void pay(int communicationId) throws UnknownIdentifierException {
-		if (_communications.keySet().contains(communicationId)) {
-			Communication communication = _communications.get(communicationId);
-			if (!communication.getPaymentState()) {
+
+	void pay(int communicationId) throws UnknownIdentifierException{
+		if(_communicationsMade.keySet().contains(communicationId)){
+			Communication communication = _communicationsMade.get(communicationId);
+			if(!communication.getPaymentState()){
 				double cost = communication.computeCost(_owner.getRatePlan());
 				_payments += cost;
 				_debt -= cost;
 
 			}
 		}
-		// throw new InvalIdCommunicationException;
+		// throw new InvalidCommunicationException();
 	}
 
 	double getPayments() {

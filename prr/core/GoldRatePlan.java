@@ -29,7 +29,7 @@ public class GoldRatePlan implements RatePlan, Serializable {
 
     @Override
     public void promote(Client client) {
-        if(client.getClientBalance() > 0 && true){ // true = cliente realizou 5 comunicacoes de vIdeo consecutivas, a 5a conta como gold
+        if(client.getBalance() > 0 && true){ // true = cliente realizou 5 comunicacoes de video consecutivas, a 5a conta como gold
             RatePlan ratePlan = client.getRatePlan();
             ratePlan = new PlatinumRatePlan();
         }
@@ -38,7 +38,7 @@ public class GoldRatePlan implements RatePlan, Serializable {
 
     @Override
     public void demote(Client client) {
-        if(client.getClientBalance() < 0 && true){ // true = saldo do cliente apos realizar 1a chamada
+        if(client.getBalance() < 0 && true){ // true = saldo do cliente apos realizar 1a chamada
             RatePlan ratePlan = client.getRatePlan();
             ratePlan = new BasicRatePlan();
         }

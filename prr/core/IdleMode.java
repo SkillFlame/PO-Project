@@ -50,8 +50,9 @@ public class IdleMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public void acceptSMS(Terminal sender) {
+	public Communication acceptSMS(Terminal sender) {
 		// TODO Auto-generated method stub
+		return null;
 
 	}
 
@@ -62,8 +63,9 @@ public class IdleMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public void acceptVoiceCall(Terminal sender) {
+	public Communication acceptVoiceCall(Terminal sender) {
 		// TODO Auto-generated method stub
+		return null;
 
 	}
 
@@ -74,8 +76,9 @@ public class IdleMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public void acceptVIdeoCall(Terminal terminalFrom) {
+	public Communication acceptVideoCall(Terminal terminalFrom) {
 		// TODO Auto-generated method stub
+		return null;
 
 	}
 
@@ -83,4 +86,8 @@ public class IdleMode implements TerminalMode, Serializable {
 	public void endOngoingCommunication(int duration) {
 	}
 
+	@Override
+	public String toString() {
+		return "IDLE";
+	}
 }

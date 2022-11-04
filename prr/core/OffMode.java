@@ -45,7 +45,8 @@ public class OffMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public void acceptSMS(Terminal sender) {
+	public Communication acceptSMS(Terminal sender) {
+		return null;
 	}
 
 	@Override
@@ -54,20 +55,26 @@ public class OffMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public void acceptVoiceCall(Terminal sender) {
-	}
-
-	@Override
-	public Communication makeVIdeoCall(Terminal sender, Terminal receiver) {
+	public Communication acceptVoiceCall(Terminal sender) {
 		return null;
 	}
 
 	@Override
-	public void acceptVIdeoCall(Terminal terminalFrom) {
+	public Communication makeVideoCall(Terminal sender, Terminal receiver) {
+		return null;
+	}
+
+	@Override
+	public Communication acceptVideoCall(Terminal sender) {
+		return null;
 	}
 
 	@Override
 	public void endOngoingCommunication(int duration) {
 	}
 
+	@Override
+	public String toString() {
+		return "OFF";
+	}
 }

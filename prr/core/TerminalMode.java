@@ -15,15 +15,15 @@ public interface TerminalMode {
 
 	Communication makeSMS(Terminal sender, Terminal receiver, String Message);
 
-	void acceptSMS(Terminal sender);
+	Communication acceptSMS(Terminal sender);
 
 	Communication makeVoiceCall(Terminal sender, Terminal receiver);
 
-	void acceptVoiceCall(Terminal sender);
+	Communication acceptVoiceCall(Terminal sender);
 
 	Communication makeVIdeoCall(Terminal sender, Terminal receiver);
 
-	void acceptVIdeoCall(Terminal terminalFrom);
+	Communication acceptVideoCall(Terminal sender);
 
 	void endOngoingCommunication(int duration);
 }

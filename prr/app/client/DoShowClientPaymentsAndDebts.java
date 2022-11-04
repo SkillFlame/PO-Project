@@ -1,6 +1,7 @@
 package prr.app.client;
 
 import prr.core.Network;
+import prr.core.exception.UnknownKeyException;
 import prr.app.exception.UnknownClientKeyException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
@@ -17,7 +18,13 @@ class DoShowClientPaymentsAndDebts extends Command<Network> {
 	}
 	
 	@Override
-	protected final void execute() throws CommandException {
-		//FIXME implement command
+	protected final void execute() throws CommandException, UnknownClientKeyException {
+		try{
+			_display.popup(Message.clientPaymentsAndDebts("clientKey", 
+			_receiver.getClientPayments("clientKey"), _receiver.getClientDebt("clientKey")));
+		}
+		catch(UnknownKeyException uie){
+			throw new UnknownClientKeyException("clientKey");
+		}
 	}
 }

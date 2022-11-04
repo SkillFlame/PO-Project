@@ -16,6 +16,7 @@ class DoShowAllCommunications extends Command<Network> {
 
 	@Override
 	protected final void execute() throws CommandException {
-		// FIXME implement command
+		_display.addAll(_receiver.getCommunications());
+		_display.display();
 	}
 }
