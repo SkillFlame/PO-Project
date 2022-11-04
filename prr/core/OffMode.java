@@ -80,8 +80,8 @@ public class OffMode implements TerminalMode, Serializable {
 	 * @param sender terminal that sends the communication
 	 */
 	@Override
-	public Communication acceptSMS(Terminal sender) {
-		return null;
+	public Communication acceptSMS(Terminal sender) throws ReceiverIsOffException {
+		throw new ReceiverIsOffException();
 	}
 
 	
@@ -135,6 +135,6 @@ public class OffMode implements TerminalMode, Serializable {
 
 	
 	@Override
-	public void endOngoingCommunication(int duration) {
+	public void endOngoingCommunication(int duration, Terminal terminal) {
 	}
 }

@@ -136,6 +136,10 @@ public class Client implements Serializable {
 		_ratePlan = ratePlan;
 	}
 
+	String getKey() {
+		return _key;
+	}
+
 	/**
 	 * toString implementation of a Client
 	 * CLIENT|key|name|taxId|type|notifications|terminals|payments|debts

@@ -19,7 +19,7 @@ public interface TerminalMode {
 
 	Communication makeSMS(Terminal sender, Terminal receiver, String Message);
 
-	Communication acceptSMS(Terminal sender);
+	Communication acceptSMS(Terminal sender) throws ReceiverIsOffException;
 
 	Communication makeVoiceCall(Terminal sender, Terminal receiver);
 
@@ -29,5 +29,5 @@ public interface TerminalMode {
 
 	Communication acceptVideoCall(Terminal sender) throws ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException;
 
-	void endOngoingCommunication(int duration);
+	void endOngoingCommunication(int duration, Terminal terminal);
 }

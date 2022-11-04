@@ -14,8 +14,8 @@ public class FancyTerminal extends Terminal {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
-	FancyTerminal(String terminalId, String clientId) throws InvalidKeyException {
-		super(terminalId, clientId);
+	FancyTerminal(String terminalId, Client client) throws InvalidKeyException {
+		super(terminalId, client);
 	}
 
 	/**
@@ -49,7 +49,10 @@ public class FancyTerminal extends Terminal {
 	 */
 	@Override
 	public void makeVideoCall(Terminal receiver) throws ReceiverTerminalDoesNotSupportCommunicationException, ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
-		addMadeCommunication(getMode().makeVideoCall(this, receiver));
+		Communication communication = getMode().makeVideoCall(this, receiver);
+		addMadeCommunication(communication);
+		setLastCommunicationMade(communication);
+		setLastInteractiveCommunication(communication);
 		receiver.acceptVideoCall(this);
 	}
 	

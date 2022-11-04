@@ -20,6 +20,10 @@ public class TextCommunication extends Communication {
 	 * Gets the length of the Text Communication made
 	 */
 	@Override
+	void setSize(int size) {
+	}
+
+	@Override
 	int getSize(){ 
 		if(!getIsOngoing()){
 			return 0;
@@ -50,6 +54,8 @@ public class TextCommunication extends Communication {
 		String output = "TEXT" + "|" + super.toString();
 		return output;
 	}
+
+
 
 	
 }

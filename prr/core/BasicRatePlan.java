@@ -38,8 +38,8 @@ public class BasicRatePlan implements RatePlan, Serializable {
 	 * @param communication the communication made
 	 */
 	@Override
-	public double computeCost(Client client, VoiceCommunication communication) {
-		return 20.0;
+	public double computeCost(Client client, VoiceCommunication communication, int duration) {
+		return duration * 20.0;
 	}
 
 	
@@ -51,8 +51,8 @@ public class BasicRatePlan implements RatePlan, Serializable {
 	 * @param communication the communication made
 	 */
 	@Override
-	public double computeCost(Client client, VideoCommunication communication) {
-		return 30.0;
+	public double computeCost(Client client, VideoCommunication communication, int duration) {
+		return duration * 30.0;
 	}
 
 	

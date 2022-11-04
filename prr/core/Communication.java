@@ -19,6 +19,7 @@ public abstract class Communication implements Serializable{
 
 	abstract double computeCost(RatePlan ratePlan);
 	abstract int getSize();
+	abstract void setSize(int size);
 	
 	public Communication(Terminal sender, Terminal receiver){
 		_id += 1;
@@ -26,8 +27,12 @@ public abstract class Communication implements Serializable{
 		_receiver = receiver;
 	}
 
+	void setIsOngoing(boolean ongoing){
+		_isOngoing = ongoing;
+	}
+
 	/**
-	 * Gets the status of the Communication into String
+	 * Gets the current Communication status
 	 */
 	String getStatus(){
 		if(_isOngoing){
@@ -71,7 +76,7 @@ public abstract class Communication implements Serializable{
 	 */
 	@Override 
 	public String toString() {
-		String output = _id + "|" + _sender.getId() + "|" + _receiver.getId() + "|" + getSize() + "|" + _price + "|" + getStatus();
+		String output = _id + "|" + _sender.getId() + "|" + _receiver.getId() + "|" + getSize() + "|" + (long)_price + "|" + getStatus();
 		return output;
 	}
 }

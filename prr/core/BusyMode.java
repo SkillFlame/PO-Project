@@ -24,8 +24,7 @@ public class BusyMode implements TerminalMode, Serializable {
 	 */
 	@Override
 	public boolean canEndCurrentCommunication(Terminal terminal) {
-		// TODO Auto-generated method stub
-		return false;
+		return terminal.getLastCommunicationMade().getTerminalSender().getId() == terminal.getId();
 	}
 
 	
@@ -76,8 +75,12 @@ public class BusyMode implements TerminalMode, Serializable {
 	 */
 	@Override
 	public Communication acceptSMS(Terminal sender) {
+<<<<<<< HEAD
 		// TODO Auto-generated method stub
 		return null;
+=======
+		return sender.getLastCommunicationMade();
+>>>>>>> 080155909e3a02384cc62f59fdfb164b276ecaa7
 	}
 
 	
@@ -126,8 +129,8 @@ public class BusyMode implements TerminalMode, Serializable {
 	 * @param duration the duration of the interactive communication made
 	 */
 	@Override
-	public void endOngoingCommunication(int duration) {
-		// TODO Finish
+	public void endOngoingCommunication(int duration, Terminal terminal) {
+		terminal.setMode(IdleMode.getMode());
 	}
 
 	
