@@ -65,7 +65,7 @@ public class Network implements Serializable {
 	 * @throws UnknownKeyException       if the given clientId is not recognized
 	 */
 	public Terminal registerTerminal(String terminalType, String terminalId, String clientId)
-			throws UnrecognizedTypeException, InvalidKeyException, KeyAlreadyExistsException, 
+			throws UnrecognizedTypeException, InvalidKeyException, KeyAlreadyExistsException,
 			UnknownKeyException {
 		Terminal terminal;
 
@@ -140,7 +140,7 @@ public class Network implements Serializable {
 	 * Adds a friend to the chosen Terminal's friendlist
 	 * 
 	 * @param terminalId id of desired terminal
-	 * @param friendId	id of desired friend terminal
+	 * @param friendId   id of desired friend terminal
 	 */
 	public void addFriend(String terminalId, String friendId) {
 		_terminals.get(terminalId).addFriend(friendId);
@@ -150,7 +150,7 @@ public class Network implements Serializable {
 	 * Adds friend to the chosen Terminal
 	 * 
 	 * @param terminal chosen terminal
-	 * @param friendId	id of desired friend terminal
+	 * @param friendId id of desired friend terminal
 	 */
 	public void addFriend(Terminal terminal, String friendId) {
 		terminal.addFriend(friendId);
@@ -160,7 +160,7 @@ public class Network implements Serializable {
 	 * Removes a friend from the chosen Terminal's friendlist
 	 * 
 	 * @param terminalId id of desired terminal
-	 * @param friendId id of desired friend terminal
+	 * @param friendId   id of desired friend terminal
 	 */
 	public void removeFriend(String terminalId, String friendId) {
 		_terminals.get(terminalId).removeFriend(friendId);
@@ -170,7 +170,7 @@ public class Network implements Serializable {
 	 * Removes friend from chosen Terminal
 	 * 
 	 * @param terminal chosen terminal
-	 * @param friendId	id of desired friend terminal
+	 * @param friendId id of desired friend terminal
 	 */
 	public void removeFriend(Terminal terminal, String friendId) {
 		_terminals.get(terminal.getId()).removeFriend(friendId);
@@ -224,13 +224,13 @@ public class Network implements Serializable {
 
 	/**
 	 * Gets a Terminal's id
+	 * 
 	 * @param terminal chosen terminal
 	 */
 	public String getTerminalId(Terminal terminal) {
 		return terminal.getId();
 	}
 
-	
 	// CLIENTS
 
 	/**
@@ -304,12 +304,15 @@ public class Network implements Serializable {
 	 * 
 	 * @param clientId id of the desired client
 	 * 
-	 * @throws NotificationsAlreadyEnabledException if the client's notifications are already
-	 * 												enabled
+	 * @throws NotificationsAlreadyEnabledException if the client's notifications
+	 *                                              are already
+	 *                                              enabled
 	 * 
-	 * @throws UnknownKeyException if the given clientId is not recognized
+	 * @throws UnknownKeyException                  if the given clientId is not
+	 *                                              recognized
 	 */
-	public void activateClientNotifications(String clientId) throws NotificationsAlreadyEnabledException, UnknownKeyException {
+	public void activateClientNotifications(String clientId)
+			throws NotificationsAlreadyEnabledException, UnknownKeyException {
 		if (isClientNotificationsActive(clientId)) {
 			throw new NotificationsAlreadyEnabledException();
 		}
@@ -321,12 +324,15 @@ public class Network implements Serializable {
 	 * 
 	 * @param clientId id of the desired client
 	 * 
-	 * @throws NotificationsAlreadyDisabledException if the client's notifications are already
-	 * 												 disabled
+	 * @throws NotificationsAlreadyDisabledException if the client's notifications
+	 *                                               are already
+	 *                                               disabled
 	 * 
-	 * @throws UnknownKeyException if the given clientId is not recognized
+	 * @throws UnknownKeyException                   if the given clientId is not
+	 *                                               recognized
 	 */
-	public void deactivateClientNotifications(String clientId) throws NotificationsAlreadyDisabledException, UnknownKeyException {
+	public void deactivateClientNotifications(String clientId)
+			throws NotificationsAlreadyDisabledException, UnknownKeyException {
 		if (!isClientNotificationsActive(clientId)) {
 			throw new NotificationsAlreadyDisabledException();
 		}
@@ -347,7 +353,7 @@ public class Network implements Serializable {
 	 * 
 	 * @return
 	 */
-	public void clearNotifications(String clientId){
+	public void clearNotifications(String clientId) {
 		_clients.get(clientId).removeNotifications();
 	}
 
@@ -363,7 +369,6 @@ public class Network implements Serializable {
 		}
 		return payments;
 	}
-
 
 	/**
 	 * Gets the global debts of a Network
@@ -389,9 +394,9 @@ public class Network implements Serializable {
 	 * Gets the chosen Terminal's debt
 	 * 
 	 * @param terminal the chosen terminal
-	*/
+	 */
 	public long getTerminalDebt(Terminal terminal) {
-		return (long)terminal.getDebt();
+		return (long) terminal.getDebt();
 	}
 
 	/**
@@ -459,7 +464,6 @@ public class Network implements Serializable {
 		return clientsWithoutDebt;
 	}
 
-
 	// COMMUNICATIONS
 
 	/**
@@ -477,28 +481,43 @@ public class Network implements Serializable {
 	/**
 	 * Starts an Interactive Communication from a Terminal
 	 * 
-	 * @param terminal the chosen terminal
+	 * @param terminal   the chosen terminal
 	 * @param receiverId id of the terminal that recieves the communication
-	 * @param type either "VIDEO" or "VOICE" interactive communication type
+	 * @param type       either "VIDEO" or "VOICE" interactive communication type
 	 * 
-	 * @throws UnknownKeyException if the given receiverId is not recognized
+	 * @throws UnknownKeyException                                  if the given
+	 *                                                              receiverId is
+	 *                                                              not recognized
 	 * 
-	 * @throws SenderTerminalDoesNotSupportCommunicationException if the sender terminal does
-	 * 													not support an interactive communication
+	 * @throws SenderTerminalDoesNotSupportCommunicationException   if the sender
+	 *                                                              terminal does
+	 *                                                              not support an
+	 *                                                              interactive
+	 *                                                              communication
 	 * 
-	 * @throws ReceiverTerminalDoesNotSupportCommunicationException if the receiver terminal
-	 * 											does not support an interactive communication
+	 * @throws ReceiverTerminalDoesNotSupportCommunicationException if the receiver
+	 *                                                              terminal
+	 *                                                              does not support
+	 *                                                              an interactive
+	 *                                                              communication
 	 * 
-	 * @throws ReceiverIsBusyException if the receiver terminal is on Busy mode
+	 * @throws ReceiverIsBusyException                              if the receiver
+	 *                                                              terminal is on
+	 *                                                              Busy mode
 	 * 
-	 * @throws ReceiverIsOffException if the receiver terminal is on Off mode
+	 * @throws ReceiverIsOffException                               if the receiver
+	 *                                                              terminal is on
+	 *                                                              Off mode
 	 * 
-	 * @throws ReceiverIsSilentException if the receiver terminal is on Silent mode
+	 * @throws ReceiverIsSilentException                            if the receiver
+	 *                                                              terminal is on
+	 *                                                              Silent mode
 	 */
 	public void startInteractiveCommunication(Terminal terminal, String receiverId, String type)
 			throws UnknownKeyException, SenderTerminalDoesNotSupportCommunicationException,
 			ReceiverTerminalDoesNotSupportCommunicationException, ReceiverIsBusyException, ReceiverIsOffException,
 			ReceiverIsSilentException {
+
 		switch (type) {
 			case "VIDEO" -> terminal.makeVideoCall(getTerminal(receiverId));
 
@@ -519,15 +538,16 @@ public class Network implements Serializable {
 	/**
 	 * Sends a Text Communication to another Terminal
 	 * 
-	 * @param terminal the sender terminal
+	 * @param terminal   the sender terminal
 	 * @param receiverId id of the receiver terminal
-	 * @param message content of the sent message
+	 * @param message    content of the sent message
 	 * 
-	 * @throws UnknownKeyException if the given receiverId is not recognized
+	 * @throws UnknownKeyException    if the given receiverId is not recognized
 	 * 
 	 * @throws ReceiverIsOffException if the receiver terminal is on Off mode
 	 */
-	public void sendTextCommunication(Terminal terminal, String receiverId, String message) throws UnknownKeyException, ReceiverIsOffException {
+	public void sendTextCommunication(Terminal terminal, String receiverId, String message)
+			throws UnknownKeyException, ReceiverIsOffException {
 		if (!hasTerminal(receiverId)) {
 			throw new UnknownKeyException(receiverId);
 		}
@@ -539,7 +559,8 @@ public class Network implements Serializable {
 	 * 
 	 * @param terminal the chosen terminal
 	 * 
-	 * @throws NoOngoingCommunicationException if there no ongoing communication on the chosen terminal
+	 * @throws NoOngoingCommunicationException if there no ongoing communication on
+	 *                                         the chosen terminal
 	 */
 	public Communication showOngoingCommunication(Terminal terminal) throws NoOngoingCommunicationException {
 		return terminal.getOngoingCommunication();
@@ -574,7 +595,7 @@ public class Network implements Serializable {
 	 * 
 	 * @throws UnknownKeyException if the given clientId is not recognized
 	 */
-	public List<Communication> getCommunicationsRecievedByClient(String clientId) throws UnknownKeyException{
+	public List<Communication> getCommunicationsRecievedByClient(String clientId) throws UnknownKeyException {
 		List<Communication> receivedCommunications = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
 			receivedCommunications.addAll(terminal.getCommunicationsReceived());
@@ -586,15 +607,15 @@ public class Network implements Serializable {
 	/**
 	 * Performs the payment of a Communication made by a Terminal
 	 * 
-	 * @param terminal chosen terminal
+	 * @param terminal        chosen terminal
 	 * @param communicationId id of the communication made
 	 * 
-	 * @throws UnknownIdentifierException if the given communicationId is not recognized
+	 * @throws UnknownIdentifierException if the given communicationId is not
+	 *                                    recognized
 	 */
 	public void performPayment(Terminal terminal, int communicationId) throws UnknownIdentifierException {
 		terminal.pay(communicationId);
 	}
-
 
 	// IMPORT FILE
 

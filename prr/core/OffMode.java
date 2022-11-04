@@ -138,7 +138,7 @@ public class OffMode implements TerminalMode, Serializable {
 
 	
 	@Override
-	public void endOngoingCommunication(int duration, Terminal terminal) {
+	public void endOngoingCommunication(Terminal terminal) {
 	}
 
 	@Override
