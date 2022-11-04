@@ -11,6 +11,12 @@ public abstract class InteractiveCommunication extends Communication {
 
 	public InteractiveCommunication(Terminal sender, Terminal receiver) {
 		super(sender, receiver);
+		setIsOngoing(true);
+	}
+
+	@Override
+	void setSize(int size) {
+		_duration = size;
 	}
 
 	@Override

@@ -19,11 +19,16 @@ public abstract class Communication implements Serializable{
 
 	abstract double computeCost(RatePlan ratePlan);
 	abstract int getSize();
+	abstract void setSize(int size);
 	
 	public Communication(Terminal sender, Terminal receiver){
 		_Id += 1;
 		_sender = sender;
 		_receiver = receiver;
+	}
+
+	void setIsOngoing(boolean ongoing){
+		_isOngoing = ongoing;
 	}
 
 	String getStatus(){
@@ -68,7 +73,7 @@ public abstract class Communication implements Serializable{
 	 */
 	@Override 
 	public String toString() {
-		String output = _Id + "|" + _sender.getId() + "|" + _receiver.getId() + "|" + getSize() + "|" + _price + "|" + getStatus();
+		String output = _Id + "|" + _sender.getId() + "|" + _receiver.getId() + "|" + getSize() + "|" + (long)_price + "|" + getStatus();
 		return output;
 	}
 }

@@ -14,7 +14,7 @@ public class VoiceCommunication extends InteractiveCommunication {
 
 	@Override
 	double computeCost(RatePlan ratePlan) {
-		double price = ratePlan.computeCost(getTerminalSender().getOwner(), this);
+		double price = ratePlan.computeCost(getTerminalSender().getOwner(), this, getSize());
 		if (getTerminalSender().getFriends().contains(getTerminalReceiver().getId())) {
 			price *= 0.5;
 		}
@@ -33,4 +33,6 @@ public class VoiceCommunication extends InteractiveCommunication {
 		String output = "VOICE" + "|" + super.toString();
 		return output;
 	}
+
+	
 }

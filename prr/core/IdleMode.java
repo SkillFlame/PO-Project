@@ -51,39 +51,35 @@ public class IdleMode implements TerminalMode, Serializable {
 
 	@Override
 	public Communication acceptSMS(Terminal sender) {
-		// TODO Auto-generated method stub
-		return null;
-
+		return sender.getLastCommunicationMade();
 	}
 
 	@Override
 	public Communication makeVoiceCall(Terminal sender, Terminal receiver) {
-		Communication call = new VoiceCommunication(sender, receiver);
-		return call;
+		sender.setMode(BusyMode.getMode());
+		return new VoiceCommunication(sender, receiver);
 	}
 
 	@Override
 	public Communication acceptVoiceCall(Terminal sender) {
-		// TODO Auto-generated method stub
-		return null;
-
+		sender.setMode(BusyMode.getMode());
+		return sender.getLastCommunicationMade();
 	}
 
 	@Override
 	public Communication makeVideoCall(Terminal sender, Terminal receiver) {
-		Communication call = new VideoCommunication(sender, receiver);
-		return call;
+		sender.setMode(BusyMode.getMode());
+		return new VideoCommunication(sender, receiver);
 	}
 
 	@Override
 	public Communication acceptVideoCall(Terminal sender) {
-		// TODO Auto-generated method stub
-		return null;
-
+		sender.setMode(BusyMode.getMode());
+		return sender.getLastCommunicationMade();
 	}
 
 	@Override
-	public void endOngoingCommunication(int duration) {
+	public void endOngoingCommunication(int duration, Terminal terminal) {
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package prr.app.terminal;
 
 import prr.core.Network;
 import prr.core.Terminal;
+import prr.core.exception.NoOngoingCommunicationException;
 import pt.tecnico.uilib.menus.CommandException;
 //FIXME add more imports if needed
 
@@ -17,7 +18,12 @@ class DoEndInteractiveCommunication extends TerminalCommand {
 	
 	@Override
 	protected final void execute() throws CommandException {
-		_network.endInteractiveCommunication(_receiver, integerField("duration"));
-		_display.addLine(Message.communicationCost(_network.getCommunicationCost(_receiver)));
+		try {
+			_network.endInteractiveCommunication(_receiver, integerField("duration"));
+			_display.popup(Message.communicationCost(_network.getCommunicationCost(_receiver)));
+		} catch (NoOngoingCommunicationException noce) {
+			_display.popup(Message.noOngoingCommunication());
+		}
+		
 	}
 }

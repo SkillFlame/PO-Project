@@ -2,6 +2,7 @@ package prr.app.terminal;
 
 import prr.core.Network;
 import prr.core.Terminal;
+import prr.core.exception.ReceiverIsOffException;
 import prr.core.exception.UnknownKeyException;
 import prr.app.exception.UnknownTerminalKeyException;
 import pt.tecnico.uilib.menus.CommandException;
@@ -24,6 +25,8 @@ class DoSendTextCommunication extends TerminalCommand {
 			_network.sendTextCommunication(_receiver, stringField("receiverID"), stringField("message"));
 		} catch (UnknownKeyException uke) {
 			throw new UnknownTerminalKeyException(uke.getKey());
+		} catch (ReceiverIsOffException rioe) {
+			_display.popup(Message.destinationIsOff(stringField("receiverID")));
 		}
 	}
 }

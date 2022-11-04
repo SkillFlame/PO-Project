@@ -29,16 +29,17 @@ abstract public class Terminal implements Serializable {
 	private double _payments;
 	private TerminalMode _mode;
 
-	private String _clientId;
-	private Client _owner;
+	
+	private Client _client;
 	private Collection<String> _friendsId = new HashSet<String>();
 	private Map<Integer, Communication> _communicationsMade = new TreeMap<>();
 	private Map<Integer, Communication> _communicationsReceived = new TreeMap<>();
 	private Communication _lastInteractiveCommunication; // FIXME add implementation
+	private Communication _lastCommunicationMade;
 
-	Terminal(String id, String clientId) throws InvalidKeyException {
+	Terminal(String id, Client client) throws InvalidKeyException {
 		setId(id);
-		_clientId = clientId;
+		_client = client;
 		_mode = new IdleMode();
 	}
 
@@ -75,7 +76,7 @@ abstract public class Terminal implements Serializable {
 	}
 
 	Client getOwner() {
-		return _owner;
+		return _client;
 	}
 
 	Collection<Communication> getCommunicationsMade() {
@@ -92,6 +93,18 @@ abstract public class Terminal implements Serializable {
 
 	void addReceivedCommunication(Communication communication) {
 		_communicationsReceived.put(communication.getId(), communication);
+	}
+
+	void setLastCommunicationMade(Communication communication) {
+		_lastCommunicationMade = communication;
+	}
+
+	Communication getLastCommunicationMade() {
+		return _lastCommunicationMade;
+	}
+
+	void setLastInteractiveCommunication(Communication communication) {
+		_lastInteractiveCommunication = communication;
 	}
 
 	/**
@@ -141,18 +154,27 @@ abstract public class Terminal implements Serializable {
 		getMode().setOnIdle(this);
 	}
 
-	void makeSMS(Terminal receiver, String Message) {
-		addMadeCommunication(getMode().makeSMS(this, receiver, Message));
+	void makeSMS(Terminal receiver, String Message) throws ReceiverIsOffException {
+		Communication communication = getMode().makeSMS(this, receiver, Message);
+		addMadeCommunication(communication);
+		setLastCommunicationMade(communication);
+		communication.computeCost(_client.getRatePlan());
+		_debt += communication.getPrice();
 		receiver.acceptSMS(this);
 	}
 
-	void acceptSMS(Terminal sender) {
-		addReceivedCommunication(getMode().acceptSMS(sender));
+	void acceptSMS(Terminal sender) throws ReceiverIsOffException {
+		Communication communication = getMode().acceptSMS(sender);
+		addReceivedCommunication(communication);
 	}
 
 	void makeVoiceCall(Terminal receiver)
 			throws ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
-		addMadeCommunication(getMode().makeVoiceCall(this, receiver));
+
+		Communication communication = getMode().makeVoiceCall(this, receiver);
+		addMadeCommunication(communication);
+		setLastCommunicationMade(communication);
+		setLastInteractiveCommunication(communication);
 		receiver.acceptVoiceCall(this);
 	}
 
@@ -172,15 +194,19 @@ abstract public class Terminal implements Serializable {
 		throw new ReceiverTerminalDoesNotSupportCommunicationException(getId(), "VIDEO");
 	}
 
-	void endOngoingCommunication(int duration) {
-		getMode().endOngoingCommunication(duration);
+	void endOngoingCommunication(int duration) throws NoOngoingCommunicationException {
+		getMode().endOngoingCommunication(duration, this);
+		Communication communication = getOngoingCommunication();
+		communication.setSize(duration);
+		communication.computeCost(getOwner().getRatePlan());
+		_debt += getOngoingCommunication().getPrice();
 	}
 
 	void pay(int communicationId) throws UnknownIdentifierException {
 		if (_communicationsMade.keySet().contains(communicationId)) {
 			Communication communication = _communicationsMade.get(communicationId);
 			if (!communication.getPaymentState()) {
-				double cost = communication.computeCost(_owner.getRatePlan());
+				double cost = communication.computeCost(_client.getRatePlan());
 				_payments += cost;
 				_debt -= cost;
 
@@ -198,7 +224,7 @@ abstract public class Terminal implements Serializable {
 	}
 
 	String getClientId() {
-		return _clientId;
+		return _client.getKey();
 	}
 
 	public double getTerminalBalance() {
@@ -238,7 +264,7 @@ abstract public class Terminal implements Serializable {
 	@Override
 	public String toString() {
 
-		String output = _id + "|" + _clientId + "|" + _mode + "|" + (int) _payments + "|" + (int) _debt
+		String output = _id + "|" + _client.getKey() + "|" + _mode + "|" + (int) _payments + "|" + (int) _debt
 				+ friendsToString();
 		return output;
 	}

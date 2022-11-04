@@ -25,7 +25,7 @@ class DoEnableClientNotifications extends Command<Network> {
 			_receiver.activateClientNotifications(stringField("clientKey"));
 		}
 		catch(NotificationsAlreadyEnabledException naee){
-			_display.popup(Message.clientNotificationsAlreadyDisabled());
+			_display.popup(Message.clientNotificationsAlreadyEnabled());
 		}
 		catch(UnknownKeyException uke){
 			throw new UnknownClientKeyException(uke.getKey());

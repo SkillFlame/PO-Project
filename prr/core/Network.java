@@ -77,8 +77,8 @@ public class Network implements Serializable {
 		}
 
 		switch (terminalType) {
-			case "BASIC" -> terminal = new BasicTerminal(terminalId, clientId);
-			case "FANCY" -> terminal = new FancyTerminal(terminalId, clientId);
+			case "BASIC" -> terminal = new BasicTerminal(terminalId, _clients.get(clientId));
+			case "FANCY" -> terminal = new FancyTerminal(terminalId, _clients.get(clientId));
 			default -> throw new UnrecognizedTypeException();
 		}
 
@@ -308,7 +308,7 @@ public class Network implements Serializable {
 	}
 
 	public long getTerminalDebt(Terminal terminal) {
-		return (long) terminal.getDebt();
+		return (long)terminal.getDebt();
 	}
 
 	public long getClientPayments(String clientId) throws UnknownKeyException {
@@ -388,11 +388,11 @@ public class Network implements Serializable {
 		}
 	}
 
-	public void endInteractiveCommunication(Terminal terminal, int duration) {
+	public void endInteractiveCommunication(Terminal terminal, int duration) throws NoOngoingCommunicationException {
 		terminal.endOngoingCommunication(duration);
 	}
 
-	public void sendTextCommunication(Terminal terminal, String receiverId, String message) throws UnknownKeyException {
+	public void sendTextCommunication(Terminal terminal, String receiverId, String message) throws UnknownKeyException, ReceiverIsOffException {
 		if (!hasTerminal(receiverId)) {
 			throw new UnknownKeyException(receiverId);
 		}
