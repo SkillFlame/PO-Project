@@ -231,7 +231,7 @@ abstract public class Terminal implements Serializable {
 	 */
 	void makeVoiceCall(Terminal receiver)
 			throws ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
-
+				
 		Communication communication = getMode().makeVoiceCall(this, receiver);
 		addMadeCommunication(communication);
 		setLastCommunicationMade(communication);
