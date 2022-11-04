@@ -1,6 +1,8 @@
 package prr.app.lookup;
 
+import prr.app.exception.UnknownClientKeyException;
 import prr.core.Network;
+import prr.core.exception.UnknownKeyException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
 //FIXME add more imports if needed
@@ -16,8 +18,14 @@ class DoShowCommunicationsFromClient extends Command<Network> {
 	}
 
 	@Override
-	protected final void execute() throws CommandException {
-		_display.addAll(_receiver.getCommunicationsMadeByClient("clientKey"));
-		_display.display();
+	protected final void execute() throws CommandException, UnknownClientKeyException{
+		try{
+			_display.addAll(_receiver.getCommunicationsMadeByClient(stringField("clientKey")));
+			_display.display();
+		}
+		catch(UnknownKeyException uke){
+			throw new UnknownClientKeyException(uke.getKey());
+		}
+
 	}
 }

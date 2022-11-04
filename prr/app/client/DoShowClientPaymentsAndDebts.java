@@ -21,10 +21,10 @@ class DoShowClientPaymentsAndDebts extends Command<Network> {
 	protected final void execute() throws CommandException, UnknownClientKeyException {
 		try{
 			_display.popup(Message.clientPaymentsAndDebts("clientKey", 
-			_receiver.getClientPayments("clientKey"), _receiver.getClientDebt("clientKey")));
+			_receiver.getClientPayments(stringField("clientKey")), _receiver.getClientDebt(stringField("clientKey"))));
 		}
 		catch(UnknownKeyException uie){
-			throw new UnknownClientKeyException("clientKey");
+			throw new UnknownClientKeyException(uie.getKey());
 		}
 	}
 }

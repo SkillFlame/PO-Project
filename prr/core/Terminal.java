@@ -24,7 +24,7 @@ abstract public class Terminal implements Serializable {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
-	private String _Id;
+	private String _id;
 	private double _debt;
 	private double _payments;
 	private TerminalMode _mode;
@@ -36,8 +36,8 @@ abstract public class Terminal implements Serializable {
 	private Map<Integer, Communication> _communicationsReceived = new TreeMap<>();
 	private Communication _lastInteractiveCommunication; // FIXME add implementation
 
-	Terminal(String Id, String clientId) throws InvalidKeyException {
-		setId(Id);
+	Terminal(String id, String clientId) throws InvalidKeyException {
+		setId(id);
 		_clientId = clientId;
 		_mode = new IdleMode();
 	}
@@ -46,20 +46,20 @@ abstract public class Terminal implements Serializable {
 	 * @param Id of a Terminal
 	 * @throws InvalIdKeyException if the given clientId is not valId
 	 */
-	private void setId(String Id) throws InvalidKeyException {
-		if (Id.length() != 6) {
-			throw new InvalidKeyException(Id);
+	private void setId(String id) throws InvalidKeyException {
+		if (id.length() != 6) {
+			throw new InvalidKeyException(id);
 		}
 		try {
-			Integer.parseInt(Id);
-			_Id = Id;
+			Integer.parseInt(id);
+			_id = id;
 		} catch (NumberFormatException nfe) {
-			throw new InvalidKeyException(Id);
+			throw new InvalidKeyException(id);
 		}
 	}
 
 	String getId() {
-		return _Id;
+		return _id;
 	}
 
 	void setMode(TerminalMode mode) {
@@ -98,7 +98,7 @@ abstract public class Terminal implements Serializable {
 	 * Adds a Friend to the Friend List
 	 */
 	void addFriend(String friendId) {
-		if (friendId != _Id && !_friendsId.contains(friendId)) {
+		if (friendId != _id && !_friendsId.contains(friendId)) {
 			_friendsId.add(friendId);
 		}
 	}
@@ -238,7 +238,7 @@ abstract public class Terminal implements Serializable {
 	@Override
 	public String toString() {
 
-		String output = _Id + "|" + _clientId + "|" + _mode + "|" + (int) _payments + "|" + (int) _debt
+		String output = _id + "|" + _clientId + "|" + _mode + "|" + (int) _payments + "|" + (int) _debt
 				+ friendsToString();
 		return output;
 	}

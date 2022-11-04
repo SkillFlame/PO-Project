@@ -52,8 +52,8 @@ public class Network implements Serializable {
 	 * Registers a Terminal on the current Network
 	 * 
 	 * @param terminalType either "FANCY" or "BASIC" terminal type
-	 * @param terminalId   Id of a terminal
-	 * @param clientId     Id of a client
+	 * @param terminalId   id of a terminal
+	 * @param clientId     id of a client
 	 * 
 	 * @throws UnrecognizedTypeException if the given entry type is not recognized
 	 * 
@@ -88,39 +88,19 @@ public class Network implements Serializable {
 	}
 
 	/**
-	 * Checks if a Terminal with a certain ID is contained in the Terminal Map
+	 * Checks if a Terminal with a certain id is contained in the Terminal Map
 	 * 
 	 * @param terminalID id of a terminal
 	 * @return true if the terminal with the desired id exists
 	 */
-	public boolean hasTerminal(String terminalID) {
-		return _terminals.containsKey(terminalID);
-	}
-
-	/**
-	 * Checks if a Terminal Type is valid ("BASIC" or "FANCY")
-	 * 
-	 * @param terminalType type of a terminal
-	 * @return true if the given type is a valid terminal type
-	 */
-	public boolean isValidTerminalType(String terminalType) {
-		boolean isValid = false;
-		switch (terminalType) {
-			case "BASIC", "FANCY" -> isValid = true;
-		}
-
-		return isValid;
+	public boolean hasTerminal(String terminalId) {
+		return _terminals.containsKey(terminalId);
 	}
 
 	/**
 	 * Gets the Terminal with the desired ID from the terminal Map
 	 * 
 	 * @param terminalID id of the desired terminal
-	 * 
-	 *                   /**
-	 *                   Gets the Terminal with the desired Id from the terminal Map
-	 * 
-	 * @param terminalId Id of the desired terminal
 	 * 
 	 * @throws UnknownKeyException if the given clientId is not recognized
 	 */
@@ -155,12 +135,12 @@ public class Network implements Serializable {
 		return terminals;
 	}
 
-	public void addFriend(String terminalID, String friendID) {
-		_terminals.get(terminalID).addFriend(friendID);
+	public void addFriend(String terminalId, String friendId) {
+		_terminals.get(terminalId).addFriend(friendId);
 	}
 
-	public void addFriend(Terminal terminal, String friendID) {
-		terminal.addFriend(friendID);
+	public void addFriend(Terminal terminal, String friendId) {
+		terminal.addFriend(friendId);
 	}
 
 	public void removeFriend(String terminalId, String friendId) {
@@ -210,13 +190,191 @@ public class Network implements Serializable {
 	 * @param terminalType type of a terminal
 	 * @return true if the given type is a valId terminal type
 	 */
-	public boolean isValIdTerminalType(String terminalType) {
-		boolean isValId = false;
-		switch (terminalType) {
-			case "BASIC", "FANCY" -> isValId = true;
-		}
+	//public boolean isValIdTerminalType(String terminalType) {
+	//	boolean isValId = false;
+	//	switch (terminalType) {
+	//		case "BASIC", "FANCY" -> isValId = true;
+	//	}
+	//	return isValId;
+	//}
 
-		return isValId;
+	
+	// CLIENTS
+
+	/**
+	 * Registers a Client on the current Network
+	 * 
+	 * @param clientId   clientId of a client
+	 * @param clientName name of a client
+	 * @param taxNumber  tax number of a client
+	 * 
+	 * @throws KeyAlreadyExistsException if the given clientId is a duplicate of an
+	 *                                   existing one
+	 */
+	public void registerClient(String clientId, String name, int taxNumber) throws KeyAlreadyExistsException {
+		if (hasClient(clientId)) {
+			throw new KeyAlreadyExistsException(clientId);
+		}
+		Client client = new Client(name, taxNumber, clientId);
+		_clients.put(clientId, client);
+	}
+
+	/**
+	 * Checks if a Client with a certain id is contained in the Client Map
+	 * 
+	 * @param clientId id of a Client
+	 * @return true if the client with the desired id exists
+	 */
+	public boolean hasClient(String clientId) {
+		return _clients.containsKey(clientId);
+	}
+
+	/**
+	 * Gets the Client from the Client Map by its id
+	 * 
+	 * @param clientId Id of a client
+	 * 
+	 * @throws UnknownIdentifierException if the given id is not contained in the
+	 *                                    Collection
+	 * 
+	 * @throws UnknownKeyException        if the given clientId is not recognized
+	 */
+	public Client getClient(String clientId) throws UnknownIdentifierException, UnknownKeyException {
+		Client client = _clients.get(clientId);
+		if (client == null) {
+			throw new UnknownKeyException(clientId);
+		}
+		return client;
+	}
+
+	/**
+	 * Gets the List of Clients from the Client Map by its Ids
+	 */
+	public List<Client> getClients() {
+		List<Client> listed = new ArrayList<>(_clients.values());
+		return listed;
+	}
+
+	// CLIENT NOTIFICATIONS
+
+	public boolean isClientNotificationsActive(String clientId) {
+		return _clients.get(clientId).getNotificationActivity();
+	}
+
+	public void activateClientNotifications(String clientId) throws NotificationsAlreadyEnabledException, UnknownKeyException {
+		if (isClientNotificationsActive(clientId)) {
+			throw new NotificationsAlreadyEnabledException();
+		}
+		_clients.get(clientId).activateNotifications();
+	}
+
+	public void deactivateClientNotifications(String clientId) throws NotificationsAlreadyDisabledException, UnknownKeyException {
+		if (!isClientNotificationsActive(clientId)) {
+			throw new NotificationsAlreadyDisabledException();
+		}
+		_clients.get(clientId).deactivateNotifications();
+	}
+
+	/**
+	 * Gets the Notifications of a Client from the Client Map by its id
+	 * 
+	 * @param clientId id of a client
+	 */
+	public List<Notification> getNotifications(String clientId) {
+		Client client = _clients.get(clientId);
+		return client.getNotifications();
+	}
+
+	// PAYMENTS AND DEBTS
+
+	public long getGlobalPayments() {
+		long payments = 0;
+		for (Client client : _clients.values()) {
+			payments += client.getClientPayments();
+		}
+		return payments;
+	}
+
+	public long getGlobalDebts() {
+		long debts = 0;
+		for (Client client : _clients.values()) {
+			debts += client.getClientDebt();
+		}
+		return debts;
+	}
+
+	public long getTerminalPayments(Terminal terminal) {
+		return (long) terminal.getPayments();
+	}
+
+	public long getTerminalDebt(Terminal terminal) {
+		return (long) terminal.getDebt();
+	}
+
+	public long getClientPayments(String clientId) throws UnknownKeyException {
+		if (!hasClient(clientId)) {
+			throw new UnknownKeyException(clientId);
+		}
+		return (long) _clients.get(clientId).getClientPayments();
+	}
+
+	public long getClientDebt(String clientId) throws UnknownKeyException {
+		if (!hasClient(clientId)) {
+			throw new UnknownKeyException(clientId);
+		}
+		return (long) _clients.get(clientId).getClientDebt();
+	}
+
+	public double getClientBalance(String clientId) {
+		Client client = _clients.get(clientId);
+		return client.getBalance();
+
+	}
+
+	public List<Client> getClientsWithDebt() {
+		List<Client> clientsWithDebt = new ArrayList<>(_clients.values());
+		for (Client client : clientsWithDebt) {
+			if (client.getClientDebt() > 0) {
+				clientsWithDebt.remove(client);
+			}
+		}
+		return clientsWithDebt;
+	}
+
+	public List<Client> getClientsWithoutDebt() {
+		List<Client> clientsWithoutDebt = new ArrayList<>(_clients.values());
+		for (Client client : clientsWithoutDebt) {
+			if (client.getClientDebt() == 0) {
+				clientsWithoutDebt.remove(client);
+			}
+		}
+		return clientsWithoutDebt;
+	}
+
+	public void activateNotificationReception(String clientId) throws NotificationsAlreadyEnabledException {
+		Client client = _clients.get(clientId);
+		if (client.getNotificationActivity()) {
+			throw new NotificationsAlreadyEnabledException();
+		}
+	}
+
+	public void deactivateNotificationReception(String clientId) throws NotificationsAlreadyDisabledException {
+		Client client = _clients.get(clientId);
+		if (!client.getNotificationActivity()) {
+			throw new NotificationsAlreadyDisabledException();
+		}
+	}
+
+
+	// COMMUNICATIONS
+
+	public List<Communication> getCommunications() {
+		List<Communication> communications = new ArrayList<>();
+		for (Terminal terminal : _terminals.values()) {
+			communications.addAll(terminal.getCommunicationsMade());
+			communications.addAll(terminal.getCommunicationsReceived());
+		}
+		return communications;
 	}
 
 	public void startInteractiveCommunication(Terminal terminal, String receiverId, String type)
@@ -244,196 +402,12 @@ public class Network implements Serializable {
 	public Communication showOngoingCommunication(Terminal terminal) throws NoOngoingCommunicationException {
 		return terminal.getOngoingCommunication();
 	}
-	// CLIENTS
-
-	/**
-	 * Registers a Client on the current Network
-	 * 
-	 * @param clientId   clientId of a client
-	 * @param clientName name of a client
-	 * @param taxNumber  tax number of a client
-	 * 
-	 * @throws KeyAlreadyExistsException if the given clientId is a duplicate of an
-	 *                                   existing one
-	 */
-	public void registerClient(String clientId, String name, int taxNumber) throws KeyAlreadyExistsException {
-		if (hasClient(clientId)) {
-			throw new KeyAlreadyExistsException(clientId);
-		}
-		Client client = new Client(name, taxNumber, clientId);
-		_clients.put(clientId, client);
-	}
-
-	/**
-	 * Checks if a Client with a certain Id is contained in the Client Map
-	 * 
-	 * @param clientId id of a Client
-	 * @return true if the client with the desired id exists
-	 */
-	public boolean hasClient(String clientId) {
-		return _clients.containsKey(clientId);
-	}
-
-	/**
-	 * Gets the Client from the Client Map by its Id
-	 * 
-	 * @param clientId Id of a client
-	 * 
-	 * @throws UnknownIdentifierException if the given Id is not contained in the
-	 *                                    Collection
-	 * 
-	 * @throws UnknownKeyException        if the given clientId is not recognized
-	 */
-	public Client getClient(String clientId) throws UnknownIdentifierException, UnknownKeyException {
-		Client client = _clients.get(clientId);
-		if (client == null) {
-			throw new UnknownKeyException(clientId);
-		}
-		return client;
-	}
-
-	/**
-	 * Gets the List of Clients from the Client Map by its Ids
-	 */
-	public List<Client> getClients() {
-		List<Client> listed = new ArrayList<>(_clients.values());
-		return listed;
-	}
-
-	// CLIENT NOTIFICATIONS
-
-	public boolean isClientNotificationsActive(String clientId) {
-		return _clients.get(clientId).getNotificationActivity();
-	}
-
-	public void activateClientNotifications(String clientId) throws NotificationsAlreadyEnabledException {
-		if (isClientNotificationsActive(clientId)) {
-			throw new NotificationsAlreadyEnabledException();
-		}
-		_clients.get(clientId).activateNotifications();
-	}
-
-	public void deactivateClientNotifications(String clientId) throws NotificationsAlreadyDisabledException {
-		if (!isClientNotificationsActive(clientId)) {
-			throw new NotificationsAlreadyDisabledException();
-		}
-		_clients.get(clientId).deactivateNotifications();
-	}
-
-	/**
-	 * Gets the Notifications of a Client from the Client Map by its ID
-	 * 
-	 * @param clientId id of a client
-	 * 
-	 *                 /**
-	 *                 Gets the Notifications of a Client from the Client Map by its
-	 *                 Id
-	 * 
-	 * @param clientId Id of a client
-	 */
-	public List<Notification> getNotifications(String clientId) {
-		Client client = _clients.get(clientId);
-		return client.getNotifications();
-	}
-
-	// PAYMENTS AND DEBTS
-
-	public long getGlobalPayments() {
-		long payments = 0;
-		for (Client client : _clients.values()) {
-			payments += client.getClientPayments();
-		}
-		return payments;
-	}
-
-	public long getGlobalDebts() {
-		long debts = 0;
-		for (Client client : _clients.values()) {
-			debts += client.getClientDebt();
-		}
-		return debts;
-	}
-
-	public long getClientPayments(String clientId) throws UnknownKeyException {
-		if (!hasClient(clientId)) {
-			throw new UnknownKeyException(clientId);
-		}
-		return (long) _clients.get(clientId).getClientPayments();
-	}
-
-	public long getClientDebt(String clientId) throws UnknownKeyException {
-		if (!hasClient(clientId)) {
-			throw new UnknownKeyException(clientId);
-		}
-		return (long) _clients.get(clientId).getClientDebt();
-	}
-
-	public double getClientBalance(String clientId) {
-		Client client = _clients.get(clientId);
-		return client.getBalance();
-
-	}
-
-	public void activateNotificationReception(String clientId) throws NotificationsAlreadyEnabledException {
-		// FIXME add implementation code
-		Client client = _clients.get(clientId);
-		if (client.getNotificationActivity()) {
-			throw new NotificationsAlreadyEnabledException();
-		}
-	}
-
-	public List<Client> getClientsWithDebt() {
-		List<Client> clientsWithDebt = new ArrayList<>(_clients.values());
-		for (Client client : clientsWithDebt) {
-			if (client.getClientDebt() > 0) {
-				clientsWithDebt.remove(client);
-			}
-		}
-		return clientsWithDebt;
-	}
-
-	public List<Client> getClientsWithoutDebt() {
-		List<Client> clientsWithoutDebt = new ArrayList<>(_clients.values());
-		for (Client client : clientsWithoutDebt) {
-			if (client.getClientDebt() == 0) {
-				clientsWithoutDebt.remove(client);
-			}
-		}
-		return clientsWithoutDebt;
-	}
-
-	public void deactivateNotificationReception(String clientId) throws NotificationsAlreadyDisabledException {
-		// FIXME add implementation code
-		Client client = _clients.get(clientId);
-		if (!client.getNotificationActivity()) {
-			throw new NotificationsAlreadyDisabledException();
-		}
-	}
-
-	public long getTerminalPayments(Terminal terminal) {
-		return (long) terminal.getPayments();
-	}
-
-	public long getTerminalDebt(Terminal terminal) {
-		return (long) terminal.getDebt();
-	}
-
-	// COMMUNICATIONS
-
-	public List<Communication> getCommunications() {
-		List<Communication> communications = new ArrayList<>();
-		for (Terminal terminal : _terminals.values()) {
-			communications.addAll(terminal.getCommunicationsMade());
-			communications.addAll(terminal.getCommunicationsReceived());
-		}
-		return communications;
-	}
 
 	public long getCommunicationCost(Terminal terminal) {
 		return (long) terminal.getLastInteractiveCommunicationCost();
 	}
 
-	public List<Communication> getCommunicationsMadeByClient(String clientId) {
+	public List<Communication> getCommunicationsMadeByClient(String clientId) throws UnknownKeyException {
 		List<Communication> madeCommunications = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
 			madeCommunications.addAll(terminal.getCommunicationsMade());
@@ -441,7 +415,7 @@ public class Network implements Serializable {
 		return madeCommunications;
 	}
 
-	public List<Communication> getCommunicationsRecievedByClient(String clientId) {
+	public List<Communication> getCommunicationsRecievedByClient(String clientId) throws UnknownKeyException{
 		List<Communication> receivedCommunications = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
 			receivedCommunications.addAll(terminal.getCommunicationsReceived());
@@ -453,6 +427,7 @@ public class Network implements Serializable {
 	public void performPayment(Terminal terminal, int communicationId) throws UnknownIdentifierException {
 		terminal.pay(communicationId);
 	}
+
 
 	// IMPORT FILE
 
