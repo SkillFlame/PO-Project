@@ -2,6 +2,8 @@ package prr.core;
 
 import java.io.Serializable;
 
+import prr.core.exception.TerminalStateAlreadySetException;
+
 public class IdleMode implements TerminalMode, Serializable {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
@@ -39,7 +41,8 @@ public class IdleMode implements TerminalMode, Serializable {
 
 	
 	@Override
-	public void setOnIdle(Terminal terminal) {
+	public void setOnIdle(Terminal terminal) throws TerminalStateAlreadySetException {
+		throw new TerminalStateAlreadySetException();
 	}
 
 	
@@ -136,6 +139,7 @@ public class IdleMode implements TerminalMode, Serializable {
 	@Override
 	public Communication makeVideoCall(Terminal sender, Terminal receiver) {
 		sender.setLastTerminalMode(this);
+		sender.setMode(BusyMode.getMode());
 		return new VideoCommunication(sender, receiver);
 	}
 
@@ -147,6 +151,7 @@ public class IdleMode implements TerminalMode, Serializable {
 	 */
 	@Override
     public Communication acceptVideoCall(Terminal sender) {
+		sender.getLastCommunicationMade().getTerminalReceiver().setLastTerminalMode(this);
         sender.getLastCommunicationMade().getTerminalReceiver().setMode(BusyMode.getMode());
         return sender.getLastCommunicationMade();
     }

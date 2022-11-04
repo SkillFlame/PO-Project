@@ -3,6 +3,7 @@ package prr.core;
 import java.io.Serializable;
 
 import prr.core.exception.ReceiverIsSilentException;
+import prr.core.exception.TerminalStateAlreadySetException;
 
 public class SilenceMode implements TerminalMode, Serializable {
 	/** Serial number for serialization. */
@@ -51,7 +52,8 @@ public class SilenceMode implements TerminalMode, Serializable {
 
 	
 	@Override
-	public void setOnSilent(Terminal terminal) {
+	public void setOnSilent(Terminal terminal) throws TerminalStateAlreadySetException {
+		throw new TerminalStateAlreadySetException();
 	}
 
 	

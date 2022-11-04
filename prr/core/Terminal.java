@@ -1,10 +1,13 @@
 package prr.core;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import prr.core.exception.InvalidKeyException;
 import prr.core.exception.ReceiverIsBusyException;
@@ -30,7 +33,7 @@ abstract public class Terminal implements Serializable {
 	private TerminalMode _mode;
 
 	private Client _client;
-	private Collection<String> _friendsId = new HashSet<String>();
+	private Collection<String> _friendsId = new TreeSet<String>();
 	private Map<Integer, Communication> _communicationsMade = new TreeMap<>();
 	private Map<Integer, Communication> _communicationsReceived = new TreeMap<>();
 	private Communication _lastInteractiveCommunication;
@@ -135,7 +138,7 @@ abstract public class Terminal implements Serializable {
 	 * @param friendId id of the friend terminal
 	 */
 	void addFriend(String friendId) {
-		if (friendId != _id && !_friendsId.contains(friendId)) {
+		if (friendId.compareTo(_id) != 0) {
 			_friendsId.add(friendId);
 		}
 	}
@@ -429,9 +432,13 @@ abstract public class Terminal implements Serializable {
 			return "";
 		}
 
-		String output = "";
-		for (String friendId : _friendsId) {
-			output += friendId + ", ";
+		String output = "|";
+		Iterator<String> friendId = _friendsId.iterator();
+		while (friendId.hasNext()) {
+			output += friendId.next();
+			if(friendId.hasNext()) {
+				output += ",";
+			}
 		}
 		return output;
 	}

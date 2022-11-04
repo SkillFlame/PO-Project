@@ -151,8 +151,12 @@ public class Network implements Serializable {
 	 * 
 	 * @param terminal chosen terminal
 	 * @param friendId id of desired friend terminal
+	 * @throws UnknownKeyException
 	 */
-	public void addFriend(Terminal terminal, String friendId) {
+	public void addFriend(Terminal terminal, String friendId) throws UnknownKeyException {
+		if(!hasTerminal(friendId)) {
+			throw new UnknownKeyException(friendId);
+		}
 		terminal.addFriend(friendId);
 	}
 
@@ -473,7 +477,6 @@ public class Network implements Serializable {
 		List<Communication> communications = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
 			communications.addAll(terminal.getCommunicationsMade());
-			communications.addAll(terminal.getCommunicationsReceived());
 		}
 		return communications;
 	}

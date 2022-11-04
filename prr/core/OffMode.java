@@ -3,6 +3,7 @@ package prr.core;
 import java.io.Serializable;
 
 import prr.core.exception.ReceiverIsOffException;
+import prr.core.exception.TerminalStateAlreadySetException;
 
 public class OffMode implements TerminalMode, Serializable {
 	/** Serial number for serialization. */
@@ -61,7 +62,8 @@ public class OffMode implements TerminalMode, Serializable {
 
 
 	@Override
-	public void turnOff(Terminal terminal) {
+	public void turnOff(Terminal terminal) throws TerminalStateAlreadySetException {
+		throw new TerminalStateAlreadySetException();
 	}
 
 	
