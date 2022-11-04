@@ -9,7 +9,6 @@ public class BusyMode implements TerminalMode, Serializable {
 	private static final long serialVersionUID = 202208091753L;
 
 	final static TerminalMode _mode = new BusyMode();
-	private NotificationDeliveryMethod _method;
 
 	
 	public static TerminalMode getMode() {
@@ -25,6 +24,9 @@ public class BusyMode implements TerminalMode, Serializable {
 	 */
 	@Override
 	public boolean canEndCurrentCommunication(Terminal terminal) {
+		if(terminal.getLastCommunicationMade() == null) {
+			return false;
+		}
 		return terminal.getLastCommunicationMade().getTerminalSender().getId() == terminal.getId();
 	}
 
@@ -141,7 +143,6 @@ public class BusyMode implements TerminalMode, Serializable {
 	@Override
 	public void handleFailedCommunication(Terminal terminal) {
 		terminal.setMode(IdleMode.getMode());
-		_method.notifyTerminalB2I(terminal);
 	}
 
 }
