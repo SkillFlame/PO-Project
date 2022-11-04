@@ -12,6 +12,12 @@ public class VideoCommunication extends InteractiveCommunication {
 		super(sender, receiver);
 	}
 
+	
+	/** 
+	 * Computes the cost of the Video Communication made using the Terminal owner's Rateplan
+	 * 
+	 * @param ratePlan the owner's rateplan
+	 */
 	@Override
 	double computeCost(RatePlan ratePlan) {
 		double price = ratePlan.computeCost(getTerminalSender().getOwner(), this, getSize());

@@ -18,7 +18,11 @@ public abstract class InteractiveCommunication extends Communication {
 	void setSize(int size) {
 		_duration = size;
 	}
-
+	
+	
+	/** 
+	 * Gets the duration of the Interactive Communication made
+	 */
 	@Override
 	int getSize() {
 		if (getIsOngoing()) {

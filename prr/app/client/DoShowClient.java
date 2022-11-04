@@ -27,6 +27,7 @@ class DoShowClient extends Command<Network> {
 			for (Object notification : _receiver.getNotifications(key)) {
 				_display.addLine(notification);
 			}
+			_receiver.clearNotifications(key);
 
 		} catch (UnknownIdentifierException | UnknownKeyException e) {
 			throw new UnknownClientKeyException(key);
