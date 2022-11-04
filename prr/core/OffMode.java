@@ -9,7 +9,6 @@ public class OffMode implements TerminalMode, Serializable {
 	private static final long serialVersionUID = 202208091753L;
 
 	final static TerminalMode _mode = new OffMode();
-	private NotificationDeliveryMethod _method;
 	
 	public static TerminalMode getMode() {
 		return _mode;

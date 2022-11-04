@@ -24,6 +24,9 @@ public class BusyMode implements TerminalMode, Serializable {
 	 */
 	@Override
 	public boolean canEndCurrentCommunication(Terminal terminal) {
+		if(terminal.getLastCommunicationMade() == null) {
+			return false;
+		}
 		return terminal.getLastCommunicationMade().getTerminalSender().getId() == terminal.getId();
 	}
 
