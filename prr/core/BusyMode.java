@@ -121,10 +121,10 @@ public class BusyMode implements TerminalMode, Serializable {
 	/** 
 	 * Ends the current ongoing Communication
 	 * 
-	 * @param duration the duration of the interactive communication made
+	 * @param terminal the terminal of the interactive communication made
 	 */
 	@Override
-	public void endOngoingCommunication(int duration, Terminal terminal) {
+	public void endOngoingCommunication(Terminal terminal) {
 		terminal.setMode(IdleMode.getMode());
 	}
 

@@ -37,7 +37,7 @@ public class VideoCommunication extends InteractiveCommunication {
 
 	@Override
 	public String toString() {
-		String output = "VIdEO" + "|" + super.toString();
+		String output = "VIDEO" + "|" + super.toString();
 		return output;
 	}
 }

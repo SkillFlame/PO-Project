@@ -29,7 +29,7 @@ public interface TerminalMode {
 
 	Communication acceptVideoCall(Terminal sender) throws ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException;
 
-	void endOngoingCommunication(int duration, Terminal terminal);
+	void endOngoingCommunication(Terminal terminal);
 
 	void handleFailedCommunication(Terminal terminal);
 }
