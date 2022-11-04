@@ -127,7 +127,7 @@ public class BusyMode implements TerminalMode, Serializable {
 	 */
 	@Override
 	public void endOngoingCommunication(int duration, Terminal terminal) {
-		terminal.setMode(IdleMode.getMode());
+		terminal.setMode(terminal.getLastTerminalMode());
 	}
 
 	

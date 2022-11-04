@@ -106,6 +106,7 @@ public class SilenceMode implements TerminalMode, Serializable {
 	 */
 	@Override
 	public Communication makeVoiceCall(Terminal sender, Terminal receiver) {
+		sender.setLastTerminalMode(this);
 		sender.setMode(BusyMode.getMode());
 		return new VoiceCommunication(sender, receiver);
 	}
@@ -130,6 +131,7 @@ public class SilenceMode implements TerminalMode, Serializable {
 	 */
 	@Override
 	public Communication makeVideoCall(Terminal sender, Terminal receiver) {
+		sender.setLastTerminalMode(this);
 		sender.setMode(BusyMode.getMode());
 		return new VoiceCommunication(sender, receiver);
 	}

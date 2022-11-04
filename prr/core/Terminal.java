@@ -35,7 +35,7 @@ abstract public class Terminal implements Serializable {
 	private Map<Integer, Communication> _communicationsReceived = new TreeMap<>();
 	private Communication _lastInteractiveCommunication;
 	private Communication _lastCommunicationMade;
-	private TerminalMode _lastMode;
+	private TerminalMode _lastTerminalMode;
 
 	Terminal(String id, Client client) throws InvalidKeyException {
 		setId(id);
@@ -88,6 +88,14 @@ abstract public class Terminal implements Serializable {
 
 	Collection<Communication> getCommunicationsReceived() {
 		return _communicationsReceived.values();
+	}
+
+	TerminalMode getLastTerminalMode(){
+		return _lastTerminalMode;
+	}
+
+	void setLastTerminalMode(TerminalMode lastTerminalMode){
+		_lastTerminalMode = lastTerminalMode;
 	}
 
 	/**
@@ -241,6 +249,7 @@ abstract public class Terminal implements Serializable {
 		addMadeCommunication(communication);
 		setLastCommunicationMade(communication);
 		setLastInteractiveCommunication(communication);
+		
 		
 		try {
 			receiver.acceptVoiceCall(this);

@@ -108,6 +108,7 @@ public class IdleMode implements TerminalMode, Serializable {
 	 */
 	@Override
 	public Communication makeVoiceCall(Terminal sender, Terminal receiver) {
+		sender.setLastTerminalMode(this);
 		sender.setMode(BusyMode.getMode());
 		return new VoiceCommunication(sender, receiver);
 	}
@@ -119,10 +120,11 @@ public class IdleMode implements TerminalMode, Serializable {
 	 * @param sender terminal that sends the communication
 	 */
 	@Override
-	public Communication acceptVoiceCall(Terminal sender) {
-		sender.setMode(BusyMode.getMode());
-		return sender.getLastCommunicationMade();
-	}
+    public Communication acceptVoiceCall(Terminal sender) {
+        sender.getLastCommunicationMade().getTerminalReceiver().setLastTerminalMode(this);
+		sender.getLastCommunicationMade().getTerminalReceiver().setMode(BusyMode.getMode());
+        return sender.getLastCommunicationMade();
+    }
 
 	
 	/** 
@@ -133,7 +135,7 @@ public class IdleMode implements TerminalMode, Serializable {
 	 */
 	@Override
 	public Communication makeVideoCall(Terminal sender, Terminal receiver) {
-		sender.setMode(BusyMode.getMode());
+		sender.setLastTerminalMode(this);
 		return new VideoCommunication(sender, receiver);
 	}
 
@@ -144,10 +146,10 @@ public class IdleMode implements TerminalMode, Serializable {
 	 * @param sender terminal that sends the communication
 	 */
 	@Override
-	public Communication acceptVideoCall(Terminal sender) {
-		sender.setMode(BusyMode.getMode());
-		return sender.getLastCommunicationMade();
-	}
+    public Communication acceptVideoCall(Terminal sender) {
+        sender.getLastCommunicationMade().getTerminalReceiver().setMode(BusyMode.getMode());
+        return sender.getLastCommunicationMade();
+    }
 
 	
 	@Override
