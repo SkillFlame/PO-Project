@@ -12,7 +12,11 @@ public abstract class InteractiveCommunication extends Communication {
 	public InteractiveCommunication(Terminal sender, Terminal receiver) {
 		super(sender, receiver);
 	}
-
+	
+	
+	/** 
+	 * Gets the duration of the Interactive Communication made
+	 */
 	@Override
 	int getSize() {
 		if (getIsOngoing()) {

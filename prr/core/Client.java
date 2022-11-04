@@ -40,16 +40,24 @@ public class Client implements Serializable {
 	}
 
 	/**
-	 * Puts all the Client's Notifications in a Notification List
+	 * Puts all the Client's Notifications in an unmodifiable Notification List
 	 */
 	List<Notification> getNotifications() {
 		return Collections.unmodifiableList(_notifications);
 	}
 
+	/**
+	 * Clears the Notification List of the Client
+	 */
 	void removeNotifications() {
 		_notifications.clear();
 	}
 
+	/**
+	 * Gets the activity of the Client's Notifications
+	 * 
+	 * @return true if the client can receive notifications
+	 */
 	boolean getNotificationActivity() {
 		if (_activity == Notifications.YES) {
 			return true;
@@ -57,14 +65,25 @@ public class Client implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Adds a notification to the Client's Notification List
+	 * 
+	 * @param notification the chosen notification
+	 */
 	void addNotification(Notification notification) {
 		_notifications.add(notification);
 	}
 
+	/**
+	 * Activates the Client's ability of receiving notifications
+	 */
 	void activateNotifications() {
 		this._activity = Notifications.YES;
 	}
 
+	/**
+	 * Deactivates the Client's ability of receiving notifications
+	 */
 	void deactivateNotifications() {
 		this._activity = Notifications.NO;
 	}
@@ -76,10 +95,18 @@ public class Client implements Serializable {
 		_terminals.add(terminalId);
 	}
 
+	/**
+	 * Gets the terminal ids of the Client's Terminals
+	 */
 	List<String> getClientTerminals() {
 		return _terminals;
 	}
 
+	/**
+	 * Updates Client's Balance by its Terminal
+	 * 
+	 * @param clientTerminal a terminal of the client
+	 */
 	void updateClientBalance(Terminal clientTerminal) {
 		for (String Id : _terminals) {
 			if (Id == clientTerminal.getId()) {

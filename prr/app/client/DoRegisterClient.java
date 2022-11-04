@@ -22,7 +22,7 @@ class DoRegisterClient extends Command<Network> {
 		try {
 			_receiver.registerClient(stringField("key"), stringField("name"), integerField("taxId"));
 		} catch (KeyAlreadyExistsException e) {
-			throw new DuplicateClientKeyException(stringField("key"));
+			throw new DuplicateClientKeyException(e.getKey());
 		}
 	}
 }

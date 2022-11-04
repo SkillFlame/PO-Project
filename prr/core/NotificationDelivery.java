@@ -1,5 +1,5 @@
 package prr.core;
-
+/* Interface of the Notification Delivery Strategy Pattern */
 public interface NotificationDelivery {
     void notifyTerminalO2S(Terminal target);
     void notifyTerminalO2I(Terminal target);

@@ -10,8 +10,8 @@ public abstract class Communication implements Serializable{
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 	
-	private static int _Id;
-	private boolean _isPaId;
+	private static int _id;
+	private boolean _isPaid;
 	private double _price;
 	private boolean _isOngoing;
 	private Terminal _sender;
@@ -21,11 +21,14 @@ public abstract class Communication implements Serializable{
 	abstract int getSize();
 	
 	public Communication(Terminal sender, Terminal receiver){
-		_Id += 1;
+		_id += 1;
 		_sender = sender;
 		_receiver = receiver;
 	}
 
+	/**
+	 * Gets the status of the Communication into String
+	 */
 	String getStatus(){
 		if(_isOngoing){
 			return "ONGOING";
@@ -34,7 +37,7 @@ public abstract class Communication implements Serializable{
 	}
 
 	int getId(){
-		return _Id;
+		return _id;
 	}
 
 	double getPrice(){
@@ -42,7 +45,7 @@ public abstract class Communication implements Serializable{
 	}
 
 	boolean getPaymentState(){
-		return _isPaId;
+		return _isPaid;
 	}
 
 	void setPrice(double price) {
@@ -68,7 +71,7 @@ public abstract class Communication implements Serializable{
 	 */
 	@Override 
 	public String toString() {
-		String output = _Id + "|" + _sender.getId() + "|" + _receiver.getId() + "|" + getSize() + "|" + _price + "|" + getStatus();
+		String output = _id + "|" + _sender.getId() + "|" + _receiver.getId() + "|" + getSize() + "|" + _price + "|" + getStatus();
 		return output;
 	}
 }

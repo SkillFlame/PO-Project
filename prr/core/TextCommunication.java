@@ -15,14 +15,25 @@ public class TextCommunication extends Communication {
 		_message = message;
 	}
 	
+	
+	/** 
+	 * Gets the length of the Text Communication made
+	 */
 	@Override
 	int getSize(){ 
 		if(!getIsOngoing()){
 			return 0;
 		}
+
 		return _message.length(); 
 	}
 
+	
+	/** 
+	 * Computes the cost of the Text Communication made using the Terminal owner's Rateplan
+	 * 
+	 * @param ratePlan the owner's rateplan
+	 */
 	@Override
 	double computeCost(RatePlan ratePlan) {
 		double price = ratePlan.computeCost(getTerminalSender().getOwner(), this);

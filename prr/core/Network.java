@@ -51,7 +51,7 @@ public class Network implements Serializable {
 	/**
 	 * Registers a Terminal on the current Network
 	 * 
-	 * @param terminalType either "FANCY" or "BASIC" terminal type
+	 * @param terminalType either "FANCY" or "BASIC" Terminal type
 	 * @param terminalId   id of a terminal
 	 * @param clientId     id of a client
 	 * 
@@ -65,7 +65,8 @@ public class Network implements Serializable {
 	 * @throws UnknownKeyException       if the given clientId is not recognized
 	 */
 	public Terminal registerTerminal(String terminalType, String terminalId, String clientId)
-			throws UnrecognizedTypeException, InvalidKeyException, KeyAlreadyExistsException, UnknownKeyException {
+			throws UnrecognizedTypeException, InvalidKeyException, KeyAlreadyExistsException, 
+			UnknownKeyException {
 		Terminal terminal;
 
 		if (hasTerminal(terminalId)) {
@@ -98,7 +99,7 @@ public class Network implements Serializable {
 	}
 
 	/**
-	 * Gets the Terminal with the desired ID from the terminal Map
+	 * Gets the Terminal with the desired id from the Terminal Map
 	 * 
 	 * @param terminalID id of the desired terminal
 	 * 
@@ -112,7 +113,7 @@ public class Network implements Serializable {
 	}
 
 	/**
-	 * Gets the List of Terminals from the Terminal Map by its Ids
+	 * Gets the List of Terminals from the Terminal Map by its ids
 	 */
 	public List<Terminal> getTerminals() {
 		List<Terminal> terminals = new ArrayList<>();
@@ -123,7 +124,7 @@ public class Network implements Serializable {
 	}
 
 	/**
-	 * Gets the UnusedTerminals from the Terminal Map by its Ids
+	 * Gets the unused Terminals from the Terminal Map by its ids
 	 */
 	public List<Terminal> getFreeTerminals() {
 		List<Terminal> terminals = new ArrayList<>();
@@ -135,22 +136,49 @@ public class Network implements Serializable {
 		return terminals;
 	}
 
+	/**
+	 * Adds a friend to the chosen Terminal's friendlist
+	 * 
+	 * @param terminalId id of desired terminal
+	 * @param friendId	id of desired friend terminal
+	 */
 	public void addFriend(String terminalId, String friendId) {
 		_terminals.get(terminalId).addFriend(friendId);
 	}
 
+	/**
+	 * Adds friend to the chosen Terminal
+	 * 
+	 * @param terminal chosen terminal
+	 * @param friendId	id of desired friend terminal
+	 */
 	public void addFriend(Terminal terminal, String friendId) {
 		terminal.addFriend(friendId);
 	}
 
+	/**
+	 * Removes a friend from the chosen Terminal's friendlist
+	 * 
+	 * @param terminalId id of desired terminal
+	 * @param friendId id of desired friend terminal
+	 */
 	public void removeFriend(String terminalId, String friendId) {
 		_terminals.get(terminalId).removeFriend(friendId);
 	}
 
+	/**
+	 * Removes friend from chosen Terminal
+	 * 
+	 * @param terminal chosen terminal
+	 * @param friendId	id of desired friend terminal
+	 */
 	public void removeFriend(Terminal terminal, String friendId) {
 		_terminals.get(terminal.getId()).removeFriend(friendId);
 	}
 
+	/**
+	 * Gets all Terminals with a positive balance from the Terminal Map
+	 */
 	public List<Terminal> getPositiveBalanceTerminals() {
 		List<Terminal> terminals = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
@@ -162,41 +190,45 @@ public class Network implements Serializable {
 	}
 
 	/**
-	 * Checks if a Terminal with a certain Id is contained in the Terminal Map
+	 * Sets a terminal on Idle state
 	 * 
-	 * @param terminalId Id of a terminal
-	 * @return true if the terminal with the desired Id exists
+	 * @param terminal chosen terminal
+	 * 
+	 * @throws TerminalStateAlreadySetException if the Idle state is already set
 	 */
-
 	public void setOnIdle(Terminal terminal) throws TerminalStateAlreadySetException {
 		terminal.setOnIdle();
 	}
 
+	/**
+	 * Sets a terminal to the Off state
+	 * 
+	 * @param terminal chosen terminal
+	 * 
+	 * @throws TerminalStateAlreadySetException if the Off state is already set
+	 */
 	public void turnOff(Terminal terminal) throws TerminalStateAlreadySetException {
 		terminal.turnOff();
 	}
 
+	/**
+	 * Sets a terminal to the Silent state
+	 * 
+	 * @param terminal chosen terminal
+	 * 
+	 * @throws TerminalStateAlreadySetException if the Silent state is already set
+	 */
 	public void setOnSilent(Terminal terminal) throws TerminalStateAlreadySetException {
 		terminal.setOnSilent();
 	}
 
+	/**
+	 * Gets a Terminal's id
+	 * @param terminal chosen terminal
+	 */
 	public String getTerminalId(Terminal terminal) {
 		return terminal.getId();
 	}
-
-	/**
-	 * Checks if a Terminal Type is valId ("BASIC" or "FANCY")
-	 * 
-	 * @param terminalType type of a terminal
-	 * @return true if the given type is a valId terminal type
-	 */
-	//public boolean isValIdTerminalType(String terminalType) {
-	//	boolean isValId = false;
-	//	switch (terminalType) {
-	//		case "BASIC", "FANCY" -> isValId = true;
-	//	}
-	//	return isValId;
-	//}
 
 	
 	// CLIENTS
@@ -248,7 +280,7 @@ public class Network implements Serializable {
 	}
 
 	/**
-	 * Gets the List of Clients from the Client Map by its Ids
+	 * Gets the List of Clients from the Client Map by its ids
 	 */
 	public List<Client> getClients() {
 		List<Client> listed = new ArrayList<>(_clients.values());
@@ -257,10 +289,26 @@ public class Network implements Serializable {
 
 	// CLIENT NOTIFICATIONS
 
+	/**
+	 * Checks if the desired Client in the Client Map has its Notifications active
+	 * 
+	 * @param clientId id of the desired client
+	 * @return true if the client's notifications are active
+	 */
 	public boolean isClientNotificationsActive(String clientId) {
 		return _clients.get(clientId).getNotificationActivity();
 	}
 
+	/**
+	 * Activates the Client's Notification activity
+	 * 
+	 * @param clientId id of the desired client
+	 * 
+	 * @throws NotificationsAlreadyEnabledException if the client's notifications are already
+	 * 												enabled
+	 * 
+	 * @throws UnknownKeyException if the given clientId is not recognized
+	 */
 	public void activateClientNotifications(String clientId) throws NotificationsAlreadyEnabledException, UnknownKeyException {
 		if (isClientNotificationsActive(clientId)) {
 			throw new NotificationsAlreadyEnabledException();
@@ -268,6 +316,16 @@ public class Network implements Serializable {
 		_clients.get(clientId).activateNotifications();
 	}
 
+	/**
+	 * Deactivates the Client's Notifications activity
+	 * 
+	 * @param clientId id of the desired client
+	 * 
+	 * @throws NotificationsAlreadyDisabledException if the client's notifications are already
+	 * 												 disabled
+	 * 
+	 * @throws UnknownKeyException if the given clientId is not recognized
+	 */
 	public void deactivateClientNotifications(String clientId) throws NotificationsAlreadyDisabledException, UnknownKeyException {
 		if (!isClientNotificationsActive(clientId)) {
 			throw new NotificationsAlreadyDisabledException();
@@ -285,8 +343,19 @@ public class Network implements Serializable {
 		return client.getNotifications();
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public void clearNotifications(String clientId){
+		_clients.get(clientId).removeNotifications();
+	}
+
 	// PAYMENTS AND DEBTS
 
+	/**
+	 * Gets the global payments of a Network
+	 */
 	public long getGlobalPayments() {
 		long payments = 0;
 		for (Client client : _clients.values()) {
@@ -295,6 +364,10 @@ public class Network implements Serializable {
 		return payments;
 	}
 
+
+	/**
+	 * Gets the global debts of a Network
+	 */
 	public long getGlobalDebts() {
 		long debts = 0;
 		for (Client client : _clients.values()) {
@@ -303,14 +376,31 @@ public class Network implements Serializable {
 		return debts;
 	}
 
+	/**
+	 * Gets the chosen Terminal's payments
+	 * 
+	 * @param terminal the chosen terminal
+	 */
 	public long getTerminalPayments(Terminal terminal) {
 		return (long) terminal.getPayments();
 	}
 
+	/**
+	 * Gets the chosen Terminal's debt
+	 * 
+	 * @param terminal the chosen terminal
+	*/
 	public long getTerminalDebt(Terminal terminal) {
 		return (long) terminal.getDebt();
 	}
 
+	/**
+	 * Gets the desired Client's payments
+	 * 
+	 * @param clientId id of the desired client
+	 * 
+	 * @throws UnknownKeyException if the given clientId is not recognized
+	 */
 	public long getClientPayments(String clientId) throws UnknownKeyException {
 		if (!hasClient(clientId)) {
 			throw new UnknownKeyException(clientId);
@@ -318,6 +408,13 @@ public class Network implements Serializable {
 		return (long) _clients.get(clientId).getClientPayments();
 	}
 
+	/**
+	 * Gets the desired Client's debt
+	 * 
+	 * @param clientId id of the desired client
+	 * 
+	 * @throws UnknownKeyException if the given clientId is not recognized
+	 */
 	public long getClientDebt(String clientId) throws UnknownKeyException {
 		if (!hasClient(clientId)) {
 			throw new UnknownKeyException(clientId);
@@ -325,12 +422,20 @@ public class Network implements Serializable {
 		return (long) _clients.get(clientId).getClientDebt();
 	}
 
+	/**
+	 * Gets the balance (payments - debt) of the desired client
+	 * 
+	 * @param clientId id of the desired client
+	 */
 	public double getClientBalance(String clientId) {
 		Client client = _clients.get(clientId);
 		return client.getBalance();
 
 	}
 
+	/**
+	 * Gets all the Clients with debt from the Client Map
+	 */
 	public List<Client> getClientsWithDebt() {
 		List<Client> clientsWithDebt = new ArrayList<>(_clients.values());
 		for (Client client : clientsWithDebt) {
@@ -341,6 +446,9 @@ public class Network implements Serializable {
 		return clientsWithDebt;
 	}
 
+	/**
+	 * Gets all the Clients without debt from the Client Map
+	 */
 	public List<Client> getClientsWithoutDebt() {
 		List<Client> clientsWithoutDebt = new ArrayList<>(_clients.values());
 		for (Client client : clientsWithoutDebt) {
@@ -351,23 +459,12 @@ public class Network implements Serializable {
 		return clientsWithoutDebt;
 	}
 
-	public void activateNotificationReception(String clientId) throws NotificationsAlreadyEnabledException {
-		Client client = _clients.get(clientId);
-		if (client.getNotificationActivity()) {
-			throw new NotificationsAlreadyEnabledException();
-		}
-	}
-
-	public void deactivateNotificationReception(String clientId) throws NotificationsAlreadyDisabledException {
-		Client client = _clients.get(clientId);
-		if (!client.getNotificationActivity()) {
-			throw new NotificationsAlreadyDisabledException();
-		}
-	}
-
 
 	// COMMUNICATIONS
 
+	/**
+	 * Gets all the Communications from the Network
+	 */
 	public List<Communication> getCommunications() {
 		List<Communication> communications = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
@@ -377,6 +474,27 @@ public class Network implements Serializable {
 		return communications;
 	}
 
+	/**
+	 * Starts an Interactive Communication from a Terminal
+	 * 
+	 * @param terminal the chosen terminal
+	 * @param receiverId id of the terminal that recieves the communication
+	 * @param type either "VIDEO" or "VOICE" interactive communication type
+	 * 
+	 * @throws UnknownKeyException if the given receiverId is not recognized
+	 * 
+	 * @throws SenderTerminalDoesNotSupportCommunicationException if the sender terminal does
+	 * 													not support an interactive communication
+	 * 
+	 * @throws ReceiverTerminalDoesNotSupportCommunicationException if the receiver terminal
+	 * 											does not support an interactive communication
+	 * 
+	 * @throws ReceiverIsBusyException if the receiver terminal is on Busy mode
+	 * 
+	 * @throws ReceiverIsOffException if the receiver terminal is on Off mode
+	 * 
+	 * @throws ReceiverIsSilentException if the receiver terminal is on Silent mode
+	 */
 	public void startInteractiveCommunication(Terminal terminal, String receiverId, String type)
 			throws UnknownKeyException, SenderTerminalDoesNotSupportCommunicationException,
 			ReceiverTerminalDoesNotSupportCommunicationException, ReceiverIsBusyException, ReceiverIsOffException,
@@ -388,10 +506,25 @@ public class Network implements Serializable {
 		}
 	}
 
+	/**
+	 * Ends the current Interactive Communication of a Terminal
+	 * 
+	 * @param terminal the chosen terminal
+	 * @param duration the duration of the interactive communication
+	 */
 	public void endInteractiveCommunication(Terminal terminal, int duration) {
 		terminal.endOngoingCommunication(duration);
 	}
 
+	/**
+	 * Sends a Text Communication to another Terminal
+	 * 
+	 * @param terminal the sender terminal
+	 * @param receiverId id of the receiver terminal
+	 * @param message content of the sent message
+	 * 
+	 * @throws UnknownKeyException if the given receiverId is not recognized
+	 */
 	public void sendTextCommunication(Terminal terminal, String receiverId, String message) throws UnknownKeyException {
 		if (!hasTerminal(receiverId)) {
 			throw new UnknownKeyException(receiverId);
@@ -399,14 +532,31 @@ public class Network implements Serializable {
 		terminal.makeSMS(_terminals.get(receiverId), message);
 	}
 
+	/**
+	 * Shows the current ongoing InteractiveCommunication of a Terminal
+	 * 
+	 * @param terminal the chosen terminal
+	 * 
+	 * @throws NoOngoingCommunicationException if there no ongoing communication on the chosen terminal
+	 */
 	public Communication showOngoingCommunication(Terminal terminal) throws NoOngoingCommunicationException {
 		return terminal.getOngoingCommunication();
 	}
 
+	/**
+	 * Gets the cost of a Communication
+	 */
 	public long getCommunicationCost(Terminal terminal) {
 		return (long) terminal.getLastInteractiveCommunicationCost();
 	}
 
+	/**
+	 * Gets the List of Communications made by a Client
+	 * 
+	 * @param clientId id of the desired client
+	 * 
+	 * @throws UnknownKeyException if if the given clientId is not recognized
+	 */
 	public List<Communication> getCommunicationsMadeByClient(String clientId) throws UnknownKeyException {
 		List<Communication> madeCommunications = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
@@ -415,6 +565,13 @@ public class Network implements Serializable {
 		return madeCommunications;
 	}
 
+	/**
+	 * Gets the List of Communications received by a Client
+	 * 
+	 * @param clientId id of the desired client
+	 * 
+	 * @throws UnknownKeyException if the given clientId is not recognized
+	 */
 	public List<Communication> getCommunicationsRecievedByClient(String clientId) throws UnknownKeyException{
 		List<Communication> receivedCommunications = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
@@ -424,6 +581,14 @@ public class Network implements Serializable {
 		return receivedCommunications;
 	}
 
+	/**
+	 * Performs the payment of a Communication made by a Terminal
+	 * 
+	 * @param terminal chosen terminal
+	 * @param communicationId id of the communication made
+	 * 
+	 * @throws UnknownIdentifierException if the given communicationId is not recognized
+	 */
 	public void performPayment(Terminal terminal, int communicationId) throws UnknownIdentifierException {
 		terminal.pay(communicationId);
 	}

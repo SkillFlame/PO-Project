@@ -3,7 +3,7 @@ package prr.core;
 import prr.core.exception.ReceiverIsBusyException;
 import prr.core.exception.ReceiverIsOffException;
 import prr.core.exception.ReceiverIsSilentException;
-
+/* Interface of the TerminalMode State pattern */
 public interface TerminalMode {
 	public boolean canEndCurrentCommunication(Terminal terminal);
 

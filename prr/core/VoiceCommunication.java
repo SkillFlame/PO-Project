@@ -12,6 +12,12 @@ public class VoiceCommunication extends InteractiveCommunication {
 		super(sender, receiver);
 	}
 
+	
+	/** 
+	 * Computes the cost of the Voice Communication made using the Terminal owner's Rateplan
+	 * 
+	 * @param ratePlan the owner's rateplan
+	 */
 	@Override
 	double computeCost(RatePlan ratePlan) {
 		double price = ratePlan.computeCost(getTerminalSender().getOwner(), this);

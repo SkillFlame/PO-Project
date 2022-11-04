@@ -42,9 +42,12 @@ abstract public class Terminal implements Serializable {
 		_mode = new IdleMode();
 	}
 
-	/**
+	/** 
+	 * Sets the Terminal id while checking if it is valid
+	 * 
 	 * @param Id of a Terminal
-	 * @throws InvalIdKeyException if the given clientId is not valId
+	 * 
+	 * @throws InvalIdKeyException if the given id is not valId
 	 */
 	private void setId(String id) throws InvalidKeyException {
 		if (id.length() != 6) {
@@ -86,16 +89,28 @@ abstract public class Terminal implements Serializable {
 		return _communicationsReceived.values();
 	}
 
+	/**
+	 * Adds a Communication that was made to the Terminal's made Communication Map
+	 * 
+	 * @param communication the communication that was made
+	 */
 	void addMadeCommunication(Communication communication) {
 		_communicationsMade.put(communication.getId(), communication);
 	}
 
+	/**
+	 * Adds a Communication that was received to the Terminal's received Communication Map
+	 * 
+	 * @param communication the communication that was received
+	 */
 	void addReceivedCommunication(Communication communication) {
 		_communicationsReceived.put(communication.getId(), communication);
 	}
 
 	/**
-	 * Adds a Friend to the Friend List
+	 * Adds a Friend Terminal to the Friend List
+	 * 
+	 * @param friendId id of the friend terminal
 	 */
 	void addFriend(String friendId) {
 		if (friendId != _id && !_friendsId.contains(friendId)) {
@@ -103,6 +118,11 @@ abstract public class Terminal implements Serializable {
 		}
 	}
 
+	/**
+	 * Removes a Friend Terminal to the Friend List
+	 * 
+	 * @param friendId id of the friend terminal
+	 */
 	void removeFriend(String friendId) {
 		if (_friendsId.contains(friendId)) {
 			_friendsId.remove(friendId);
@@ -129,53 +149,143 @@ abstract public class Terminal implements Serializable {
 		return getMode().canStartCommunication();
 	}
 
+	/**
+	 * Turns the Terminal to the Off state
+	 * 
+	 * @throws TerminalStateAlreadySetException if the terminal is already in Off state
+	 */
 	public void turnOff() throws TerminalStateAlreadySetException {
 		getMode().turnOff(this);
 	}
 
+	/**
+	 * Turns the Terminal to the Silent state
+	 * 
+	 * @throws TerminalStateAlreadySetException if the terminal is already in Silent state
+	 */
 	public void setOnSilent() throws TerminalStateAlreadySetException {
 		getMode().setOnSilent(this);
 	}
 
+	/**
+	 * Turns the Terminal to the Idle state
+	 * 
+	 * @throws TerminalStateAlreadySetException if the terminal is already in Idle state
+	 */
 	public void setOnIdle() throws TerminalStateAlreadySetException {
 		getMode().setOnIdle(this);
 	}
 
+	/**
+	 * Creates a Text Communication and adds it to the Map of made Communications
+	 * 
+	 * @param receiver the terminal that receives the communication
+	 * @param Message text content of the sent message
+	 */
 	void makeSMS(Terminal receiver, String Message) {
 		addMadeCommunication(getMode().makeSMS(this, receiver, Message));
 		receiver.acceptSMS(this);
 	}
 
+	/**
+	 * Accepts a received Text Communication adding it to the Map of received Communications
+	 * 
+	 * @param sender the terminal that sends the communication
+	 */
 	void acceptSMS(Terminal sender) {
 		addReceivedCommunication(getMode().acceptSMS(sender));
 	}
 
+	/**
+	 * Creates a Voice Communication and adds it to the Map of made Communications
+	 * 
+	 * @param receiver the terminal that receives the communication
+	 * 
+	 * @throws ReceiverIsBusyException if the receiver terminal is in Busy state
+	 * 
+	 * @throws ReceiverIsOffException if the receiver terminal is in Off state
+	 * 
+	 * @throws ReceiverIsSilentException if the receiver terminal is in Silent state 
+	 */
 	void makeVoiceCall(Terminal receiver)
 			throws ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
 		addMadeCommunication(getMode().makeVoiceCall(this, receiver));
 		receiver.acceptVoiceCall(this);
 	}
 
+	/**
+	 * Accepts a received Voice Communication adding it to the Map of received Communications
+	 * 
+	 * @param sender the terminal that sends the communication
+	 */
 	void acceptVoiceCall(Terminal sender)
 			throws ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
 		addReceivedCommunication(getMode().acceptVoiceCall(sender));
 	}
 
+	/**
+	 * Prepares the process of creating a Video Communication on a Fancy Terminal
+	 * 
+	 * @param receiver the terminal that receives the communication
+	 * 
+	 * @throws SenderTerminalDoesNotSupportCommunicationException if the sender terminal does not support a
+	 * 															Video Communication
+	 * 
+	 * @throws ReceiverTerminalDoesNotSupportCommunicationException if the receiver terminal does not support
+	 * 															a Video Communication
+	 * 
+	 * @throws ReceiverIsBusyException if the receiver terminal is in Busy state
+	 * 
+	 * @throws ReceiverIsOffException if the receiver terminal is in Off state
+	 * 
+	 * @throws ReceiverIsSilentException if the receiver terminal is in Silent state
+	 */
 	void makeVideoCall(Terminal receiver) throws SenderTerminalDoesNotSupportCommunicationException,
 			ReceiverTerminalDoesNotSupportCommunicationException, ReceiverIsBusyException, ReceiverIsOffException,
 			ReceiverIsSilentException {
 		throw new SenderTerminalDoesNotSupportCommunicationException(getId(), "VIDEO");
 	}
 
+	/**
+	 * Prepares the process of accepting a received Video Communication on a Fancy Terminal
+	 * 
+	 * @param sender the terminal that sends the communication
+	 * 
+	 * @throws ReceiverTerminalDoesNotSupportCommunicationException if the receiver terminal does not support
+	 * 																a Video Communication
+	 * 
+	 * @throws ReceiverIsBusyException if the receiver terminal is in Busy state
+	 * 
+	 * @throws ReceiverIsOffException if the receiver terminal is in Off state
+	 * 
+	 * @throws ReceiverIsSilentException if the receiver terminal is in Silent state
+	 */
 	void acceptVideoCall(Terminal sender) throws ReceiverTerminalDoesNotSupportCommunicationException,
 			ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
 		throw new ReceiverTerminalDoesNotSupportCommunicationException(getId(), "VIDEO");
 	}
 
+	/**
+	 * Ends the current ongoing Interactive Communication
+	 * 
+	 * @param duration minutes of duration of the made interactive communication
+	 */
 	void endOngoingCommunication(int duration) {
 		getMode().endOngoingCommunication(duration);
+		if(getOwner().getRatePlan().toStringRatePlan() == "GOLD" || 
+			getOwner().getRatePlan().toStringRatePlan() == "PLATINUM"){
+			getOwner().getRatePlan().demote(_owner);
+		}
 	}
 
+	/**
+	 * Performs the payment of a Communication by its id
+	 * 		promotes the Terminal's owner if it meets the conditions
+	 * 
+	 * @param communicationId id of the desired communication
+	 * 
+	 * @throws UnknownIdentifierException if the given communicationId is not recognized
+	 */
 	void pay(int communicationId) throws UnknownIdentifierException {
 		if (_communicationsMade.keySet().contains(communicationId)) {
 			Communication communication = _communicationsMade.get(communicationId);
@@ -183,10 +293,11 @@ abstract public class Terminal implements Serializable {
 				double cost = communication.computeCost(_owner.getRatePlan());
 				_payments += cost;
 				_debt -= cost;
-
 			}
 		}
-		// throw new InvalidCommunicationException();
+		if(getOwner().getRatePlan().toStringRatePlan() == "NORMAL"){
+			getOwner().getRatePlan().promote(_owner);
+		}
 	}
 
 	double getPayments() {
@@ -205,10 +316,18 @@ abstract public class Terminal implements Serializable {
 		return getPayments() - getDebt();
 	}
 
+	/**
+	 * Gets the cost of the last Interactive Communication made
+	 */
 	public double getLastInteractiveCommunicationCost() {
 		return _lastInteractiveCommunication.getPrice();
 	}
 
+	/**
+	 * Gets the current ongoing Communication
+	 * 
+	 * @throws NoOngoingCommunicationException if there is no ongoing communication
+	 */
 	public Communication getOngoingCommunication() throws NoOngoingCommunicationException {
 		if (!canEndCurrentCommunication()) {
 			throw new NoOngoingCommunicationException();
