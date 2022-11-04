@@ -17,12 +17,11 @@ class DoOpenMenuTerminalConsole extends Command<Network> {
 	}
 
 	@Override
-	protected final void execute() throws CommandException {
+	protected final void execute() throws CommandException, UnknownTerminalKeyException {
 		try {
 			(new prr.app.terminal.Menu(_receiver, _receiver.getTerminal(stringField("terminalKey")))).open();
 		} catch (UnknownKeyException uke) {
 			throw new UnknownTerminalKeyException(uke.getKey());
 		}
-		;
 	}
 }
