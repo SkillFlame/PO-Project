@@ -9,6 +9,7 @@ public class BusyMode implements TerminalMode, Serializable {
 	private static final long serialVersionUID = 202208091753L;
 
 	final static TerminalMode _mode = new BusyMode();
+	private NotificationDeliveryMethod _method;
 
 	
 	public static TerminalMode getMode() {
@@ -126,6 +127,7 @@ public class BusyMode implements TerminalMode, Serializable {
 	@Override
 	public void endOngoingCommunication(int duration, Terminal terminal) {
 		terminal.setMode(IdleMode.getMode());
+		_method.notifyTerminalB2I(terminal);
 	}
 
 	

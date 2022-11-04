@@ -9,7 +9,7 @@ public class OffMode implements TerminalMode, Serializable {
 	private static final long serialVersionUID = 202208091753L;
 
 	final static TerminalMode _mode = new OffMode();
-
+	private NotificationDeliveryMethod _method;
 	
 	public static TerminalMode getMode() {
 		return _mode;
@@ -47,11 +47,14 @@ public class OffMode implements TerminalMode, Serializable {
 	@Override
 	public void setOnIdle(Terminal terminal) {
 		terminal.setMode(IdleMode.getMode());
+		_method.notifyTerminalO2I(terminal);
 	}
 
 	
 	@Override
 	public void setOnSilent(Terminal terminal) {
+		terminal.setMode(SilenceMode.getMode());
+		_method.notifyTerminalO2S(terminal);
 	}
 
 	
