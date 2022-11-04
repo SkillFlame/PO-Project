@@ -239,7 +239,8 @@ abstract public class Terminal implements Serializable {
 		try {
 			receiver.acceptVoiceCall(this);
 		} catch (ReceiverIsOffException rioe) {
-			getMode().handleFailedCommunication(this);;
+			getMode().handleFailedCommunication(this);
+			communication.setIsOngoing(false);
 			throw new ReceiverIsOffException();
 		}
 	}
@@ -306,6 +307,7 @@ abstract public class Terminal implements Serializable {
 	void endOngoingCommunication(int duration) throws NoOngoingCommunicationException {
 		getMode().endOngoingCommunication(duration, this);
 		Communication communication = getOngoingCommunication();
+		communication.setIsOngoing(false);
 		communication.setSize(duration);
 		communication.computeCost(getOwner().getRatePlan());
 		_debt += getOngoingCommunication().getPrice();
@@ -362,7 +364,7 @@ abstract public class Terminal implements Serializable {
 	 * @throws NoOngoingCommunicationException if there is no ongoing communication
 	 */
 	public Communication getOngoingCommunication() throws NoOngoingCommunicationException {
-		if (!canEndCurrentCommunication()) {
+		if (canStartCommunication()) {
 			throw new NoOngoingCommunicationException();
 		}
 		return _lastInteractiveCommunication;
