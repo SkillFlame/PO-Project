@@ -29,7 +29,6 @@ abstract public class Terminal implements Serializable {
 	private double _payments;
 	private TerminalMode _mode;
 
-	
 	private Client _client;
 	private Collection<String> _friendsId = new HashSet<String>();
 	private Map<Integer, Communication> _communicationsMade = new TreeMap<>();
@@ -43,7 +42,7 @@ abstract public class Terminal implements Serializable {
 		_mode = new IdleMode();
 	}
 
-	/** 
+	/**
 	 * Sets the Terminal id while checking if it is valid
 	 * 
 	 * @param Id of a Terminal
@@ -100,7 +99,8 @@ abstract public class Terminal implements Serializable {
 	}
 
 	/**
-	 * Adds a Communication that was received to the Terminal's received Communication Map
+	 * Adds a Communication that was received to the Terminal's received
+	 * Communication Map
 	 * 
 	 * @param communication the communication that was received
 	 */
@@ -165,7 +165,8 @@ abstract public class Terminal implements Serializable {
 	/**
 	 * Turns the Terminal to the Off state
 	 * 
-	 * @throws TerminalStateAlreadySetException if the terminal is already in Off state
+	 * @throws TerminalStateAlreadySetException if the terminal is already in Off
+	 *                                          state
 	 */
 	public void turnOff() throws TerminalStateAlreadySetException {
 		getMode().turnOff(this);
@@ -174,7 +175,8 @@ abstract public class Terminal implements Serializable {
 	/**
 	 * Turns the Terminal to the Silent state
 	 * 
-	 * @throws TerminalStateAlreadySetException if the terminal is already in Silent state
+	 * @throws TerminalStateAlreadySetException if the terminal is already in Silent
+	 *                                          state
 	 */
 	public void setOnSilent() throws TerminalStateAlreadySetException {
 		getMode().setOnSilent(this);
@@ -183,7 +185,8 @@ abstract public class Terminal implements Serializable {
 	/**
 	 * Turns the Terminal to the Idle state
 	 * 
-	 * @throws TerminalStateAlreadySetException if the terminal is already in Idle state
+	 * @throws TerminalStateAlreadySetException if the terminal is already in Idle
+	 *                                          state
 	 */
 	public void setOnIdle() throws TerminalStateAlreadySetException {
 		getMode().setOnIdle(this);
@@ -193,7 +196,7 @@ abstract public class Terminal implements Serializable {
 	 * Creates a Text Communication and adds it to the Map of made Communications
 	 * 
 	 * @param receiver the terminal that receives the communication
-	 * @param Message text content of the sent message
+	 * @param Message  text content of the sent message
 	 * 
 	 * @throws ReceiverIsOffException if the receiver terminal is in Off state
 	 */
@@ -207,7 +210,8 @@ abstract public class Terminal implements Serializable {
 	}
 
 	/**
-	 * Accepts a received Text Communication adding it to the Map of received Communications
+	 * Accepts a received Text Communication adding it to the Map of received
+	 * Communications
 	 * 
 	 * @param sender the terminal that sends the communication
 	 * 
@@ -223,11 +227,11 @@ abstract public class Terminal implements Serializable {
 	 * 
 	 * @param receiver the terminal that receives the communication
 	 * 
-	 * @throws ReceiverIsBusyException if the receiver terminal is in Busy state
+	 * @throws ReceiverIsBusyException   if the receiver terminal is in Busy state
 	 * 
-	 * @throws ReceiverIsOffException if the receiver terminal is in Off state
+	 * @throws ReceiverIsOffException    if the receiver terminal is in Off state
 	 * 
-	 * @throws ReceiverIsSilentException if the receiver terminal is in Silent state 
+	 * @throws ReceiverIsSilentException if the receiver terminal is in Silent state
 	 */
 	void makeVoiceCall(Terminal receiver)
 			throws ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
@@ -242,11 +246,20 @@ abstract public class Terminal implements Serializable {
 			getMode().handleFailedCommunication(this);
 			communication.setIsOngoing(false);
 			throw new ReceiverIsOffException();
+		} catch (ReceiverIsBusyException ribe) {
+			getMode().handleFailedCommunication(this);
+			communication.setIsOngoing(false);
+			throw new ReceiverIsBusyException();
+		} catch (ReceiverIsSilentException rise) {
+			getMode().handleFailedCommunication(this);
+			communication.setIsOngoing(false);
+			throw new ReceiverIsSilentException();
 		}
 	}
 
 	/**
-	 * Accepts a received Voice Communication adding it to the Map of received Communications
+	 * Accepts a received Voice Communication adding it to the Map of received
+	 * Communications
 	 * 
 	 * @param sender the terminal that sends the communication
 	 */
@@ -260,17 +273,29 @@ abstract public class Terminal implements Serializable {
 	 * 
 	 * @param receiver the terminal that receives the communication
 	 * 
-	 * @throws SenderTerminalDoesNotSupportCommunicationException if the sender terminal does not support a
-	 * 															Video Communication
+	 * @throws SenderTerminalDoesNotSupportCommunicationException   if the sender
+	 *                                                              terminal does
+	 *                                                              not support a
+	 *                                                              Video
+	 *                                                              Communication
 	 * 
-	 * @throws ReceiverTerminalDoesNotSupportCommunicationException if the receiver terminal does not support
-	 * 															a Video Communication
+	 * @throws ReceiverTerminalDoesNotSupportCommunicationException if the receiver
+	 *                                                              terminal does
+	 *                                                              not support
+	 *                                                              a Video
+	 *                                                              Communication
 	 * 
-	 * @throws ReceiverIsBusyException if the receiver terminal is in Busy state
+	 * @throws ReceiverIsBusyException                              if the receiver
+	 *                                                              terminal is in
+	 *                                                              Busy state
 	 * 
-	 * @throws ReceiverIsOffException if the receiver terminal is in Off state
+	 * @throws ReceiverIsOffException                               if the receiver
+	 *                                                              terminal is in
+	 *                                                              Off state
 	 * 
-	 * @throws ReceiverIsSilentException if the receiver terminal is in Silent state
+	 * @throws ReceiverIsSilentException                            if the receiver
+	 *                                                              terminal is in
+	 *                                                              Silent state
 	 */
 	void makeVideoCall(Terminal receiver) throws SenderTerminalDoesNotSupportCommunicationException,
 			ReceiverTerminalDoesNotSupportCommunicationException, ReceiverIsBusyException, ReceiverIsOffException,
@@ -279,18 +304,28 @@ abstract public class Terminal implements Serializable {
 	}
 
 	/**
-	 * Prepares the process of accepting a received Video Communication on a Fancy Terminal
+	 * Prepares the process of accepting a received Video Communication on a Fancy
+	 * Terminal
 	 * 
 	 * @param sender the terminal that sends the communication
 	 * 
-	 * @throws ReceiverTerminalDoesNotSupportCommunicationException if the receiver terminal does not support
-	 * 																a Video Communication
+	 * @throws ReceiverTerminalDoesNotSupportCommunicationException if the receiver
+	 *                                                              terminal does
+	 *                                                              not support
+	 *                                                              a Video
+	 *                                                              Communication
 	 * 
-	 * @throws ReceiverIsBusyException if the receiver terminal is in Busy state
+	 * @throws ReceiverIsBusyException                              if the receiver
+	 *                                                              terminal is in
+	 *                                                              Busy state
 	 * 
-	 * @throws ReceiverIsOffException if the receiver terminal is in Off state
+	 * @throws ReceiverIsOffException                               if the receiver
+	 *                                                              terminal is in
+	 *                                                              Off state
 	 * 
-	 * @throws ReceiverIsSilentException if the receiver terminal is in Silent state
+	 * @throws ReceiverIsSilentException                            if the receiver
+	 *                                                              terminal is in
+	 *                                                              Silent state
 	 */
 	void acceptVideoCall(Terminal sender) throws ReceiverTerminalDoesNotSupportCommunicationException,
 			ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
@@ -302,7 +337,8 @@ abstract public class Terminal implements Serializable {
 	 * 
 	 * @param duration minutes of duration of the made interactive communication
 	 * 
-	 * @throws NoOngoingCommunicationException if there is no current ongoing communication
+	 * @throws NoOngoingCommunicationException if there is no current ongoing
+	 *                                         communication
 	 */
 	void endOngoingCommunication(int duration) throws NoOngoingCommunicationException {
 		getMode().endOngoingCommunication(duration, this);
@@ -315,11 +351,12 @@ abstract public class Terminal implements Serializable {
 
 	/**
 	 * Performs the payment of a Communication by its id
-	 * 		promotes the Terminal's owner if it meets the conditions
+	 * promotes the Terminal's owner if it meets the conditions
 	 * 
 	 * @param communicationId id of the desired communication
 	 * 
-	 * @throws UnknownIdentifierException if the given communicationId is not recognized
+	 * @throws UnknownIdentifierException if the given communicationId is not
+	 *                                    recognized
 	 */
 	void pay(int communicationId) throws UnknownIdentifierException {
 		if (_communicationsMade.keySet().contains(communicationId)) {
@@ -330,7 +367,7 @@ abstract public class Terminal implements Serializable {
 				_debt -= cost;
 			}
 		}
-		if(getOwner().getRatePlan().toStringRatePlan() == "NORMAL"){
+		if (getOwner().getRatePlan().toStringRatePlan() == "NORMAL") {
 			getOwner().getRatePlan().promote(_client);
 		}
 	}
