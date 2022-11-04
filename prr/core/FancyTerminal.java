@@ -10,13 +10,13 @@ public class FancyTerminal extends Terminal {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
-	FancyTerminal(String terminalID, String clientID) throws InvalidKeyException {
-		super(terminalID, clientID);
+	FancyTerminal(String terminalId, String clientId) throws InvalidKeyException {
+		super(terminalId, clientId);
 	}
 
 	/**
 	 * toString implementation of a Fancy Terminal
-	 * terminalType|terminalId|clientId|terminalStatus|balance-paid|balance-debts|friend1,...,friend
+	 * terminalType|terminalId|clientId|terminalStatus|balance-paId|balance-debts|friend1,...,friend
 	 */
 	@Override
 	public String toString() {
@@ -24,13 +24,13 @@ public class FancyTerminal extends Terminal {
 		return output;
 	}
 
-	
+	@Override
 	public void makeVideoCall(Terminal receiver) {
-		super.getMode().makeVideoCall(this, receiver);
+		addCommunication(getMode().makeVIdeoCall(this, receiver));
 	}
-
+	@Override
 	void acceptVideoCall(Terminal terminalFrom) {
-		super.getMode().acceptVideoCall(terminalFrom);
+		getMode().acceptVIdeoCall(terminalFrom);
 	}
 
 }

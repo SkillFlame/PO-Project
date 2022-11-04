@@ -3,7 +3,6 @@ package prr.app.terminal;
 import prr.core.Network;
 import prr.core.Terminal;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Add a friend.
@@ -17,6 +16,7 @@ class DoAddFriend extends TerminalCommand {
 
 	@Override
 	protected final void execute() throws CommandException {
-		// FIXME implement command
+		_network.addFriend(_receiver, stringField("terminalID"));
+		// FIXME na se se funciona
 	}
 }

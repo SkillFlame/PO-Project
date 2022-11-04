@@ -66,17 +66,17 @@ public class SilenceMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public Communication makeVideoCall(Terminal sender, Terminal receiver) {
+	public Communication makeVIdeoCall(Terminal sender, Terminal receiver) {
 		Communication call = new VideoCommunication(sender, receiver);
 		return call;
 	}
 
 	@Override
-	public void acceptVideoCall(Terminal terminalFrom) {
+	public void acceptVIdeoCall(Terminal terminalFrom) {
 	}
 
 	@Override
-	public void endOngoingCommunication(int size) {
+	public void endOngoingCommunication(int duration) {
 	}
 
 }

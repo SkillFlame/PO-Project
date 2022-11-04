@@ -10,8 +10,8 @@ public abstract class Communication implements Serializable{
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 	
-	private static int _id;
-	private boolean _isPaid;
+	private static int _Id;
+	private boolean _isPaId;
 	private double _price;
 	private boolean _isOngoing;
 	private Terminal _sender;
@@ -21,7 +21,7 @@ public abstract class Communication implements Serializable{
 	abstract int getSize();
 	
 	public Communication(Terminal sender, Terminal receiver){
-		_id += 1;
+		_Id += 1;
 		_sender = sender;
 		_receiver = receiver;
 	}
@@ -34,7 +34,7 @@ public abstract class Communication implements Serializable{
 	}
 
 	int getId(){
-		return _id;
+		return _Id;
 	}
 
 	double getPrice(){
@@ -42,7 +42,7 @@ public abstract class Communication implements Serializable{
 	}
 
 	boolean getPaymentState(){
-		return _isPaid;
+		return _isPaId;
 	}
 
 	void setPrice(double price) {
@@ -64,11 +64,11 @@ public abstract class Communication implements Serializable{
 
 	/**
 	 * toString implementation of a Communication
-	 * type|idCommunication|idSender|idReceiver|units|price|status
+	 * type|IdCommunication|IdSender|IdReceiver|units|price|status
 	 */
 	@Override 
 	public String toString() {
-		String output = _id + "|" + _sender.getId() + "|" + _receiver.getId() + "|" + getSize() + "|" + _price + "|" + getStatus();
+		String output = _Id + "|" + _sender.getId() + "|" + _receiver.getId() + "|" + getSize() + "|" + _price + "|" + getStatus();
 		return output;
 	}
 }

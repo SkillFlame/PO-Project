@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 import prr.core.exception.InvalidKeyException;
+import prr.core.exception.ReceiverIsNotIdleException;
+import prr.core.exception.ReceiverIsNotIdleException;
 import prr.core.exception.TerminalStateAlreadySetException;
 import prr.core.exception.UnknownIdentifierException;
 
@@ -17,7 +19,7 @@ abstract public class Terminal implements Serializable {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
-	private String _id;
+	private String _Id;
 	private double _debt;
 	private double _payments;
 	private TerminalMode _mode;
@@ -26,50 +28,51 @@ abstract public class Terminal implements Serializable {
 	private Client _owner;
 	private Collection<String> _friendsId = new HashSet<String>();
 	private Map<Integer, Communication> _communications = new TreeMap<>();
+	private Communication _lastInteractiveCommunication; //FIXME add implementation
 
-	Terminal(String id, String clientId) throws InvalidKeyException {
-		setID(id);
+	Terminal(String Id, String clientId) throws InvalidKeyException {
+		setId(Id);
 		_clientId = clientId;
 		_mode = new IdleMode();
 	}
 
 	/**
-	 * @param id of a Terminal
-	 * @throws InvalidKeyException if the given clientId is not valid
+	 * @param Id of a Terminal
+	 * @throws InvalIdKeyException if the given clientId is not valId
 	 */
-	private void setID(String id) throws InvalidKeyException {
-		if (id.length() != 6) {
-			throw new InvalidKeyException(id);
+	private void setId(String Id) throws InvalidKeyException {
+		if (Id.length() != 6) {
+			throw new InvalidKeyException(Id);
 		}
 		try {
-			Integer.parseInt(id);
-			_id = id;
+			Integer.parseInt(Id);
+			_Id = Id;
 		} catch (NumberFormatException nfe) {
-			throw new InvalidKeyException(id);
+			throw new InvalidKeyException(Id);
 		}
 	}
 
 	String getId() {
-		return _id;
+		return _Id;
 	}
 
 	void setMode(TerminalMode mode) {
 		_mode = mode;
 	}
 
-	TerminalMode getMode(){
+	TerminalMode getMode() {
 		return _mode;
 	}
 
-	Collection<String> getFriends(){
+	Collection<String> getFriends() {
 		return _friendsId;
 	}
 
-	Client getOwner(){
+	Client getOwner() {
 		return _owner;
 	}
 
-	Collection<Communication> getCommunications(){
+	Collection<Communication> getCommunications() {
 		return _communications.values();
 	}
 
@@ -77,14 +80,14 @@ abstract public class Terminal implements Serializable {
 	 * Adds a Friend to the Friend List
 	 */
 	void addFriend(String friendId) {
-		if(friendId != _id && !_friendsId.contains(friendId)){
+		if (friendId != _Id && !_friendsId.contains(friendId)) {
 			_friendsId.add(friendId);
 		}
 	}
 
-	void removeFriend(String friendID){
-		if(_friendsId.contains(friendID)){
-			_friendsId.remove(friendID);
+	void removeFriend(String friendId) {
+		if (_friendsId.contains(friendId)) {
+			_friendsId.remove(friendId);
 		}
 	}
 
@@ -121,7 +124,7 @@ abstract public class Terminal implements Serializable {
 	}
 
 	void makeSMS(Terminal receiver, String Message) {
-		getMode().makeSMS(this, receiver, Message);
+		addCommunication(getMode().makeSMS(this, receiver, Message));
 	}
 
 	void acceptSMS(Terminal sender) {
@@ -129,15 +132,63 @@ abstract public class Terminal implements Serializable {
 	}
 
 	void makeVoiceCall(Terminal receiver) {
-		getMode().makeVoiceCall(this, receiver);
+		addCommunication(getMode().makeVoiceCall(this, receiver));
 	}
 
 	void acceptVoiceCall(Terminal sender) {
 		getMode().acceptVoiceCall(sender);
 	}
 
-	void endOngoingCommunication(int size) {
-		getMode().endOngoingCommunication(size);
+	void makeVideoCall(Terminal receiver) {
+		throw new 
+	}
+
+	void endOngoingCommunication(int duration) {
+		getMode().endOngoingCommunication(duration);
+	}
+
+	void addCommunication(Communication communication) {
+		_communications.put(communication.getId(), communication);
+	}
+
+	void pay(int communicationId) throws UnknownIdentifierException {
+		if (_communications.keySet().contains(communicationId)) {
+			Communication communication = _communications.get(communicationId);
+			if (!communication.getPaymentState()) {
+				double cost = communication.computeCost(_owner.getRatePlan());
+				_payments += cost;
+				_debt -= cost;
+
+			}
+		}
+		// throw new InvalIdCommunicationException;
+	}
+
+	double getPayments() {
+		return _payments;
+	}
+
+	double getDebt() {
+		return _debt;
+	}
+
+	String getClientId() {
+		return _clientId;
+	}
+
+	public double getTerminalBalance() {
+		return getPayments() - getDebt();
+	}
+
+	public double getLastInteractiveCommunicationCost() {
+		return _lastInteractiveCommunication.getPrice();
+	}
+
+	public Communication getOngoingCommunication() throws ReceiverIsNotIdleException {
+		if(!canEndCurrentCommunication()) {
+			throw new ReceiverIsNotIdleException();
+		}
+		return _lastInteractiveCommunication;
 	}
 
 	/**
@@ -155,48 +206,16 @@ abstract public class Terminal implements Serializable {
 		return output;
 	}
 
-
-	void pay(int communicationId) throws UnknownIdentifierException{
-		if(_communications.keySet().contains(communicationId)){
-			Communication communication = _communications.get(communicationId);
-			if(!communication.getPaymentState()){
-				double cost = communication.computeCost(_owner.getRatePlan());
-				_payments += cost;
-				_debt -= cost;
-
-			}
-		}
-		// throw new InvalidCommunicationException;
-	}
-
-
-	double getPayments(){
-		return _payments;
-	}
-
-	double getDebt(){
-		return _debt;
-	}
-
-	String getClientId(){
-		return _clientId;
-	}
-
-	public double getTerminalBalance(){
-		return getPayments() - getDebt();
-	}
-	
-
-
 	/**
 	 * toString implementation of a Terminal
-	 * terminalType|terminalId|clientId|terminalStatus|balance-paid|balance-debts|friend1,...,friend
+	 * terminalType|terminalId|clientId|terminalStatus|balance-paId|balance-debts|friend1,...,friend
 	 */
 	@Override
 	public String toString() {
 
-		String output = _id + "|" + _clientId + "|" + _mode + "|" + (int) _payments + "|" + (int) _debt
+		String output = _Id + "|" + _clientId + "|" + _mode + "|" + (int) _payments + "|" + (int) _debt
 				+ friendsToString();
 		return output;
 	}
+
 }

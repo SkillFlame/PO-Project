@@ -1,7 +1,7 @@
 package prr.core;
 
 /**
- * Specialization of an Interactive Communication by Video
+ * Specialization of an Interactive Communication by VIdeo
  */
 public class VideoCommunication extends InteractiveCommunication {
 
@@ -26,12 +26,12 @@ public class VideoCommunication extends InteractiveCommunication {
 
 	/**
 	 * toString implementation of a Communication
-	 * type|idCommunication|idSender|idReceiver|units|price|status
+	 * type|IdCommunication|IdSender|IdReceiver|units|price|status
 	 */
 
 	@Override
 	public String toString() {
-		String output = "VIDEO" + "|" + super.toString();
+		String output = "VIdEO" + "|" + super.toString();
 		return output;
 	}
 }

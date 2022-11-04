@@ -75,14 +75,14 @@ public class Client implements Serializable {
 	/** 
 	 * Adds a Terminal to the Client's Terminal List
 	 */
-	void addTerminal(String terminalID) {
-		_terminals.add(terminalID);
+	void addTerminal(String terminalId) {
+		_terminals.add(terminalId);
 	}
 
 	
 	void updateClientBalance(Terminal clientTerminal){
-		for(String id : _terminals){
-			if(id == clientTerminal.getId()){
+		for(String Id : _terminals){
+			if(Id == clientTerminal.getId()){
 				_clientPayments += clientTerminal.getPayments();
 				_clientDebts += clientTerminal.getDebt();
 			}

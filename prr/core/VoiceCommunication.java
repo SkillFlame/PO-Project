@@ -26,7 +26,7 @@ public class VoiceCommunication extends InteractiveCommunication {
 
 	/**
 	 * toString implementation of a Communication
-	 * type|idCommunication|idSender|idReceiver|units|price|status
+	 * type|IdCommunication|IdSender|IdReceiver|units|price|status
 	 */
 	@Override
 	public String toString() {

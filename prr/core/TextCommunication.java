@@ -32,7 +32,7 @@ public class TextCommunication extends Communication {
 
 	/**
 	 * toString implementation of a Communication
-	 * type|idCommunication|idSender|idReceiver|units|price|status
+	 * type|IdCommunication|IdSender|IdReceiver|units|price|status
 	 */
 	@Override 
 	public String toString() {

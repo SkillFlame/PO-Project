@@ -2,6 +2,7 @@ package prr.app.terminal;
 
 import prr.core.Network;
 import prr.core.Terminal;
+import prr.core.exception.UnknownIdentifierException;
 import pt.tecnico.uilib.menus.CommandException;
 // Add more imports if needed
 
@@ -17,6 +18,10 @@ class DoPerformPayment extends TerminalCommand {
 
 	@Override
 	protected final void execute() throws CommandException {
-		// FIXME implement command
+		try {
+			_network.performPayment(_receiver, integerField("communicationID"));
+		} catch (UnknownIdentifierException uie) {
+			_display.popup(Message.invalidCommunication());
+		}
 	}
 }

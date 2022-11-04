@@ -31,7 +31,7 @@ public class Notification implements Serializable {
 
 	/**
 	 * toString implementaion of a Notification
-	 * notificationType | idTerminal
+	 * notificationType | IdTerminal
 	 */
 	@Override
 	public String toString() {

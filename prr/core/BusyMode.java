@@ -60,16 +60,16 @@ public class BusyMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public Communication makeVideoCall(Terminal sender, Terminal receiver) {
+	public Communication makeVIdeoCall(Terminal sender, Terminal receiver) {
 		return null;
 	}
 
 	@Override
-	public void acceptVideoCall(Terminal terminalFrom) {
+	public void acceptVIdeoCall(Terminal terminalFrom) {
 	}
 
 	@Override
-	public void endOngoingCommunication(int size) {
+	public void endOngoingCommunication(int duration) {
 		// TODO Finish
 	}
 
