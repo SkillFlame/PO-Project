@@ -3,6 +3,7 @@ package prr.core;
 import java.io.Serializable;
 import java.util.TreeMap;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.io.IOException;
@@ -469,6 +470,7 @@ public class Network implements Serializable {
 		for (Terminal terminal : _terminals.values()) {
 			communications.addAll(terminal.getCommunicationsMade());
 		}
+		communications.sort(Comparator.comparing(Communication::getId));
 		return communications;
 	}
 

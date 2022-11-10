@@ -7,12 +7,11 @@ public class GoldRatePlan implements RatePlan, Serializable {
 	private static RatePlan _previousPlan = new BasicRatePlan();
 	private static RatePlan _nextPlan = new PlatinumRatePlan();
 
-	
-	/** 
+	/**
 	 * Computes the cost of a Text Communication made by a Client
-	 * 												with this Rateplan
+	 * with this RatePlan
 	 * 
-	 * @param client the desired client
+	 * @param client        the desired client
 	 * @param communication the communication made
 	 */
 	@Override
@@ -23,12 +22,11 @@ public class GoldRatePlan implements RatePlan, Serializable {
 		return 2 * communication.getSize();
 	}
 
-	
-	/** 
+	/**
 	 * Computes the cost of a Voice Communication made by a Client
-	 * 												with this Rateplan
+	 * with this RatePlan
 	 * 
-	 * @param client the desired client
+	 * @param client        the desired client
 	 * @param communication the communication made
 	 */
 	@Override
@@ -36,12 +34,11 @@ public class GoldRatePlan implements RatePlan, Serializable {
 		return duration * 10.0;
 	}
 
-	
-	/** 
+	/**
 	 * Computes the cost of a Video Communication made by a Client
-	 * 												with this Rateplan
+	 * with this RatePlan
 	 * 
-	 * @param client the desired client
+	 * @param client        the desired client
 	 * @param communication the communication made
 	 */
 	@Override
@@ -49,40 +46,37 @@ public class GoldRatePlan implements RatePlan, Serializable {
 		return duration * 20.0;
 	}
 
-	
-	/** 
-	 * Conversion of this RatePlan into String
-	 */
-	@Override
-	public String toStringRatePlan() {
-		return "GOLD";
-	}
-
-	
-	/** 
-	 * Promotes a Client from this Rateplan to a Platinum Rateplan
+	/**
+	 * Promotes a Client from this RatePlan to a Platinum RatePlan
 	 * 
-	 * @param client the client that has this Rateplan
+	 * @param client the client that has this RatePlan
 	 */
 	@Override
 	public void promote(Client client) {
-		if (client.getBalance() > 0) { 
+		if (client.getBalance() > 0 && client.getVideoCommunicationCounter() >= 5) {
 			client.setRatePlan(_nextPlan);
 		}
 
 	}
 
-	
-	/** 
-	 * Demotes a Client from this Rateplan to a Basic Rateplan
+	/**
+	 * Demotes a Client from this RatePlan to a Basic RatePlan
 	 * 
-	 * @param client the client that has this Rateplan
+	 * @param client the client that has this RatePlan
 	 */
 	@Override
 	public void demote(Client client) {
 		if (client.getBalance() < 0) {
 			client.setRatePlan(_previousPlan);
 		}
+	}
+
+	/**
+	 * Conversion of this RatePlan into String
+	 */
+	@Override
+	public String toString() {
+		return "GOLD";
 	}
 
 }

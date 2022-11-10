@@ -29,6 +29,10 @@ public abstract class Communication implements Serializable{
 		_receiver = receiver;
 	}
 
+	void decreaseCommunicationIdCounter() {
+		_idCounter -= 1;
+	}
+
 	void setIsOngoing(boolean ongoing){
 		_isOngoing = ongoing;
 	}

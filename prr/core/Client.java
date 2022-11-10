@@ -28,6 +28,9 @@ public class Client implements Serializable {
 	private List<Notification> _notifications;
 	private List<String> _terminals;
 
+	private int _videoCommunicationCounter;
+	private int _textCommunicationCounter;
+
 	Client(String name, int taxNumber, String key) {
 		_key = key;
 		_name = name;
@@ -36,6 +39,8 @@ public class Client implements Serializable {
 		_notifications = new ArrayList<>();
 		_terminals = new ArrayList<>();
 		_acceptNotifications = true;
+		_videoCommunicationCounter = 0;
+		_textCommunicationCounter = 0;
 	}
 
 	List<Notification> getNotifications() {
@@ -56,12 +61,16 @@ public class Client implements Serializable {
 	 * @throws DuplicateNotificationException
 	 */
 	void addNotification(Notification notification) throws DuplicateNotificationException {
-		for(Notification not: _notifications) {
-			if(not.toString().compareTo(notification.toString()) == 0) {
-				throw new DuplicateNotificationException();
+			for (Notification not : _notifications) {
+				if (not.toString().compareTo(notification.toString()) == 0) {
+					throw new DuplicateNotificationException();
+				}
 			}
-		}
-		_notifications.add(notification);
+			_notifications.add(notification);
+	}
+
+	boolean isAcceptingNotifications() {
+		return _acceptNotifications;
 	}
 
 	/**
@@ -102,18 +111,12 @@ public class Client implements Serializable {
 		return _terminals;
 	}
 
-	/**
-	 * Updates Client's Balance by its Terminal
-	 * 
-	 * @param clientTerminal a terminal of the client
-	 */
-	void updateClientBalance(Terminal clientTerminal) {
-		for (String Id : _terminals) {
-			if (Id == clientTerminal.getId()) {
-				_clientPayments += clientTerminal.getPayments();
-				_clientDebt += clientTerminal.getDebt();
-			}
-		}
+	void addPayment(double value) {
+		_clientPayments += value;
+	}
+
+	void addDebt(double value) {
+		_clientDebt += value;
 	}
 
 	double getBalance() {
@@ -140,6 +143,39 @@ public class Client implements Serializable {
 		return _key;
 	}
 
+	void promote() {
+		getRatePlan().promote(this);
+	}
+	
+	void demote() {
+		getRatePlan().demote(this);
+	}
+
+	int getVideoCommunicationCounter() {
+		return _videoCommunicationCounter;
+	}
+
+	void increaseVideoCommunicationCounter() {
+		_videoCommunicationCounter += 1;
+	}
+
+	void resetVideoCommunicationCounter() {
+		_videoCommunicationCounter = 0;
+	}
+
+	int getTextCommunicationCounter() {
+		return _textCommunicationCounter;
+	}
+
+	void increaseTextCommunicationCounter() {
+		_textCommunicationCounter += 1;
+	}
+
+	void resetTextCommunicationCounter() {
+		_textCommunicationCounter = 0;
+	}
+
+
 	/**
 	 * Gets the activity of the Client's Notifications
 	 * 
@@ -158,7 +194,7 @@ public class Client implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		String output = "CLIENT|" + _key + "|" + _name + "|" + _taxNumber + "|" + _ratePlan.toStringRatePlan() + "|"
+		String output = "CLIENT|" + _key + "|" + _name + "|" + _taxNumber + "|" + _ratePlan.toString() + "|"
 				+ getNotificationActivity() + "|"
 				+ _terminals.size() + "|" + _clientPayments + "|" + _clientDebt;
 		return output;

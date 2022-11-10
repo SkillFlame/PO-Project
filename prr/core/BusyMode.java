@@ -124,7 +124,9 @@ public class BusyMode implements TerminalMode, Serializable {
 	 */
 	@Override
 	public void endOngoingCommunication(Terminal terminal) {
-		terminal.updateNotifications("B2I");
+		if(terminal.getLastTerminalMode().toString() == "IDLE") {
+			terminal.updateNotifications("B2I");	
+		}
 		terminal.setMode(terminal.getLastTerminalMode());
 	}
 

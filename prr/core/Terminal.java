@@ -220,13 +220,18 @@ abstract public class Terminal implements Serializable {
 		addMadeCommunication(communication);
 		setLastCommunicationMade(communication);
 		communication.computeCost(_client.getRatePlan());
-		_debt += communication.getPrice();
+
 		try {
 			receiver.acceptSMS(this);
 		} catch (ReceiverIsOffException rioe) {
 			handleFailedCommunication(receiver);
 			throw new ReceiverIsOffException();
 		}
+		_debt += communication.getPrice();
+		getOwner().addDebt(communication.getPrice());
+		getOwner().resetVideoCommunicationCounter();
+		getOwner().increaseTextCommunicationCounter();
+		getOwner().demote();
 	}
 
 	/**
@@ -272,6 +277,8 @@ abstract public class Terminal implements Serializable {
 			handleFailedCommunication(receiver);
 			throw new ReceiverIsSilentException();
 		}
+		getOwner().resetVideoCommunicationCounter();
+		getOwner().resetTextCommunicationCounter();
 	}
 
 	/**
@@ -363,20 +370,26 @@ abstract public class Terminal implements Serializable {
 		communication.setSize(duration);
 		communication.computeCost(getOwner().getRatePlan());
 		_debt += getOngoingCommunication().getPrice();
+		getOwner().addDebt(getOngoingCommunication().getPrice());
 		getMode().endOngoingCommunication(this);
 
 		Terminal receiver = communication.getTerminalReceiver();
 		receiver.getMode().endOngoingCommunication(receiver);
+		getOwner().demote();
+		getOwner().promote();
 	}
 
 	void handleFailedCommunication(Terminal receiver) {
-		receiver.addNotification(new NotificationDeliveryMethod(getOwner(), receiver.getId()));
+		receiver.addNotification(new NotificationDeliveryMethod(getOwner(), receiver.getId()), this);
 		getMode().handleFailedCommunication(this);
 		getLastCommunicationMade().setIsOngoing(false);
+		getLastCommunicationMade().decreaseCommunicationIdCounter();
 	}
 
-	void addNotification(Notification notification) {
-		_notifications.add(notification);
+	void addNotification(Notification notification, Terminal sender) {
+		if (sender.getOwner().isAcceptingNotifications()) {
+			_notifications.add(notification);
+		}
 	}
 
 	void updateNotifications(String type) {
@@ -401,17 +414,19 @@ abstract public class Terminal implements Serializable {
 	 *                                    recognized
 	 */
 	void pay(int communicationId) throws UnknownIdentifierException {
-		if (_communicationsMade.keySet().contains(communicationId)) {
-			Communication communication = _communicationsMade.get(communicationId);
-			if (!communication.getPaymentState()) {
-				double cost = communication.computeCost(_client.getRatePlan());
-				_payments += cost;
-				_debt -= cost;
-			}
+		if (!_communicationsMade.keySet().contains(communicationId)) {
+			throw new UnknownIdentifierException(communicationId);
 		}
-		if (getOwner().getRatePlan().toStringRatePlan() == "NORMAL") {
-			getOwner().getRatePlan().promote(_client);
+
+		Communication communication = _communicationsMade.get(communicationId);
+		if (!communication.getPaymentState()) {
+			double cost = communication.computeCost(_client.getRatePlan());
+			_payments += cost;
+			_debt -= cost;
+			getOwner().addPayment(cost);
+			getOwner().addDebt(-cost);
 		}
+		getOwner().promote();
 	}
 
 	double getPayments() {

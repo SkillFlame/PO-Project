@@ -7,12 +7,11 @@ public class PlatinumRatePlan implements RatePlan, Serializable {
 	private static RatePlan _previousPlan = new GoldRatePlan();
 	private static RatePlan _firstPlan = new BasicRatePlan();
 
-	
-	/** 
+	/**
 	 * Computes the cost of a Text Communication made by a Client
-	 * 												with this Rateplan
+	 * with this RatePlan
 	 * 
-	 * @param client the desired client
+	 * @param client        the desired client
 	 * @param communication the communication made
 	 */
 	@Override
@@ -23,12 +22,11 @@ public class PlatinumRatePlan implements RatePlan, Serializable {
 		return 4.0;
 	}
 
-	
-	/** 
+	/**
 	 * Computes the cost of a Voice Communication made by a Client
-	 * 												with this Rateplan
+	 * with this RatePlan
 	 * 
-	 * @param client the desired client
+	 * @param client        the desired client
 	 * @param communication the communication made
 	 */
 	@Override
@@ -36,12 +34,11 @@ public class PlatinumRatePlan implements RatePlan, Serializable {
 		return duration * 10.0;
 	}
 
-	
-	/** 
+	/**
 	 * Computes the cost of a Video Communication made by a Client
-	 * 												with this Rateplan
+	 * with this RatePlan
 	 * 
-	 * @param client the desired client
+	 * @param client        the desired client
 	 * @param communication the communication made
 	 */
 	@Override
@@ -49,39 +46,36 @@ public class PlatinumRatePlan implements RatePlan, Serializable {
 		return duration * 10.0;
 	}
 
-	
-	/** 
-	 * Conversion of this RatePlan into String
-	 */
-	@Override
-	public String toStringRatePlan() {
-		return "PLATINUM";
-	}
-
-	
-	/** 
+	/**
 	 * This action is not possible
 	 */
 	@Override
 	public void promote(Client client) {
-		// nao e possível
 	}
 
-	
-	/** 
-	 * Demotes a Client from this Rateplan to a Gold Rateplan if the conditions are met or
-	 * Demotes a Client from this Rateplan to a Normal Rateplan if the conditions are met 
+	/**
+	 * Demotes a Client from this RatePlan to a Gold RatePlan if the conditions are
+	 * met or
+	 * Demotes a Client from this RatePlan to a Normal RatePlan if the conditions
+	 * are met
 	 * 
-	 * @param client the client that has this Rateplan
+	 * @param client the client that has this RatePlan
 	 */
 	@Override
 	public void demote(Client client) {
 		if (client.getBalance() < 0) {
 			client.setRatePlan(_firstPlan);
-		} else if (client.getBalance() > 0 && true) { // true = cliente realizou 2 textcommunication consecutivas, a 2a
-														// conta como platinum
+		} else if (client.getBalance() > 0 && client.getTextCommunicationCounter() >= 2) {
 			client.setRatePlan(_previousPlan);
 		}
+	}
+
+	/**
+	 * Conversion of this RatePlan into String
+	 */
+	@Override
+	public String toString() {
+		return "PLATINUM";
 	}
 
 }
