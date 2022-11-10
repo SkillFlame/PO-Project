@@ -217,9 +217,9 @@ abstract public class Terminal implements Serializable {
 	 */
 	void makeSMS(Terminal receiver, String Message) throws ReceiverIsOffException {
 		Communication communication = getMode().makeSMS(this, receiver, Message);
-		addMadeCommunication(communication);
+
 		setLastCommunicationMade(communication);
-		communication.computeCost(_client.getRatePlan());
+		
 
 		try {
 			receiver.acceptSMS(this);
@@ -227,6 +227,8 @@ abstract public class Terminal implements Serializable {
 			handleFailedCommunication(receiver);
 			throw new ReceiverIsOffException();
 		}
+		communication.computeCost(getOwner().getRatePlan());
+		addMadeCommunication(communication);
 		_debt += communication.getPrice();
 		getOwner().addDebt(communication.getPrice());
 		getOwner().resetVideoCommunicationCounter();
@@ -262,7 +264,7 @@ abstract public class Terminal implements Serializable {
 			throws ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
 
 		Communication communication = getMode().makeVoiceCall(this, receiver);
-		addMadeCommunication(communication);
+
 		setLastCommunicationMade(communication);
 		setLastInteractiveCommunication(communication);
 		try {
@@ -277,6 +279,7 @@ abstract public class Terminal implements Serializable {
 			handleFailedCommunication(receiver);
 			throw new ReceiverIsSilentException();
 		}
+		addMadeCommunication(communication);
 		getOwner().resetVideoCommunicationCounter();
 		getOwner().resetTextCommunicationCounter();
 	}
@@ -419,13 +422,13 @@ abstract public class Terminal implements Serializable {
 		}
 
 		Communication communication = _communicationsMade.get(communicationId);
-		if (!communication.getPaymentState()) {
-			double cost = communication.computeCost(_client.getRatePlan());
-			_payments += cost;
-			_debt -= cost;
-			getOwner().addPayment(cost);
-			getOwner().addDebt(-cost);
-		}
+		communication.pay();
+
+		double cost = communication.getPrice();
+		_payments += cost;
+		_debt -= cost;
+		getOwner().addPayment(cost);
+		getOwner().addDebt(-cost);
 		getOwner().promote();
 	}
 

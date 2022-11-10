@@ -21,7 +21,7 @@ interface Message {
 	 * @return report message
 	 */
 	static String clientPaymentsAndDebts(String key, long payments, long debts) {
-		return "Valores para o cliente '\" + key + \"':" + payments + " (pagamentos),  " + debts + " (dívidas).";
+		return "Valores para o cliente '" + key + "':" + payments + " (pagamentos),  " + debts + " (dívidas).";
 	}
 
 	/** @return prompt for a client identifier */

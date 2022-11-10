@@ -24,7 +24,7 @@ class DoSaveFile extends Command<NetworkManager> {
 			try {
 				_receiver.saveAs(Form.requestString(Message.newSaveAs()));
 			} catch (MissingFileAssociationException | IOException e) {
-				System.out.println("");
+				System.out.print("");
 			}
 		}
 	}

@@ -45,7 +45,7 @@ public class FancyTerminal extends Terminal {
 	public void makeVideoCall(Terminal receiver) throws ReceiverTerminalDoesNotSupportCommunicationException,
 			ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
 		Communication communication = getMode().makeVideoCall(this, receiver);
-		addMadeCommunication(communication);
+		
 		setLastCommunicationMade(communication);
 		setLastInteractiveCommunication(communication);
 
@@ -64,6 +64,7 @@ public class FancyTerminal extends Terminal {
 			handleFailedCommunication(receiver);
 			throw new ReceiverIsSilentException();
 		}
+		addMadeCommunication(communication);
 		getOwner().resetTextCommunicationCounter();
 		getOwner().increaseVideoCommunicationCounter();
 	}

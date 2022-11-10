@@ -127,10 +127,10 @@ public class Network implements Serializable {
 	/**
 	 * Gets the unused Terminals from the Terminal Map by its ids
 	 */
-	public List<Terminal> getFreeTerminals() {
+	public List<Terminal> getUnusedTerminals() {
 		List<Terminal> terminals = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
-			if (terminal.canStartCommunication()) {
+			if (terminal.getCommunicationsMade().isEmpty() && terminal .getCommunicationsReceived().isEmpty()) {
 				terminals.add(terminal);
 			}
 		}
@@ -155,7 +155,7 @@ public class Network implements Serializable {
 	 * @throws UnknownKeyException
 	 */
 	public void addFriend(Terminal terminal, String friendId) throws UnknownKeyException {
-		if  (!hasTerminal(friendId)) {
+		if (!hasTerminal(friendId)) {
 			throw new UnknownKeyException(friendId);
 		}
 		terminal.addFriend(friendId);
@@ -361,7 +361,7 @@ public class Network implements Serializable {
 	public long getGlobalPayments() {
 		long payments = 0;
 		for (Client client : _clients.values()) {
-			payments += client.getClientPayments();
+			payments += client.getPayments();
 		}
 		return payments;
 	}
@@ -372,7 +372,7 @@ public class Network implements Serializable {
 	public long getGlobalDebts() {
 		long debts = 0;
 		for (Client client : _clients.values()) {
-			debts += client.getClientDebt();
+			debts += client.getDebt();
 		}
 		return debts;
 	}
@@ -406,7 +406,7 @@ public class Network implements Serializable {
 		if (!hasClient(clientId)) {
 			throw new UnknownKeyException(clientId);
 		}
-		return (long) _clients.get(clientId).getClientPayments();
+		return (long) _clients.get(clientId).getPayments();
 	}
 
 	/**
@@ -420,7 +420,7 @@ public class Network implements Serializable {
 		if (!hasClient(clientId)) {
 			throw new UnknownKeyException(clientId);
 		}
-		return (long) _clients.get(clientId).getClientDebt();
+		return (long) _clients.get(clientId).getDebt();
 	}
 
 	/**
@@ -440,10 +440,11 @@ public class Network implements Serializable {
 	public List<Client> getClientsWithDebt() {
 		List<Client> clientsWithDebt = new ArrayList<>();
 		for (Client client : _clients.values()) {
-			if (client.getClientDebt() > 0) {
+			if (client.getDebt() > 0) {
 				clientsWithDebt.add(client);
 			}
 		}
+		clientsWithDebt.sort(Comparator.comparing(Client::getDebt).reversed());
 		return clientsWithDebt;
 	}
 
@@ -453,7 +454,7 @@ public class Network implements Serializable {
 	public List<Client> getClientsWithoutDebt() {
 		List<Client> clientsWithoutDebt = new ArrayList<>();
 		for (Client client : _clients.values()) {
-			if (client.getClientDebt() == 0) {
+			if (client.getDebt() == 0) {
 				clientsWithoutDebt.add(client);
 			}
 		}
@@ -536,7 +537,7 @@ public class Network implements Serializable {
 
 	/**
 	 * Sends a Text Communication to another Terminal
-	 *                                         
+	 * 
 	 * 
 	 * @param terminal   the sender terminal
 	 * @param receiverId id of the receiver terminal
@@ -566,7 +567,7 @@ public class Network implements Serializable {
 	public Communication showOngoingCommunication(Terminal terminal) throws NoOngoingCommunicationException {
 		return terminal.getOngoingCommunication();
 	}
-                                      
+
 	/**
 	 * Gets the cost of a Communication
 	 */
@@ -582,10 +583,18 @@ public class Network implements Serializable {
 	 * @throws UnknownKeyException if if the given clientId is not recognized
 	 */
 	public List<Communication> getCommunicationsMadeByClient(String clientId) throws UnknownKeyException {
+		if(!hasClient(clientId)) {
+			throw new UnknownKeyException(clientId);
+		}
+		
 		List<Communication> madeCommunications = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
+			if(terminal.getClientId().compareTo(clientId) == 0) {
 			madeCommunications.addAll(terminal.getCommunicationsMade());
+			}
 		}
+
+		madeCommunications.sort(Comparator.comparing(Communication::getId));
 		return madeCommunications;
 	}
 
@@ -597,11 +606,17 @@ public class Network implements Serializable {
 	 * @throws UnknownKeyException if the given clientId is not recognized
 	 */
 	public List<Communication> getCommunicationsReceivedByClient(String clientId) throws UnknownKeyException {
+		if (!hasClient(clientId)) {
+			throw new UnknownKeyException(clientId);
+		}
+
 		List<Communication> receivedCommunications = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
-			receivedCommunications.addAll(terminal.getCommunicationsReceived());
-
+			if (terminal.getClientId().compareTo(clientId) == 0) {
+				receivedCommunications.addAll(terminal.getCommunicationsReceived());
+			}
 		}
+		receivedCommunications.sort(Comparator.comparing(Communication::getId));
 		return receivedCommunications;
 	}
 
@@ -638,6 +653,6 @@ public class Network implements Serializable {
 			UnavailableFileException {
 		Parser networkParser = new Parser(this);
 		networkParser.parseFile(filename);
-	}   
+	}
 
 }

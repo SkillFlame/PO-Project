@@ -26,7 +26,7 @@ public class VoiceCommunication extends InteractiveCommunication {
 		}
 
 		setPrice(price);
-
+		
 		return price;
 	}
 

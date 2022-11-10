@@ -20,8 +20,8 @@ public class Client implements Serializable {
 	private String _key;
 	private String _name;
 	private int _taxNumber;
-	private int _clientPayments;
-	private int _clientDebt;
+	private int _payments;
+	private int _debt;
 	private boolean _acceptNotifications;
 	private RatePlan _ratePlan;
 
@@ -112,23 +112,23 @@ public class Client implements Serializable {
 	}
 
 	void addPayment(double value) {
-		_clientPayments += value;
+		_payments += value;
 	}
 
 	void addDebt(double value) {
-		_clientDebt += value;
+		_debt += value;
 	}
 
 	double getBalance() {
-		return _clientPayments - _clientDebt;
+		return _payments - _debt;
 	}
 
-	double getClientPayments() {
-		return _clientPayments;
+	double getPayments() {
+		return _payments;
 	}
 
-	double getClientDebt() {
-		return _clientDebt;
+	double getDebt() {
+		return _debt;
 	}
 
 	RatePlan getRatePlan() {
@@ -196,7 +196,7 @@ public class Client implements Serializable {
 	public String toString() {
 		String output = "CLIENT|" + _key + "|" + _name + "|" + _taxNumber + "|" + _ratePlan.toString() + "|"
 				+ getNotificationActivity() + "|"
-				+ _terminals.size() + "|" + _clientPayments + "|" + _clientDebt;
+				+ _terminals.size() + "|" + _payments + "|" + _debt;
 		return output;
 	}
 

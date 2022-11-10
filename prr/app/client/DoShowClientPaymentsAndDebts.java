@@ -19,7 +19,7 @@ class DoShowClientPaymentsAndDebts extends Command<Network> {
 	@Override
 	protected final void execute() throws CommandException, UnknownClientKeyException {
 		try{
-			_display.popup(Message.clientPaymentsAndDebts("clientKey", 
+			_display.popup(Message.clientPaymentsAndDebts(stringField("clientKey"), 
 			_receiver.getClientPayments(stringField("clientKey")), _receiver.getClientDebt(stringField("clientKey"))));
 		}
 		catch(UnknownKeyException uie){
