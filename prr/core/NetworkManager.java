@@ -36,6 +36,7 @@ public class NetworkManager {
 	public void load(String filename) throws UnavailableFileException {
 		try (ObjectInputStream objectInput = new ObjectInputStream(new FileInputStream(filename))) {
 			_network = (Network) objectInput.readObject();
+			_network.updateLastCommunicationId();
 			_filename = filename;
 		} catch (ClassNotFoundException | IOException e) {
 			throw new UnavailableFileException(filename);

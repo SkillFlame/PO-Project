@@ -1,19 +1,20 @@
 package prr.core;
 
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.io.IOException;
+import java.util.TreeMap;
+
 import prr.app.exception.FileOpenFailedException;
 import prr.core.exception.InvalidKeyException;
 import prr.core.exception.KeyAlreadyExistsException;
+import prr.core.exception.NoOngoingCommunicationException;
 import prr.core.exception.NotificationsAlreadyDisabledException;
 import prr.core.exception.NotificationsAlreadyEnabledException;
 import prr.core.exception.ReceiverIsBusyException;
-import prr.core.exception.NoOngoingCommunicationException;
 import prr.core.exception.ReceiverIsOffException;
 import prr.core.exception.ReceiverIsSilentException;
 import prr.core.exception.ReceiverTerminalDoesNotSupportCommunicationException;
@@ -44,7 +45,6 @@ public class Network implements Serializable {
 	public Network() {
 		_terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		_clients = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-
 	}
 
 	// TERMINALS
@@ -130,7 +130,7 @@ public class Network implements Serializable {
 	public List<Terminal> getUnusedTerminals() {
 		List<Terminal> terminals = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
-			if (terminal.getCommunicationsMade().isEmpty() && terminal .getCommunicationsReceived().isEmpty()) {
+			if (terminal.getCommunicationsMade().isEmpty() && terminal.getCommunicationsReceived().isEmpty()) {
 				terminals.add(terminal);
 			}
 		}
@@ -475,6 +475,10 @@ public class Network implements Serializable {
 		return communications;
 	}
 
+	void updateLastCommunicationId() {
+		Communication.setIdCounter(getCommunications().size()); 
+	}
+
 	/**
 	 * Starts an Interactive Communication from a Terminal
 	 * 
@@ -583,14 +587,14 @@ public class Network implements Serializable {
 	 * @throws UnknownKeyException if if the given clientId is not recognized
 	 */
 	public List<Communication> getCommunicationsMadeByClient(String clientId) throws UnknownKeyException {
-		if(!hasClient(clientId)) {
+		if (!hasClient(clientId)) {
 			throw new UnknownKeyException(clientId);
 		}
-		
+
 		List<Communication> madeCommunications = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
-			if(terminal.getClientId().compareTo(clientId) == 0) {
-			madeCommunications.addAll(terminal.getCommunicationsMade());
+			if (terminal.getClientId().compareTo(clientId) == 0) {
+				madeCommunications.addAll(terminal.getCommunicationsMade());
 			}
 		}
 

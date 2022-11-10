@@ -386,7 +386,7 @@ abstract public class Terminal implements Serializable {
 		receiver.addNotification(new NotificationDeliveryMethod(getOwner(), receiver.getId()), this);
 		getMode().handleFailedCommunication(this);
 		getLastCommunicationMade().setIsOngoing(false);
-		getLastCommunicationMade().decreaseCommunicationIdCounter();
+		getLastCommunicationMade().decreaseIdCounter();
 	}
 
 	void addNotification(Notification notification, Terminal sender) {
