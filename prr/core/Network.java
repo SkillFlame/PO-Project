@@ -437,10 +437,10 @@ public class Network implements Serializable {
 	 * Gets all the Clients with debt from the Client Map
 	 */
 	public List<Client> getClientsWithDebt() {
-		List<Client> clientsWithDebt = new ArrayList<>(_clients.values());
-		for (Client client : clientsWithDebt) {
+		List<Client> clientsWithDebt = new ArrayList<>();
+		for (Client client : _clients.values()) {
 			if (client.getClientDebt() > 0) {
-				clientsWithDebt.remove(client);
+				clientsWithDebt.add(client);
 			}
 		}
 		return clientsWithDebt;
@@ -450,10 +450,10 @@ public class Network implements Serializable {
 	 * Gets all the Clients without debt from the Client Map
 	 */
 	public List<Client> getClientsWithoutDebt() {
-		List<Client> clientsWithoutDebt = new ArrayList<>(_clients.values());
-		for (Client client : clientsWithoutDebt) {
+		List<Client> clientsWithoutDebt = new ArrayList<>();
+		for (Client client : _clients.values()) {
 			if (client.getClientDebt() == 0) {
-				clientsWithoutDebt.remove(client);
+				clientsWithoutDebt.add(client);
 			}
 		}
 		return clientsWithoutDebt;
