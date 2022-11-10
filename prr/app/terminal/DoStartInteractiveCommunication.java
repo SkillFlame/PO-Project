@@ -10,7 +10,6 @@ import prr.core.exception.SenderTerminalDoesNotSupportCommunicationException;
 import prr.core.exception.UnknownKeyException;
 import prr.app.exception.UnknownTerminalKeyException;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Command for starting communication.

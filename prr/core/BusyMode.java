@@ -124,8 +124,8 @@ public class BusyMode implements TerminalMode, Serializable {
 	 */
 	@Override
 	public void endOngoingCommunication(Terminal terminal) {
+		terminal.updateNotifications("B2I");
 		terminal.setMode(terminal.getLastTerminalMode());
-		terminal.getOwner().addNotification(new Notification(terminal, new NotificationDeliveryMethod(), "B2I"));
 	}
 
 	

@@ -43,13 +43,13 @@ public class FancyTerminal extends Terminal {
 		try {
 			receiver.acceptVideoCall(this);
 		} catch (ReceiverIsOffException rioe) {
-			handleFailedCommunication();
+			handleFailedCommunication(receiver);
 			throw new ReceiverIsOffException();
 		} catch (ReceiverIsBusyException ribe) {
-			handleFailedCommunication();
+			handleFailedCommunication(receiver);
 			throw new ReceiverIsBusyException();
 		} catch (ReceiverIsSilentException rise) {
-			handleFailedCommunication();
+			handleFailedCommunication(receiver);
 			throw new ReceiverIsSilentException();
 		}
 	}

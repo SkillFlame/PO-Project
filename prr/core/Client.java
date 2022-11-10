@@ -2,10 +2,15 @@ package prr.core;
 
 import java.io.Serializable;
 import java.util.List;
+
+import prr.core.exception.DuplicateNotificationException;
+import prr.core.exception.NotificationsAlreadyDisabledException;
+import prr.core.exception.NotificationsAlreadyEnabledException;
+
 import java.util.ArrayList;
 
 /**
- * Client Implementaion
+ * Client Implementation
  */
 public class Client implements Serializable {
 
@@ -17,13 +22,8 @@ public class Client implements Serializable {
 	private int _taxNumber;
 	private int _clientPayments;
 	private int _clientDebt;
-	private NotificationsAreAcceptable _acceptance;
+	private boolean _acceptNotifications;
 	private RatePlan _ratePlan;
-
-	/** Notification acceptability */
-	enum NotificationsAreAcceptable {
-		YES, NO
-	};
 
 	private List<Notification> _notifications;
 	private List<String> _terminals;
@@ -35,7 +35,7 @@ public class Client implements Serializable {
 		_ratePlan = new BasicRatePlan();
 		_notifications = new ArrayList<>();
 		_terminals = new ArrayList<>();
-		_acceptance = NotificationsAreAcceptable.YES;
+		_acceptNotifications = true;
 	}
 
 	List<Notification> getNotifications() {
@@ -50,38 +50,42 @@ public class Client implements Serializable {
 	}
 
 	/**
-	 * Gets the activity of the Client's Notifications
-	 * 
-	 * @return true if the client can receive notifications, false otherwise
-	 */
-	boolean getNotificationActivity() {
-		if (_acceptance == NotificationsAreAcceptable.YES) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Adds a notification to the Client's Notification List
 	 * 
 	 * @param notification the chosen notification
+	 * @throws DuplicateNotificationException
 	 */
-	void addNotification(Notification notification) {
+	void addNotification(Notification notification) throws DuplicateNotificationException {
+		for(Notification not: _notifications) {
+			if(not.toString().compareTo(notification.toString()) == 0) {
+				throw new DuplicateNotificationException();
+			}
+		}
 		_notifications.add(notification);
 	}
 
 	/**
 	 * Activates the Client's ability of receiving notifications
+	 * 
+	 * @throws NotificationsAlreadyEnabledException
 	 */
-	void activateNotifications() {
-		this._acceptance = NotificationsAreAcceptable.YES;
+	void activateNotifications() throws NotificationsAlreadyEnabledException {
+		if (_acceptNotifications) {
+			throw new NotificationsAlreadyEnabledException();
+		}
+		_acceptNotifications = true;
 	}
 
 	/**
 	 * Deactivates the Client's ability of receiving notifications
+	 * 
+	 * @throws NotificationsAlreadyDisabledException
 	 */
-	void deactivateNotifications() {
-		this._acceptance = NotificationsAreAcceptable.NO;
+	void deactivateNotifications() throws NotificationsAlreadyDisabledException {
+		if (!_acceptNotifications) {
+			throw new NotificationsAlreadyDisabledException();
+		}
+		_acceptNotifications = false;
 	}
 
 	/**
@@ -137,13 +141,25 @@ public class Client implements Serializable {
 	}
 
 	/**
+	 * Gets the activity of the Client's Notifications
+	 * 
+	 * @return YES if the client can receive notifications, NO otherwise
+	 */
+	String getNotificationActivity() {
+		if (_acceptNotifications) {
+			return "YES";
+		}
+		return "NO";
+	}
+
+	/**
 	 * toString implementation of a Client
 	 * CLIENT|key|name|taxId|type|notifications|terminals|payments|debts
 	 */
 	@Override
 	public String toString() {
 		String output = "CLIENT|" + _key + "|" + _name + "|" + _taxNumber + "|" + _ratePlan.toStringRatePlan() + "|"
-				+ _acceptance + "|"
+				+ getNotificationActivity() + "|"
 				+ _terminals.size() + "|" + _clientPayments + "|" + _clientDebt;
 		return output;
 	}

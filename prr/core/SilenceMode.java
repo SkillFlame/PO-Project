@@ -10,26 +10,23 @@ public class SilenceMode implements TerminalMode, Serializable {
 	private static final long serialVersionUID = 202208091753L;
 
 	final static TerminalMode _mode = new SilenceMode();
-	
+
 	public static TerminalMode getMode() {
 		return _mode;
 	}
 
-	
-	/** 
+	/**
 	 * Checks if the Terminal can end the current ongoing Communication
 	 * 
-	 * @param terminal 
+	 * @param terminal
 	 * @return false since communication cannot be ended in this mode
 	 */
 	@Override
 	public boolean canEndCurrentCommunication(Terminal terminal) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	
-	/** 
+	/**
 	 * Checks if the Terminal can start a new Communication
 	 * 
 	 * @return true since communication can be started in this mode
@@ -39,16 +36,15 @@ public class SilenceMode implements TerminalMode, Serializable {
 		return true;
 	}
 
-	
-	/** 
+	/**
 	 * Sets the terminal from Silence state to Idle state
 	 * 
 	 * @param terminal
 	 */
 	@Override
 	public void setOnIdle(Terminal terminal) {
+		terminal.updateNotifications("S2I");
 		terminal.setMode(IdleMode.getMode());
-		terminal.getOwner().addNotification(new Notification(terminal, new NotificationDeliveryMethod(), "S2I"));
 	}
 
 	/**
@@ -59,9 +55,7 @@ public class SilenceMode implements TerminalMode, Serializable {
 		throw new TerminalStateAlreadySetException();
 	}
 
-
-	
-	/** 
+	/**
 	 * Sets the terminal from Silence state to Off state
 	 * 
 	 * @param terminal
@@ -71,13 +65,12 @@ public class SilenceMode implements TerminalMode, Serializable {
 		terminal.setMode(OffMode.getMode());
 	}
 
-	
-	/** 
+	/**
 	 * Creates a new Text Communication from a Silent state
 	 * 
-	 * @param sender terminal that sends the communication
+	 * @param sender   terminal that sends the communication
 	 * @param receiver terminal that receives the communication
-	 * @param Message text content of the sent message
+	 * @param Message  text content of the sent message
 	 */
 	@Override
 	public Communication makeSMS(Terminal sender, Terminal receiver, String Message) {
@@ -85,9 +78,8 @@ public class SilenceMode implements TerminalMode, Serializable {
 		return SMS;
 	}
 
-	
-	/** 
-	 * Accepts a received Text Communication 
+	/**
+	 * Accepts a received Text Communication
 	 * 
 	 * @param sender terminal that sends the communication
 	 */
@@ -96,11 +88,10 @@ public class SilenceMode implements TerminalMode, Serializable {
 		return sender.getLastCommunicationMade();
 	}
 
-	
-	/** 
+	/**
 	 * Creates a new Voice Communication from a Silent state
 	 * 
-	 * @param sender terminal that sends the communication
+	 * @param sender   terminal that sends the communication
 	 * @param receiver terminal that receives the communication
 	 */
 	@Override
@@ -110,8 +101,7 @@ public class SilenceMode implements TerminalMode, Serializable {
 		return new VoiceCommunication(sender, receiver);
 	}
 
-	
-	/** 
+	/**
 	 * Voice Communication cannot be accepted
 	 * 
 	 * @throws ReceiverIsSilentException because terminal is in Silent state
@@ -121,11 +111,10 @@ public class SilenceMode implements TerminalMode, Serializable {
 		throw new ReceiverIsSilentException();
 	}
 
-	
-	/** 
+	/**
 	 * Creates a new Video Communication from a Silent state
 	 * 
-	 * @param sender terminal that sends the communication
+	 * @param sender   terminal that sends the communication
 	 * @param receiver terminal that receives the communication
 	 */
 	@Override
@@ -135,8 +124,7 @@ public class SilenceMode implements TerminalMode, Serializable {
 		return new VideoCommunication(sender, receiver);
 	}
 
-	
-	/** 
+	/**
 	 * Video Communication cannot be accepted
 	 * 
 	 * @throws ReceiverIsSilentException because terminal is in Silent state
@@ -146,13 +134,11 @@ public class SilenceMode implements TerminalMode, Serializable {
 		throw new ReceiverIsSilentException();
 	}
 
-	
 	@Override
 	public void endOngoingCommunication(Terminal terminal) {
 	}
 
-	
-	/** 
+	/**
 	 * toString implementation of the Terminal Mode
 	 */
 	@Override
@@ -161,6 +147,6 @@ public class SilenceMode implements TerminalMode, Serializable {
 	}
 
 	@Override
-	public void handleFailedCommunication(Terminal terminal) {	
+	public void handleFailedCommunication(Terminal terminal) {
 	}
 }

@@ -137,7 +137,7 @@ public class Network implements Serializable {
 	}
 
 	/**
-	 * Adds a friend to the chosen Terminal's friendlist
+	 * Adds a friend to the chosen Terminal's friendList
 	 * 
 	 * @param terminalId id of desired terminal
 	 * @param friendId   id of desired friend terminal
@@ -154,14 +154,14 @@ public class Network implements Serializable {
 	 * @throws UnknownKeyException
 	 */
 	public void addFriend(Terminal terminal, String friendId) throws UnknownKeyException {
-		if(!hasTerminal(friendId)) {
+		if  (!hasTerminal(friendId)) {
 			throw new UnknownKeyException(friendId);
 		}
 		terminal.addFriend(friendId);
 	}
 
 	/**
-	 * Removes a friend from the chosen Terminal's friendlist
+	 * Removes a friend from the chosen Terminal's friendList
 	 * 
 	 * @param terminalId id of desired terminal
 	 * @param friendId   id of desired friend terminal
@@ -294,16 +294,6 @@ public class Network implements Serializable {
 	// CLIENT NOTIFICATIONS
 
 	/**
-	 * Checks if the desired Client in the Client Map has its Notifications active
-	 * 
-	 * @param clientId id of the desired client
-	 * @return true if the client's notifications are active
-	 */
-	public boolean isClientNotificationsActive(String clientId) {
-		return _clients.get(clientId).getNotificationActivity();
-	}
-
-	/**
 	 * Activates the Client's Notification activity
 	 * 
 	 * @param clientId id of the desired client
@@ -317,8 +307,9 @@ public class Network implements Serializable {
 	 */
 	public void activateClientNotifications(String clientId)
 			throws NotificationsAlreadyEnabledException, UnknownKeyException {
-		if (isClientNotificationsActive(clientId)) {
-			throw new NotificationsAlreadyEnabledException();
+
+		if (!hasClient(clientId)) {
+			throw new UnknownKeyException(clientId);
 		}
 		_clients.get(clientId).activateNotifications();
 	}
@@ -337,8 +328,9 @@ public class Network implements Serializable {
 	 */
 	public void deactivateClientNotifications(String clientId)
 			throws NotificationsAlreadyDisabledException, UnknownKeyException {
-		if (!isClientNotificationsActive(clientId)) {
-			throw new NotificationsAlreadyDisabledException();
+
+		if (!hasClient(clientId)) {
+			throw new UnknownKeyException(clientId);
 		}
 		_clients.get(clientId).deactivateNotifications();
 	}
@@ -484,7 +476,7 @@ public class Network implements Serializable {
 	 * Starts an Interactive Communication from a Terminal
 	 * 
 	 * @param terminal   the chosen terminal
-	 * @param receiverId id of the terminal that recieves the communication
+	 * @param receiverId id of the terminal that receives the communication
 	 * @param type       either "VIDEO" or "VOICE" interactive communication type
 	 * 
 	 * @throws UnknownKeyException                                  if the given
@@ -533,7 +525,8 @@ public class Network implements Serializable {
 	 * @param terminal the chosen terminal
 	 * @param duration the duration of the interactive communication
 	 * 
-	 * @throws NoOngoingCommunicationException if there is no current ongoing interactive communication
+	 * @throws NoOngoingCommunicationException if there is no current ongoing
+	 *                                         interactive communication
 	 */
 	public void endInteractiveCommunication(Terminal terminal, int duration) throws NoOngoingCommunicationException {
 		terminal.endOngoingCommunication(duration);
@@ -541,6 +534,7 @@ public class Network implements Serializable {
 
 	/**
 	 * Sends a Text Communication to another Terminal
+	 *                                         
 	 * 
 	 * @param terminal   the sender terminal
 	 * @param receiverId id of the receiver terminal
@@ -563,13 +557,14 @@ public class Network implements Serializable {
 	 * 
 	 * @param terminal the chosen terminal
 	 * 
-	 * @throws NoOngoingCommunicationException if there no ongoing interactive communication on
+	 * @throws NoOngoingCommunicationException if there no ongoing interactive
+	 *                                         communication on
 	 *                                         the chosen terminal
 	 */
 	public Communication showOngoingCommunication(Terminal terminal) throws NoOngoingCommunicationException {
 		return terminal.getOngoingCommunication();
 	}
-
+                                      
 	/**
 	 * Gets the cost of a Communication
 	 */
@@ -599,7 +594,7 @@ public class Network implements Serializable {
 	 * 
 	 * @throws UnknownKeyException if the given clientId is not recognized
 	 */
-	public List<Communication> getCommunicationsRecievedByClient(String clientId) throws UnknownKeyException {
+	public List<Communication> getCommunicationsReceivedByClient(String clientId) throws UnknownKeyException {
 		List<Communication> receivedCommunications = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
 			receivedCommunications.addAll(terminal.getCommunicationsReceived());
@@ -633,14 +628,14 @@ public class Network implements Serializable {
 	 * @throws IOException                if there is an IO error while processing
 	 *                                    the text file
 	 * 
-	 * @throws FileOpenFailedException if the file could not be opened
+	 * @throws FileOpenFailedException    if the file could not be opened
 	 * 
-	 * @throws UnavailableFileException if the file is not available
+	 * @throws UnavailableFileException   if the file is not available
 	 */
 	void importFile(String filename) throws UnrecognizedEntryException, IOException, FileOpenFailedException,
 			UnavailableFileException {
 		Parser networkParser = new Parser(this);
 		networkParser.parseFile(filename);
-	}
+	}   
 
 }

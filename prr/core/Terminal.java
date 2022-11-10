@@ -1,12 +1,15 @@
 package prr.core;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import prr.core.exception.DuplicateNotificationException;
 import prr.core.exception.InvalidKeyException;
 import prr.core.exception.ReceiverIsBusyException;
 import prr.core.exception.NoOngoingCommunicationException;
@@ -37,6 +40,8 @@ abstract public class Terminal implements Serializable {
 	private Communication _lastInteractiveCommunication;
 	private Communication _lastCommunicationMade;
 	private TerminalMode _lastTerminalMode;
+
+	private List<Notification> _notifications = new ArrayList<>();
 
 	Terminal(String id, Client client) throws InvalidKeyException {
 		setId(id);
@@ -91,11 +96,11 @@ abstract public class Terminal implements Serializable {
 		return _communicationsReceived.values();
 	}
 
-	TerminalMode getLastTerminalMode(){
+	TerminalMode getLastTerminalMode() {
 		return _lastTerminalMode;
 	}
 
-	void setLastTerminalMode(TerminalMode lastTerminalMode){
+	void setLastTerminalMode(TerminalMode lastTerminalMode) {
 		_lastTerminalMode = lastTerminalMode;
 	}
 
@@ -216,7 +221,12 @@ abstract public class Terminal implements Serializable {
 		setLastCommunicationMade(communication);
 		communication.computeCost(_client.getRatePlan());
 		_debt += communication.getPrice();
-		receiver.acceptSMS(this);
+		try {
+			receiver.acceptSMS(this);
+		} catch (ReceiverIsOffException rioe) {
+			handleFailedCommunication(receiver);
+			throw new ReceiverIsOffException();
+		}
 	}
 
 	/**
@@ -253,13 +263,13 @@ abstract public class Terminal implements Serializable {
 		try {
 			receiver.acceptVoiceCall(this);
 		} catch (ReceiverIsOffException rioe) {
-			handleFailedCommunication();
+			handleFailedCommunication(receiver);
 			throw new ReceiverIsOffException();
 		} catch (ReceiverIsBusyException ribe) {
-			handleFailedCommunication();
+			handleFailedCommunication(receiver);
 			throw new ReceiverIsBusyException();
 		} catch (ReceiverIsSilentException rise) {
-			handleFailedCommunication();
+			handleFailedCommunication(receiver);
 			throw new ReceiverIsSilentException();
 		}
 	}
@@ -359,9 +369,26 @@ abstract public class Terminal implements Serializable {
 		receiver.getMode().endOngoingCommunication(receiver);
 	}
 
-	void handleFailedCommunication() {
+	void handleFailedCommunication(Terminal receiver) {
+		receiver.addNotification(new NotificationDeliveryMethod(getOwner(), receiver.getId()));
 		getMode().handleFailedCommunication(this);
 		getLastCommunicationMade().setIsOngoing(false);
+	}
+
+	void addNotification(Notification notification) {
+		_notifications.add(notification);
+	}
+
+	void updateNotifications(String type) {
+		for (Notification notification : _notifications) {
+			notification.update(type);
+			try {
+				notification.getClient().addNotification(notification);
+			} catch (DuplicateNotificationException dne) {
+				System.out.print("");
+			}
+		}
+		_notifications.clear();
 	}
 
 	/**
@@ -434,7 +461,7 @@ abstract public class Terminal implements Serializable {
 		Iterator<String> friendId = _friendsId.iterator();
 		while (friendId.hasNext()) {
 			output += friendId.next();
-			if(friendId.hasNext()) {
+			if (friendId.hasNext()) {
 				output += ",";
 			}
 		}

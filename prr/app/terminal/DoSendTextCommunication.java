@@ -6,7 +6,6 @@ import prr.core.exception.ReceiverIsOffException;
 import prr.core.exception.UnknownKeyException;
 import prr.app.exception.UnknownTerminalKeyException;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Command for sending a text communication.
