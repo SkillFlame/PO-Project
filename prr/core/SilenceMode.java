@@ -148,7 +148,6 @@ public class SilenceMode implements TerminalMode, Serializable {
 		throw new ReceiverIsSilentException();
 	}
 
-
 	@Override
 	public void endOngoingCommunication(Terminal terminal) {
 	}

@@ -85,17 +85,16 @@ public abstract class Communication implements Serializable {
 		return _isOngoing;
 	}
 
-
+	
 	Terminal getTerminalSender() {
 		return _sender;
 	}
-
 
 	Terminal getTerminalReceiver() {
 		return _receiver;
 	}
 
-
+	
 	/**
 	 * Verifies if a communication payment can be done
 	 * 

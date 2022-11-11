@@ -100,8 +100,8 @@ public class Client implements Serializable {
 	 * Deactivates the Client's ability of receiving notifications
 	 * 
 	 * @throws NotificationsAlreadyDisabledException if the client's notifications
-	 *                                              are already
-	 *                                              disabled
+	 *                                               are already
+	 *                                               disabled
 	 */
 	void deactivateNotifications() throws NotificationsAlreadyDisabledException {
 		if (!_acceptNotifications) {
@@ -213,7 +213,7 @@ public class Client implements Serializable {
 	/**
 	 * Gets the activity of the Client's Notifications
 	 * 
-	 * @return YES if the client can receive notifications, NO otherwise
+	 * @return "YES" if the client can receive notifications, "NO" otherwise
 	 */
 	String getNotificationActivity() {
 		if (_acceptNotifications) {

@@ -413,7 +413,8 @@ abstract public class Terminal implements Serializable {
 
 
 	/**
-	 * Handles a failed Communication from the Terminal
+	 * Handles a failed Communication from the Terminal and adds a Notification
+	 * 					to the terminal that couldn't receive the Communication
 	 * 
 	 * @param receiver the terminal that receives the communication
 	 */

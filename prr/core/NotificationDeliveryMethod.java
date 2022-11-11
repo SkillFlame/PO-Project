@@ -1,7 +1,6 @@
 package prr.core;
 
 import java.io.Serializable;
-
 /* Notification Delivery Method Class, subject of the
 	Notification Observer Interface */
 public class NotificationDeliveryMethod implements Notification, Serializable {
