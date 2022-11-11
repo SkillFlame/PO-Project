@@ -42,13 +42,11 @@ abstract public class Terminal implements Serializable {
 	private Map<Integer, Communication> _communicationsReceived = new TreeMap<>();
 	private List<Notification> _notifications = new ArrayList<>();
 
-
 	Terminal(String id, Client client) throws InvalidKeyException {
 		setId(id);
 		_client = client;
 		_mode = new IdleMode();
 	}
-
 
 	/**
 	 * Sets the Terminal id while checking if it is valid
@@ -69,51 +67,41 @@ abstract public class Terminal implements Serializable {
 		}
 	}
 
-
 	String getId() {
 		return _id;
 	}
-
 
 	void setMode(TerminalMode mode) {
 		_mode = mode;
 	}
 
-
 	TerminalMode getMode() {
 		return _mode;
 	}
-
 
 	Collection<String> getFriends() {
 		return _friendsId;
 	}
 
-
 	Client getOwner() {
 		return _client;
 	}
-
 
 	Collection<Communication> getCommunicationsMade() {
 		return _communicationsMade.values();
 	}
 
-
 	Collection<Communication> getCommunicationsReceived() {
 		return _communicationsReceived.values();
 	}
-
 
 	TerminalMode getLastTerminalMode() {
 		return _lastTerminalMode;
 	}
 
-
 	void setLastTerminalMode(TerminalMode lastTerminalMode) {
 		_lastTerminalMode = lastTerminalMode;
 	}
-
 
 	/**
 	 * Adds a Communication that was made to the Terminal's made Communication Map
@@ -123,7 +111,6 @@ abstract public class Terminal implements Serializable {
 	void addMadeCommunication(Communication communication) {
 		_communicationsMade.put(communication.getId(), communication);
 	}
-
 
 	/**
 	 * Adds a Communication that was received to the Terminal's received
@@ -135,21 +122,17 @@ abstract public class Terminal implements Serializable {
 		_communicationsReceived.put(communication.getId(), communication);
 	}
 
-
 	void setLastCommunicationMade(Communication communication) {
 		_lastCommunicationMade = communication;
 	}
-
 
 	Communication getLastCommunicationMade() {
 		return _lastCommunicationMade;
 	}
 
-
 	void setLastInteractiveCommunication(Communication communication) {
 		_lastInteractiveCommunication = communication;
 	}
-
 
 	/**
 	 * Adds a Friend Terminal to the Friend List
@@ -162,7 +145,6 @@ abstract public class Terminal implements Serializable {
 		}
 	}
 
-
 	/**
 	 * Removes a Friend Terminal to the Friend List
 	 * 
@@ -173,7 +155,6 @@ abstract public class Terminal implements Serializable {
 			_friendsId.remove(friendId);
 		}
 	}
-
 
 	/**
 	 * Checks if this terminal can end the current interactive communication.
@@ -186,7 +167,6 @@ abstract public class Terminal implements Serializable {
 		return getMode().canEndCurrentCommunication(this);
 	}
 
-
 	/**
 	 * Checks if this terminal can start a new communication.
 	 *
@@ -195,7 +175,6 @@ abstract public class Terminal implements Serializable {
 	public boolean canStartCommunication() {
 		return getMode().canStartCommunication();
 	}
-
 
 	/**
 	 * Turns the Terminal to the Off state
@@ -207,7 +186,6 @@ abstract public class Terminal implements Serializable {
 		getMode().turnOff(this);
 	}
 
-
 	/**
 	 * Turns the Terminal to the Silent state
 	 * 
@@ -218,7 +196,6 @@ abstract public class Terminal implements Serializable {
 		getMode().setOnSilent(this);
 	}
 
-
 	/**
 	 * Turns the Terminal to the Idle state
 	 * 
@@ -228,7 +205,6 @@ abstract public class Terminal implements Serializable {
 	public void setOnIdle() throws TerminalStateAlreadySetException {
 		getMode().setOnIdle(this);
 	}
-
 
 	/**
 	 * Creates a Text Communication and adds it to the Map of made Communications
@@ -242,7 +218,6 @@ abstract public class Terminal implements Serializable {
 		Communication communication = getMode().makeSMS(this, receiver, Message);
 
 		setLastCommunicationMade(communication);
-		
 
 		try {
 			receiver.acceptSMS(this);
@@ -259,7 +234,6 @@ abstract public class Terminal implements Serializable {
 		getOwner().demote();
 	}
 
-
 	/**
 	 * Accepts a received Text Communication adding it to the Map of received
 	 * Communications
@@ -272,7 +246,6 @@ abstract public class Terminal implements Serializable {
 		Communication communication = getMode().acceptSMS(sender);
 		addReceivedCommunication(communication);
 	}
-
 
 	/**
 	 * Creates a Voice Communication and adds it to the Map of made Communications
@@ -309,7 +282,6 @@ abstract public class Terminal implements Serializable {
 		getOwner().resetTextCommunicationCounter();
 	}
 
-
 	/**
 	 * Accepts a received Voice Communication adding it to the Map of received
 	 * Communications
@@ -320,7 +292,6 @@ abstract public class Terminal implements Serializable {
 			throws ReceiverIsBusyException, ReceiverIsOffException, ReceiverIsSilentException {
 		addReceivedCommunication(getMode().acceptVoiceCall(sender));
 	}
-
 
 	/**
 	 * Prepares the process of creating a Video Communication on a Fancy Terminal
@@ -357,7 +328,6 @@ abstract public class Terminal implements Serializable {
 		throw new SenderTerminalDoesNotSupportCommunicationException(getId(), "VIDEO");
 	}
 
-
 	/**
 	 * Prepares the process of accepting a received Video Communication on a Fancy
 	 * Terminal
@@ -387,7 +357,6 @@ abstract public class Terminal implements Serializable {
 		throw new ReceiverTerminalDoesNotSupportCommunicationException(getId(), "VIDEO");
 	}
 
-
 	/**
 	 * Ends the current ongoing Interactive Communication
 	 * 
@@ -411,10 +380,9 @@ abstract public class Terminal implements Serializable {
 		getOwner().promote();
 	}
 
-
 	/**
 	 * Handles a failed Communication from the Terminal and adds a Notification
-	 * 					to the terminal that couldn't receive the Communication
+	 * to the terminal that couldn't receive the Communication
 	 * 
 	 * @param receiver the terminal that receives the communication
 	 */
@@ -425,12 +393,11 @@ abstract public class Terminal implements Serializable {
 		getLastCommunicationMade().decreaseIdCounter();
 	}
 
-
 	/**
 	 * Adds a Notification to the Terminal
 	 * 
 	 * @param notification the notification received
-	 * @param sender 	   the terminal that sent the notification
+	 * @param sender       the terminal that sent the notification
 	 */
 	void addNotification(Notification notification, Terminal sender) {
 		if (sender.getOwner().isAcceptingNotifications()) {
@@ -438,11 +405,11 @@ abstract public class Terminal implements Serializable {
 		}
 	}
 
-
 	/**
 	 * Updates the Notifications of the Terminal by sending each one to
-	 * 		 the Notification List of the Client that owns the Terminal
-	 * 		 then clears the Terminal's Notifications
+	 * the Notification List of the Client that owns the Terminal
+	 * then clears the Terminal's Notifications
+	 * 
 	 * @param type the type of the notification received
 	 */
 	void updateNotifications(String type) {
@@ -456,7 +423,6 @@ abstract public class Terminal implements Serializable {
 		}
 		_notifications.clear();
 	}
-
 
 	/**
 	 * Performs the payment of a Communication by its id
@@ -483,26 +449,21 @@ abstract public class Terminal implements Serializable {
 		getOwner().promote();
 	}
 
-
 	double getPayments() {
 		return _payments;
 	}
-
 
 	double getDebt() {
 		return _debt;
 	}
 
-
 	String getClientId() {
 		return _client.getKey();
 	}
 
-
 	public double getTerminalBalance() {
 		return getPayments() - getDebt();
 	}
-
 
 	/**
 	 * Gets the cost of the last Interactive Communication made
@@ -510,7 +471,6 @@ abstract public class Terminal implements Serializable {
 	public double getLastInteractiveCommunicationCost() {
 		return _lastInteractiveCommunication.getPrice();
 	}
-
 
 	/**
 	 * Gets the current ongoing Communication
@@ -523,7 +483,6 @@ abstract public class Terminal implements Serializable {
 		}
 		return _lastInteractiveCommunication;
 	}
-
 
 	/**
 	 * Conversion of the Terminal's Friends into String
@@ -543,7 +502,6 @@ abstract public class Terminal implements Serializable {
 		}
 		return output;
 	}
-
 
 	/**
 	 * toString implementation of a Terminal

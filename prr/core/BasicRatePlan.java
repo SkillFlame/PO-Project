@@ -12,7 +12,6 @@ public class BasicRatePlan implements RatePlan, Serializable {
 
 	private static RatePlan _nextPlan = new GoldRatePlan();
 
-
 	/**
 	 * Computes the cost of a Text Communication made by a Client
 	 * with this RatePlan
@@ -31,7 +30,6 @@ public class BasicRatePlan implements RatePlan, Serializable {
 
 	}
 
-
 	/**
 	 * Computes the cost of a Voice Communication made by a Client
 	 * with this RatePlan
@@ -43,7 +41,6 @@ public class BasicRatePlan implements RatePlan, Serializable {
 	public double computeCost(Client client, VoiceCommunication communication, int duration) {
 		return duration * 20.0;
 	}
-
 
 	/**
 	 * Computes the cost of a Video Communication made by a Client
@@ -57,7 +54,6 @@ public class BasicRatePlan implements RatePlan, Serializable {
 		return duration * 30.0;
 	}
 
-
 	/**
 	 * Promotes a Client from this RatePlan to a Gold RatePlan
 	 * 
@@ -70,7 +66,6 @@ public class BasicRatePlan implements RatePlan, Serializable {
 		}
 	}
 
-
 	/**
 	 * This action is not possible
 	 */
@@ -78,7 +73,6 @@ public class BasicRatePlan implements RatePlan, Serializable {
 	public void demote(Client client) {
 	}
 
-	
 	/**
 	 * toString implementation of the Basic RatePlan
 	 */
@@ -86,5 +80,5 @@ public class BasicRatePlan implements RatePlan, Serializable {
 	public String toString() {
 		return "NORMAL";
 	}
-	
+
 }
