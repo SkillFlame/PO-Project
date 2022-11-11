@@ -5,6 +5,7 @@ import java.io.Serializable;
 import prr.core.exception.TerminalStateAlreadySetException;
 
 public class IdleMode implements TerminalMode, Serializable {
+
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
@@ -15,7 +16,7 @@ public class IdleMode implements TerminalMode, Serializable {
 		return _mode;
 	}
 
-	
+
 	/** 
 	 * Checks if the Terminal can end the current ongoing Communication
 	 * 
@@ -27,7 +28,7 @@ public class IdleMode implements TerminalMode, Serializable {
 		return false;
 	}
 
-	
+
 	/** 
 	 * Checks if the Terminal can start a new Communication
 	 * 
@@ -38,6 +39,7 @@ public class IdleMode implements TerminalMode, Serializable {
 		return true;
 	}
 
+
 	/**
 	 * @throws TerminalStateAlreadySetException since the terminal is already Idle
 	 */
@@ -46,7 +48,7 @@ public class IdleMode implements TerminalMode, Serializable {
 		throw new TerminalStateAlreadySetException();
 	}
 
-	
+
 	/** 
 	 * Sets the terminal from Idle state to Silent state
 	 * 
@@ -57,8 +59,7 @@ public class IdleMode implements TerminalMode, Serializable {
 		terminal.setMode(SilenceMode.getMode());
 	}
 
-	
-	
+
 	/** 
 	 * Sets the terminal from Idle state to Off state
 	 * 
@@ -69,7 +70,7 @@ public class IdleMode implements TerminalMode, Serializable {
 		terminal.setMode(OffMode.getMode());
 	}
 
-	
+
 	/** 
 	 * Creates a new Text Communication from an Idle state
 	 * 
@@ -83,7 +84,7 @@ public class IdleMode implements TerminalMode, Serializable {
 		return SMS;
 	}
 
-	
+
 	/** 
 	 * Accepts a received Text Communication 
 	 * 
@@ -94,7 +95,7 @@ public class IdleMode implements TerminalMode, Serializable {
 		return sender.getLastCommunicationMade();
 	}
 
-	
+
 	/** 
 	 * Creates a new Voice Communication from an Idle state
 	 * 
@@ -108,7 +109,7 @@ public class IdleMode implements TerminalMode, Serializable {
 		return new VoiceCommunication(sender, receiver);
 	}
 
-	
+
 	/** 
 	 * Accepts a received Voice Communication 
 	 * 
@@ -121,7 +122,7 @@ public class IdleMode implements TerminalMode, Serializable {
         return sender.getLastCommunicationMade();
     }
 
-	
+
 	/** 
 	 * Creates a new Video Communication from an Idle state
 	 * 
@@ -135,7 +136,7 @@ public class IdleMode implements TerminalMode, Serializable {
 		return new VideoCommunication(sender, receiver);
 	}
 
-	
+
 	/** 
 	 * Accepts a received Video Communication 
 	 * 
@@ -148,9 +149,13 @@ public class IdleMode implements TerminalMode, Serializable {
         return sender.getLastCommunicationMade();
     }
 
-	
+
 	@Override
 	public void endOngoingCommunication(Terminal terminal) {
+	}
+
+	@Override
+	public void handleFailedCommunication(Terminal terminal) {
 	}
 
 	
@@ -162,7 +167,4 @@ public class IdleMode implements TerminalMode, Serializable {
 		return "IDLE";
 	}
 
-	@Override
-	public void handleFailedCommunication(Terminal terminal) {
-	}
 }

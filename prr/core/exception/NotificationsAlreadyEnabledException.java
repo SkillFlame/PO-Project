@@ -1,5 +1,8 @@
 package prr.core.exception;
 
+/**
+ * Class for representing an already established action regarding Notifications problem.
+ */
 public class NotificationsAlreadyEnabledException extends Exception{
     
      /** Serial number for serialization. */

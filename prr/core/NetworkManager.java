@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+
 import prr.app.exception.FileOpenFailedException;
 import prr.core.exception.ImportFileException;
 import prr.core.exception.MissingFileAssociationException;
@@ -21,9 +22,11 @@ public class NetworkManager {
 	private Network _network = new Network();
 	private String _filename;
 
+
 	public Network getNetwork() {
 		return _network;
 	}
+
 
 	/**
 	 * @param filename name of the file containing the serialized application's
@@ -36,11 +39,13 @@ public class NetworkManager {
 	public void load(String filename) throws UnavailableFileException {
 		try (ObjectInputStream objectInput = new ObjectInputStream(new FileInputStream(filename))) {
 			_network = (Network) objectInput.readObject();
+			_network.updateLastCommunicationId();
 			_filename = filename;
 		} catch (ClassNotFoundException | IOException e) {
 			throw new UnavailableFileException(filename);
 		}
 	}
+
 
 	/**
 	 * Saves the serialized application's state into the file associated to the
@@ -65,6 +70,7 @@ public class NetworkManager {
 
 	}
 
+
 	/**
 	 * Saves the serialized application's state into the specified file. The current
 	 * network is
@@ -84,6 +90,7 @@ public class NetworkManager {
 		save();
 	}
 
+
 	/**
 	 * Read text input file and create domain entities..
 	 * 
@@ -98,10 +105,12 @@ public class NetworkManager {
 		}
 	}
 
+
 	/**
 	 *	Gets the file name
 	 */
 	public String getFilename() {
 		return _filename;
 	}
+
 }

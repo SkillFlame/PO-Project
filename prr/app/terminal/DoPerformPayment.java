@@ -16,6 +16,7 @@ class DoPerformPayment extends TerminalCommand {
 		addIntegerField("communicationID", Message.commKey());
 	}
 
+
 	@Override
 	protected final void execute() throws CommandException {
 		try {
@@ -24,4 +25,5 @@ class DoPerformPayment extends TerminalCommand {
 			_display.popup(Message.invalidCommunication());
 		}
 	}
+
 }

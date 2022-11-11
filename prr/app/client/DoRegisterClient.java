@@ -17,6 +17,7 @@ class DoRegisterClient extends Command<Network> {
 		addIntegerField("taxId", Message.taxId());
 	}
 
+
 	@Override
 	protected final void execute() throws DuplicateClientKeyException {
 		try {
@@ -25,4 +26,5 @@ class DoRegisterClient extends Command<Network> {
 			throw new DuplicateClientKeyException(e.getKey());
 		}
 	}
+
 }

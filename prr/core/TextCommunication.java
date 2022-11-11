@@ -10,12 +10,13 @@ public class TextCommunication extends Communication {
 	
 	private String _message;
 
+
 	public TextCommunication(Terminal sender, Terminal receiver, String message){
 		super(sender, receiver);
 		_message = message;
 	}
 	
-	
+
 	/** 
 	 * Gets the length of the Text Communication made
 	 */
@@ -23,12 +24,13 @@ public class TextCommunication extends Communication {
 	void setSize(int size) {
 	}
 
+
 	@Override
 	int getSize(){ 
 		return _message.length(); 
 	}
 
-	
+
 	/** 
 	 * Computes the cost of the Text Communication made using the Terminal owner's Rateplan
 	 * 
@@ -41,6 +43,7 @@ public class TextCommunication extends Communication {
 		return price;
 	}
 
+
 	/**
 	 * toString implementation of a Communication
 	 * type|IdCommunication|IdSender|IdReceiver|units|price|status
@@ -51,7 +54,4 @@ public class TextCommunication extends Communication {
 		return output;
 	}
 
-
-
-	
 }

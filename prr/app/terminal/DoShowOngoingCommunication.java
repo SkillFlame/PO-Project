@@ -4,7 +4,6 @@ import prr.core.Network;
 import prr.core.Terminal;
 import prr.core.exception.NoOngoingCommunicationException;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Command for showing the ongoing communication.
@@ -15,6 +14,7 @@ class DoShowOngoingCommunication extends TerminalCommand {
 		super(Label.SHOW_ONGOING_COMMUNICATION, context, terminal);
 	}
 
+
 	@Override
 	protected final void execute() throws CommandException {
 		try {
@@ -23,4 +23,5 @@ class DoShowOngoingCommunication extends TerminalCommand {
 			_display.popup(Message.noOngoingCommunication());
 		}
 	}
+
 }

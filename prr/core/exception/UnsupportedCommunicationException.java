@@ -1,5 +1,8 @@
 package prr.core.exception;
 
+/**
+ * Class for representing a Communication type unsupported by a Terminal problem.
+ */
 public class UnsupportedCommunicationException extends Exception{
      /** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;

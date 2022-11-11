@@ -1,5 +1,8 @@
 package prr.core.exception;
 
+/**
+ * Class for representing a non-existent ongoing Communication problem.
+ */
 public class NoOngoingCommunicationException extends Exception{
     
      /** Serial number for serialization. */

@@ -1,7 +1,7 @@
 package prr.core.exception;
 
 /**
- * Exception for unknown import file entries.
+ * Exception for unknown import File entries.
  */
 public class UnrecognizedEntryException extends Exception {
 

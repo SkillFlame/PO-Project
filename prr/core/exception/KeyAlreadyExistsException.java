@@ -1,7 +1,7 @@
 package prr.core.exception;
 
 /**
- * Class for representing an a duplicate key problem.
+ * Class for representing an a duplicate Key problem.
  */
 public class KeyAlreadyExistsException extends Exception {
 

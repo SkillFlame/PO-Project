@@ -10,7 +10,6 @@ import prr.core.exception.SenderTerminalDoesNotSupportCommunicationException;
 import prr.core.exception.UnknownKeyException;
 import prr.app.exception.UnknownTerminalKeyException;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Command for starting communication.
@@ -22,6 +21,7 @@ class DoStartInteractiveCommunication extends TerminalCommand {
 		addStringField("receiverID", Message.terminalKey());
 		addOptionField("communicationType", Message.commType(), "VIDEO", "VOICE");
 	}
+
 
 	@Override
 	protected final void execute() throws CommandException, UnknownTerminalKeyException {
@@ -41,4 +41,5 @@ class DoStartInteractiveCommunication extends TerminalCommand {
 			_display.popup(Message.destinationIsSilent(stringField("receiverID")));
 		}
 	}
+
 }

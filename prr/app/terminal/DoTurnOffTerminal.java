@@ -4,7 +4,6 @@ import prr.core.Network;
 import prr.core.Terminal;
 import prr.core.exception.TerminalStateAlreadySetException;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Turn off the terminal.
@@ -15,6 +14,7 @@ class DoTurnOffTerminal extends TerminalCommand {
 		super(Label.POWER_OFF, context, terminal);
 	}
 
+
 	@Override
 	protected final void execute() throws CommandException {
 		try{
@@ -24,4 +24,5 @@ class DoTurnOffTerminal extends TerminalCommand {
 			_display.popup(Message.alreadyOff());
 		}
 	}
+
 }

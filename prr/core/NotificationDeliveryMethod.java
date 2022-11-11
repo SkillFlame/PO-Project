@@ -1,50 +1,48 @@
 package prr.core;
 
 import java.io.Serializable;
-/* Notification Delivery Method Class that implements 
-    Notification Delivery Strategy Interface */
-public class NotificationDeliveryMethod  implements NotificationDelivery, Serializable{
-    
-    /** 
-     * Sends an Off2Silence Notification to a Client by its terminal
-     * 
-     * @param target terminal that will recieve the Notification
-     */
-    @Override
-    public void notifyTerminalO2S(Terminal target) {
-        target.getOwner().addNotification(new Notification(target, this, "O2S"));
-    }
 
-    
-    /**
-     * Sends an Off2Idle Notification to a Client by its terminal
-     * 
-     * @param target terminal that will recieve the Notification
-     */
-    @Override
-    public void notifyTerminalO2I(Terminal target) {
-        target.getOwner().addNotification(new Notification(target, this, "O2I"));
-    }
+/* Notification Delivery Method Class, subject of the
+	Notification Observer Interface */
+public class NotificationDeliveryMethod implements Notification, Serializable {
 
-    
-    /** 
-     * Sends a Busy2Idle Notification to a Client by its terminal
-     * 
-     * @param target terminal that will recieve the Notification
-     */
-    @Override
-    public void notifyTerminalB2I(Terminal target) {
-        target.getOwner().addNotification(new Notification(target, this, "B2I"));
-    }
+	/** Serial number for serialization. */
+	private static final long serialVersionUID = 202208091753L;
 
-    
-    /** 
-     * Sends a Silent2Idle Notification to a Client by its terminal
-     * 
-     * @param target terminal that will recieve the Notification
-     */
-    @Override
-    public void notifyTerminalS2I(Terminal target) {
-        target.getOwner().addNotification(new Notification(target, this, "S2I")); 
-    }
+	private Client _client;
+	private String _terminalId;
+	private String _type;
+
+
+	NotificationDeliveryMethod(Client client, String terminalId) {
+		_client = client;
+		_terminalId = terminalId;
+	}
+
+
+	@Override
+	public Client getClient() {
+		return _client;
+	}
+
+
+	/**
+	 * Updates the notification type
+	 */
+	@Override
+	public void update(String type) {
+		_type = type;
+
+	}
+
+
+	/**
+	 * toString implementation of a Notification
+	 * notification-type|terminalId
+	 */
+	@Override
+	public String toString() {
+		return _type + "|" + _terminalId;
+	}
+
 }

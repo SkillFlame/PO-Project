@@ -1,7 +1,7 @@
 package prr.core.exception;
 
 /**
- * Exception for Unknown identifiers on a List
+ * Exception for unknown Identifiers on a List
  */
 public class UnknownIdentifierException extends Exception {
 	/** Serial number for serialization. */

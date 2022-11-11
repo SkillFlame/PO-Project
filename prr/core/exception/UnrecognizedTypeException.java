@@ -1,7 +1,7 @@
 package prr.core.exception;
 
 /**
- * Exception for unrecognized type entries.
+ * Exception for unrecognized Type entries.
  */
 public class UnrecognizedTypeException extends Exception{
 	/** Serial number for serialization. */

@@ -13,9 +13,11 @@ class DoShowAllTerminals extends Command<Network> {
 		super(Label.SHOW_ALL_TERMINALS, receiver);
 	}
 
+
 	@Override
 	protected final void execute() throws CommandException {
 		_display.addAll(_receiver.getTerminals());
 		_display.display();
 	}
+
 }

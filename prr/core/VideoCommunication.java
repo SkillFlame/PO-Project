@@ -1,5 +1,4 @@
 package prr.core;
-
 /**
  * Specialization of an Interactive Communication by VIdeo
  */
@@ -8,11 +7,12 @@ public class VideoCommunication extends InteractiveCommunication {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
+
 	public VideoCommunication(Terminal sender, Terminal receiver) {
 		super(sender, receiver);
 	}
 
-	
+
 	/** 
 	 * Computes the cost of the Video Communication made using the Terminal owner's Rateplan
 	 * 
@@ -30,14 +30,15 @@ public class VideoCommunication extends InteractiveCommunication {
 		return price;
 	}
 
+
 	/**
 	 * toString implementation of a Communication
 	 * type|IdCommunication|IdSender|IdReceiver|units|price|status
 	 */
-
 	@Override
 	public String toString() {
 		String output = "VIDEO" + "|" + super.toString();
 		return output;
 	}
+
 }

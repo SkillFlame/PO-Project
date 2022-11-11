@@ -1,7 +1,7 @@
 package prr.core.exception;
 
 /**
- * Exception for unrecognized key entries.
+ * Exception for unrecognized Key entries.
  */
 public class UnknownKeyException extends Exception{
 	/** Serial number for serialization. */

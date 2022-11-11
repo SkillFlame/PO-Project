@@ -16,11 +16,14 @@ import prr.core.exception.UnrecognizedEntryException;
  */
 
 public class Parser {
+
 	private Network _network;
+
 
 	Parser(Network network) {
 		_network = network;
 	}
+
 
 	void parseFile(String filename) throws IOException, UnrecognizedEntryException {
 		try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -30,6 +33,7 @@ public class Parser {
 				parseLine(line);
 		}
 	}
+
 
 	private void parseLine(String line) throws UnrecognizedEntryException {
 		String[] components = line.split("\\|");
@@ -42,11 +46,13 @@ public class Parser {
 		}
 	}
 
+
 	private void checkComponentsLength(String[] components, int expectedSize, String line)
 			throws UnrecognizedEntryException {
 		if (components.length != expectedSize)
 			throw new UnrecognizedEntryException("Invalid number of fields in line: " + line);
 	}
+
 
 	// parse a client with format CLIENT|id|nome|taxId
 	private void parseClient(String[] components, String line) throws UnrecognizedEntryException {
@@ -61,6 +67,7 @@ public class Parser {
 			throw new UnrecognizedEntryException("Invalid specification in line: " + line, e);
 		}
 	}
+
 
 	// parse a line with format terminal-type|idTerminal|idClient|state
 	private void parseTerminal(String[] components, String line) throws UnrecognizedEntryException {
@@ -81,6 +88,7 @@ public class Parser {
 		}
 	}
 
+
 	// Parse a line with format FRIENDS|idTerminal|idTerminal1,...,idTerminalN
 	private void parseFriends(String[] components, String line) throws UnrecognizedEntryException {
 		checkComponentsLength(components, 3, line);
@@ -95,4 +103,5 @@ public class Parser {
 			throw new UnrecognizedEntryException("Some message error in line:  " + line, e);
 		}
 	}
+
 }

@@ -2,10 +2,15 @@ package prr.core;
 
 import java.io.Serializable;
 import java.util.List;
+
+import prr.core.exception.DuplicateNotificationException;
+import prr.core.exception.NotificationsAlreadyDisabledException;
+import prr.core.exception.NotificationsAlreadyEnabledException;
+
 import java.util.ArrayList;
 
 /**
- * Client Implementaion
+ * Client Implementation
  */
 public class Client implements Serializable {
 
@@ -15,18 +20,17 @@ public class Client implements Serializable {
 	private String _key;
 	private String _name;
 	private int _taxNumber;
-	private int _clientPayments;
-	private int _clientDebt;
-	private NotificationsAreAcceptable _acceptance;
+	private int _payments;
+	private int _debt;
+	private boolean _acceptNotifications;
 	private RatePlan _ratePlan;
-
-	/** Notification acceptability */
-	enum NotificationsAreAcceptable {
-		YES, NO
-	};
 
 	private List<Notification> _notifications;
 	private List<String> _terminals;
+
+	private int _videoCommunicationCounter;
+	private int _textCommunicationCounter;
+
 
 	Client(String name, int taxNumber, String key) {
 		_key = key;
@@ -35,12 +39,16 @@ public class Client implements Serializable {
 		_ratePlan = new BasicRatePlan();
 		_notifications = new ArrayList<>();
 		_terminals = new ArrayList<>();
-		_acceptance = NotificationsAreAcceptable.YES;
+		_acceptNotifications = true;
+		_videoCommunicationCounter = 0;
+		_textCommunicationCounter = 0;
 	}
+
 
 	List<Notification> getNotifications() {
 		return _notifications;
 	}
+
 
 	/**
 	 * Clears the Notification List of the Client
@@ -49,40 +57,59 @@ public class Client implements Serializable {
 		_notifications.clear();
 	}
 
-	/**
-	 * Gets the activity of the Client's Notifications
-	 * 
-	 * @return true if the client can receive notifications, false otherwise
-	 */
-	boolean getNotificationActivity() {
-		if (_acceptance == NotificationsAreAcceptable.YES) {
-			return true;
-		}
-		return false;
+
+	boolean isAcceptingNotifications() {
+		return _acceptNotifications;
 	}
+
 
 	/**
 	 * Adds a notification to the Client's Notification List
 	 * 
 	 * @param notification the chosen notification
+	 * 
+	 * @throws DuplicateNotificationException if the notification 
+	 * 							is a duplicate of an existing one
 	 */
-	void addNotification(Notification notification) {
-		_notifications.add(notification);
+	void addNotification(Notification notification) throws DuplicateNotificationException {
+			for (Notification not : _notifications) {
+				if (not.toString().compareTo(notification.toString()) == 0) {
+					throw new DuplicateNotificationException();
+				}
+			}
+			_notifications.add(notification);
 	}
+
 
 	/**
 	 * Activates the Client's ability of receiving notifications
+	 * 
+	 * @throws NotificationsAlreadyEnabledException if the client's notifications
+	 *                                              are already
+	 *                                              enabled
 	 */
-	void activateNotifications() {
-		this._acceptance = NotificationsAreAcceptable.YES;
+	void activateNotifications() throws NotificationsAlreadyEnabledException {
+		if (_acceptNotifications) {
+			throw new NotificationsAlreadyEnabledException();
+		}
+		_acceptNotifications = true;
 	}
+
 
 	/**
 	 * Deactivates the Client's ability of receiving notifications
+	 * 
+	 * @throws NotificationsAlreadyDisabledException if the client's notifications
+	 *                                              are already
+	 *                                              disabled
 	 */
-	void deactivateNotifications() {
-		this._acceptance = NotificationsAreAcceptable.NO;
+	void deactivateNotifications() throws NotificationsAlreadyDisabledException {
+		if (!_acceptNotifications) {
+			throw new NotificationsAlreadyDisabledException();
+		}
+		_acceptNotifications = false;
 	}
+
 
 	/**
 	 * Adds a Terminal to the Client's Terminal List
@@ -91,50 +118,110 @@ public class Client implements Serializable {
 		_terminals.add(terminalId);
 	}
 
-	/**
-	 * Gets the terminal ids of the Client's Terminals
-	 */
+
 	List<String> getClientTerminals() {
 		return _terminals;
 	}
 
-	/**
-	 * Updates Client's Balance by its Terminal
-	 * 
-	 * @param clientTerminal a terminal of the client
-	 */
-	void updateClientBalance(Terminal clientTerminal) {
-		for (String Id : _terminals) {
-			if (Id == clientTerminal.getId()) {
-				_clientPayments += clientTerminal.getPayments();
-				_clientDebt += clientTerminal.getDebt();
-			}
-		}
+
+	void addPayment(double value) {
+		_payments += value;
 	}
+
+
+	void addDebt(double value) {
+		_debt += value;
+	}
+
 
 	double getBalance() {
-		return _clientPayments - _clientDebt;
+		return _payments - _debt;
 	}
 
-	double getClientPayments() {
-		return _clientPayments;
+
+	double getPayments() {
+		return _payments;
 	}
 
-	double getClientDebt() {
-		return _clientDebt;
+
+	double getDebt() {
+		return _debt;
 	}
+
 
 	RatePlan getRatePlan() {
 		return _ratePlan;
 	}
 
+
 	void setRatePlan(RatePlan ratePlan) {
 		_ratePlan = ratePlan;
 	}
 
+
 	String getKey() {
 		return _key;
 	}
+
+
+	/**
+	 * Promotes this client according to its RatePlan
+	 */
+	void promote() {
+		getRatePlan().promote(this);
+	}
+
+
+	/**
+	 * Demotes this client according to its RatePlan
+	 */
+	void demote() {
+		getRatePlan().demote(this);
+	}
+
+
+	int getVideoCommunicationCounter() {
+		return _videoCommunicationCounter;
+	}
+
+
+	void increaseVideoCommunicationCounter() {
+		_videoCommunicationCounter += 1;
+	}
+
+
+	void resetVideoCommunicationCounter() {
+		_videoCommunicationCounter = 0;
+	}
+
+
+	int getTextCommunicationCounter() {
+		return _textCommunicationCounter;
+	}
+
+
+	void increaseTextCommunicationCounter() {
+		_textCommunicationCounter += 1;
+	}
+
+
+	void resetTextCommunicationCounter() {
+		_textCommunicationCounter = 0;
+	}
+
+
+	/**
+	 * Gets the activity of the Client's Notifications
+	 * 
+	 * @return YES if the client can receive notifications, NO otherwise
+	 */
+	String getNotificationActivity() {
+		if (_acceptNotifications) {
+			return "YES";
+		}
+		return "NO";
+	}
+
 
 	/**
 	 * toString implementation of a Client
@@ -142,9 +229,9 @@ public class Client implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		String output = "CLIENT|" + _key + "|" + _name + "|" + _taxNumber + "|" + _ratePlan.toStringRatePlan() + "|"
-				+ _acceptance + "|"
-				+ _terminals.size() + "|" + _clientPayments + "|" + _clientDebt;
+		String output = "CLIENT|" + _key + "|" + _name + "|" + _taxNumber + "|" + _ratePlan.toString() + "|"
+				+ getNotificationActivity() + "|"
+				+ _terminals.size() + "|" + _payments + "|" + _debt;
 		return output;
 	}
 

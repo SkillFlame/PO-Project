@@ -8,11 +8,12 @@ public class VoiceCommunication extends InteractiveCommunication {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
+
 	public VoiceCommunication(Terminal sender, Terminal receiver) {
 		super(sender, receiver);
 	}
 
-	
+
 	/** 
 	 * Computes the cost of the Voice Communication made using the Terminal owner's Rateplan
 	 * 
@@ -26,9 +27,10 @@ public class VoiceCommunication extends InteractiveCommunication {
 		}
 
 		setPrice(price);
-
+		
 		return price;
 	}
+
 
 	/**
 	 * toString implementation of a Communication
@@ -40,5 +42,4 @@ public class VoiceCommunication extends InteractiveCommunication {
 		return output;
 	}
 
-	
 }

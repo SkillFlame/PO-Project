@@ -1,7 +1,7 @@
 package prr.core.exception;
 
 /**
- * Thrown when an application is not associated with a file.
+ * Thrown when an application is not associated with a File.
  */
 public class MissingFileAssociationException extends Exception {
 

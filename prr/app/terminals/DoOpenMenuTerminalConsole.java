@@ -16,6 +16,7 @@ class DoOpenMenuTerminalConsole extends Command<Network> {
 		addStringField("terminalKey", Message.terminalKey());
 	}
 
+
 	@Override
 	protected final void execute() throws CommandException, UnknownTerminalKeyException {
 		try {
@@ -24,4 +25,5 @@ class DoOpenMenuTerminalConsole extends Command<Network> {
 			throw new UnknownTerminalKeyException(uke.getKey());
 		}
 	}
+
 }

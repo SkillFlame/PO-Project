@@ -6,7 +6,6 @@ import prr.core.exception.UnknownKeyException;
 import prr.app.exception.UnknownClientKeyException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Disable client notifications.
@@ -19,6 +18,7 @@ class DoDisableClientNotifications extends Command<Network> {
 		
 	}
 	
+
 	@Override
 	protected final void execute() throws CommandException, UnknownClientKeyException {
 		try{
@@ -31,4 +31,5 @@ class DoDisableClientNotifications extends Command<Network> {
 			throw new UnknownClientKeyException(uke.getKey());
 		}
 	}
+
 }

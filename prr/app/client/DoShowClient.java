@@ -4,7 +4,6 @@ import prr.app.exception.UnknownClientKeyException;
 import prr.core.Network;
 import prr.core.exception.UnknownIdentifierException;
 import prr.core.exception.UnknownKeyException;
-
 import pt.tecnico.uilib.menus.Command;
 
 /**
@@ -17,6 +16,7 @@ class DoShowClient extends Command<Network> {
 		addStringField("key", Message.key());
 
 	}
+
 
 	@Override
 	protected final void execute() throws UnknownClientKeyException {
@@ -32,4 +32,5 @@ class DoShowClient extends Command<Network> {
 		}
 		_display.display();
 	}
+
 }

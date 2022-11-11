@@ -6,6 +6,7 @@ import prr.core.exception.ReceiverIsSilentException;
 import prr.core.exception.TerminalStateAlreadySetException;
 /* Interface of the TerminalMode State pattern */
 public interface TerminalMode {
+
 	public boolean canEndCurrentCommunication(Terminal terminal);
 
 	public boolean canStartCommunication();
@@ -31,4 +32,5 @@ public interface TerminalMode {
 	void endOngoingCommunication(Terminal terminal);
 
 	void handleFailedCommunication(Terminal terminal);
+
 }

@@ -1,7 +1,7 @@
 package prr.core.exception;
 
 /**
- * Class for representing an invalid key problem.
+ * Class for representing an invalid Key problem.
  */
 public class InvalidKeyException extends Exception{
 	

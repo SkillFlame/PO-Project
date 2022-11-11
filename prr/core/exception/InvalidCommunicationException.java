@@ -1,5 +1,8 @@
 package prr.core.exception;
 
+/**
+ * Class for representing an invalid Communication problem.
+ */
 public class InvalidCommunicationException extends Exception{
     
     /** Serial number for serialization. */

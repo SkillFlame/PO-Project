@@ -1,5 +1,8 @@
 package prr.core.exception;
 
+/**
+ * Class for representing an action regarding Terminals problem.
+ */
 public class ReceiverIsBusyException extends Exception{
 
 	 /** Serial number for serialization. */

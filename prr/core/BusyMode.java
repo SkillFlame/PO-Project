@@ -5,6 +5,7 @@ import java.io.Serializable;
 import prr.core.exception.ReceiverIsBusyException;
 
 public class BusyMode implements TerminalMode, Serializable {
+	
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
@@ -46,11 +47,9 @@ public class BusyMode implements TerminalMode, Serializable {
 	public void setOnIdle(Terminal terminal) {
 	}
 
-	
 	@Override
 	public void setOnSilent(Terminal terminal) {
 	}
-
 
 	@Override
 	public void turnOff(Terminal terminal) {
@@ -58,7 +57,7 @@ public class BusyMode implements TerminalMode, Serializable {
 
 	
 	/*
-	 * Text Communication cannot be made
+	 * Text Communication cannot be made in this mode
 	 */
 	@Override
 	public Communication makeSMS(Terminal sender, Terminal receiver, String Message) {
@@ -67,7 +66,7 @@ public class BusyMode implements TerminalMode, Serializable {
 
 	
 	/** 
-	 * Text Communication can be received
+	 * Text Communication can be received in this mode
 	 * 
 	 * @param sender terminal that sends the communication
 	 */
@@ -78,7 +77,7 @@ public class BusyMode implements TerminalMode, Serializable {
 
 	
 	/** 
-	 * Voice Communication cannot be made
+	 * Voice Communication cannot be made in this mode
 	 */
 	@Override
 	public Communication makeVoiceCall(Terminal sender, Terminal receiver) {
@@ -87,7 +86,7 @@ public class BusyMode implements TerminalMode, Serializable {
 
 	
 	/** 
-	 * Voice Communication cannot be made
+	 * Voice Communication cannot be received in this mode
 	 * 
 	 * @throws ReceiverIsBusyException because terminal is in Busy state
 	 */
@@ -98,7 +97,7 @@ public class BusyMode implements TerminalMode, Serializable {
 
 	
 	/** 
-	 * Video Communication cannot be made
+	 * Video Communication cannot be made in this mode
 	 */
 	@Override
 	public Communication makeVideoCall(Terminal sender, Terminal receiver) {
@@ -107,7 +106,7 @@ public class BusyMode implements TerminalMode, Serializable {
 
 	
 	/** 
-	 * Video Communication cannot be made
+	 * Video Communication cannot be received in this mode
 	 * 
 	 * @throws ReceiverIsBusyException because terminal is in Busy state
 	 */
@@ -118,24 +117,19 @@ public class BusyMode implements TerminalMode, Serializable {
 
 	
 	/** 
-	 * Ends the current ongoing Communication and notifies client
+	 * Ends the current ongoing Communication and updates Terminal
+	 *		 Notifications also sets the Terminal to its last mode
 	 * 
 	 * @param terminal the terminal that made the interactive communication
 	 */
 	@Override
 	public void endOngoingCommunication(Terminal terminal) {
+		if(terminal.getLastTerminalMode().toString() == "IDLE") {
+			terminal.updateNotifications("B2I");	
+		}
 		terminal.setMode(terminal.getLastTerminalMode());
-		terminal.getOwner().addNotification(new Notification(terminal, new NotificationDeliveryMethod(), "B2I"));
 	}
 
-	
-	/** 
-	 * toString implementation of the Terminal Mode
-	 */
-	@Override
-	public String toString() {
-		return "BUSY";
-	}
 
 	/**
 	 * Handles failed Communications of the Terminal
@@ -145,6 +139,15 @@ public class BusyMode implements TerminalMode, Serializable {
 	@Override
 	public void handleFailedCommunication(Terminal terminal) {
 		terminal.setMode(IdleMode.getMode());
+	}
+
+
+	/** 
+	 * toString implementation of the Terminal Mode
+	 */
+	@Override
+	public String toString() {
+		return "BUSY";
 	}
 
 }

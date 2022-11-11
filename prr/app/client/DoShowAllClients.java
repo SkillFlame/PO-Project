@@ -12,9 +12,11 @@ class DoShowAllClients extends Command<Network> {
 		super(Label.SHOW_ALL_CLIENTS, receiver);
 	}
 
+
 	@Override
 	protected final void execute() {
 		_display.addAll(_receiver.getClients());
 		_display.display();
 	}
+
 }

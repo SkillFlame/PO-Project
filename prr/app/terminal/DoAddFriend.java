@@ -16,6 +16,7 @@ class DoAddFriend extends TerminalCommand {
 		addStringField("terminalID", Message.terminalKey());
 	}
 
+
 	@Override
 	protected final void execute() throws CommandException, UnknownTerminalKeyException {
 		try {
@@ -24,4 +25,5 @@ class DoAddFriend extends TerminalCommand {
 			throw new UnknownTerminalKeyException(uke.getKey());
 		}
 	}
+
 }

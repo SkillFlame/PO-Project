@@ -1,5 +1,8 @@
 package prr.core.exception;
 
+/**
+ * Class for representing an Terminal State already set problem.
+ */
 public class TerminalStateAlreadySetException extends Exception {
 
 	/** Serial number for serialization. */

@@ -4,7 +4,6 @@ import prr.core.Network;
 import prr.core.Terminal;
 import prr.core.exception.NoOngoingCommunicationException;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Command for ending communication.
@@ -16,6 +15,7 @@ class DoEndInteractiveCommunication extends TerminalCommand {
 		addIntegerField("duration", Message.duration());
 	}
 	
+
 	@Override
 	protected final void execute() throws CommandException {
 		try {
@@ -26,4 +26,5 @@ class DoEndInteractiveCommunication extends TerminalCommand {
 		}
 		
 	}
+
 }

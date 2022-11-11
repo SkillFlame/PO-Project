@@ -1,18 +1,20 @@
 package prr.core;
 
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.TreeMap;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.io.IOException;
+import java.util.TreeMap;
+
 import prr.app.exception.FileOpenFailedException;
 import prr.core.exception.InvalidKeyException;
 import prr.core.exception.KeyAlreadyExistsException;
+import prr.core.exception.NoOngoingCommunicationException;
 import prr.core.exception.NotificationsAlreadyDisabledException;
 import prr.core.exception.NotificationsAlreadyEnabledException;
 import prr.core.exception.ReceiverIsBusyException;
-import prr.core.exception.NoOngoingCommunicationException;
 import prr.core.exception.ReceiverIsOffException;
 import prr.core.exception.ReceiverIsSilentException;
 import prr.core.exception.ReceiverTerminalDoesNotSupportCommunicationException;
@@ -39,12 +41,13 @@ public class Network implements Serializable {
 	private Map<String, Terminal> _terminals;
 	private Map<String, Client> _clients;
 
+
 	/** Constructor of a Network */
 	public Network() {
 		_terminals = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		_clients = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-
 	}
+
 
 	// TERMINALS
 
@@ -88,6 +91,7 @@ public class Network implements Serializable {
 		return terminal;
 	}
 
+
 	/**
 	 * Checks if a Terminal with a certain id is contained in the Terminal Map
 	 * 
@@ -97,6 +101,7 @@ public class Network implements Serializable {
 	public boolean hasTerminal(String terminalId) {
 		return _terminals.containsKey(terminalId);
 	}
+
 
 	/**
 	 * Gets the Terminal with the desired id from the Terminal Map
@@ -112,6 +117,7 @@ public class Network implements Serializable {
 		return _terminals.get(terminalId);
 	}
 
+
 	/**
 	 * Gets the List of Terminals from the Terminal Map by its ids
 	 */
@@ -123,21 +129,23 @@ public class Network implements Serializable {
 		return terminals;
 	}
 
+
 	/**
 	 * Gets the unused Terminals from the Terminal Map by its ids
 	 */
-	public List<Terminal> getFreeTerminals() {
+	public List<Terminal> getUnusedTerminals() {
 		List<Terminal> terminals = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
-			if (terminal.canStartCommunication()) {
+			if (terminal.getCommunicationsMade().isEmpty() && terminal.getCommunicationsReceived().isEmpty()) {
 				terminals.add(terminal);
 			}
 		}
 		return terminals;
 	}
 
+
 	/**
-	 * Adds a friend to the chosen Terminal's friendlist
+	 * Adds a friend to the chosen Terminal's friendList
 	 * 
 	 * @param terminalId id of desired terminal
 	 * @param friendId   id of desired friend terminal
@@ -146,22 +154,25 @@ public class Network implements Serializable {
 		_terminals.get(terminalId).addFriend(friendId);
 	}
 
+
 	/**
 	 * Adds friend to the chosen Terminal
 	 * 
 	 * @param terminal chosen terminal
 	 * @param friendId id of desired friend terminal
-	 * @throws UnknownKeyException
+	 * 
+	 * @throws UnknownKeyException if the given friendId is not recognized
 	 */
 	public void addFriend(Terminal terminal, String friendId) throws UnknownKeyException {
-		if(!hasTerminal(friendId)) {
+		if (!hasTerminal(friendId)) {
 			throw new UnknownKeyException(friendId);
 		}
 		terminal.addFriend(friendId);
 	}
 
+
 	/**
-	 * Removes a friend from the chosen Terminal's friendlist
+	 * Removes a friend from the chosen Terminal's friendList
 	 * 
 	 * @param terminalId id of desired terminal
 	 * @param friendId   id of desired friend terminal
@@ -169,6 +180,7 @@ public class Network implements Serializable {
 	public void removeFriend(String terminalId, String friendId) {
 		_terminals.get(terminalId).removeFriend(friendId);
 	}
+
 
 	/**
 	 * Removes friend from chosen Terminal
@@ -179,6 +191,7 @@ public class Network implements Serializable {
 	public void removeFriend(Terminal terminal, String friendId) {
 		_terminals.get(terminal.getId()).removeFriend(friendId);
 	}
+
 
 	/**
 	 * Gets all Terminals with a positive balance from the Terminal Map
@@ -193,6 +206,7 @@ public class Network implements Serializable {
 		return terminals;
 	}
 
+
 	/**
 	 * Sets a terminal on Idle state
 	 * 
@@ -203,6 +217,7 @@ public class Network implements Serializable {
 	public void setOnIdle(Terminal terminal) throws TerminalStateAlreadySetException {
 		terminal.setOnIdle();
 	}
+
 
 	/**
 	 * Sets a terminal to the Off state
@@ -215,6 +230,7 @@ public class Network implements Serializable {
 		terminal.turnOff();
 	}
 
+
 	/**
 	 * Sets a terminal to the Silent state
 	 * 
@@ -226,6 +242,7 @@ public class Network implements Serializable {
 		terminal.setOnSilent();
 	}
 
+
 	/**
 	 * Gets a Terminal's id
 	 * 
@@ -234,6 +251,7 @@ public class Network implements Serializable {
 	public String getTerminalId(Terminal terminal) {
 		return terminal.getId();
 	}
+
 
 	// CLIENTS
 
@@ -255,6 +273,7 @@ public class Network implements Serializable {
 		_clients.put(clientId, client);
 	}
 
+
 	/**
 	 * Checks if a Client with a certain id is contained in the Client Map
 	 * 
@@ -264,6 +283,7 @@ public class Network implements Serializable {
 	public boolean hasClient(String clientId) {
 		return _clients.containsKey(clientId);
 	}
+
 
 	/**
 	 * Gets the Client from the Client Map by its id
@@ -283,6 +303,7 @@ public class Network implements Serializable {
 		return client;
 	}
 
+
 	/**
 	 * Gets the List of Clients from the Client Map by its ids
 	 */
@@ -291,17 +312,8 @@ public class Network implements Serializable {
 		return listed;
 	}
 
-	// CLIENT NOTIFICATIONS
 
-	/**
-	 * Checks if the desired Client in the Client Map has its Notifications active
-	 * 
-	 * @param clientId id of the desired client
-	 * @return true if the client's notifications are active
-	 */
-	public boolean isClientNotificationsActive(String clientId) {
-		return _clients.get(clientId).getNotificationActivity();
-	}
+	// CLIENT NOTIFICATIONS
 
 	/**
 	 * Activates the Client's Notification activity
@@ -317,11 +329,13 @@ public class Network implements Serializable {
 	 */
 	public void activateClientNotifications(String clientId)
 			throws NotificationsAlreadyEnabledException, UnknownKeyException {
-		if (isClientNotificationsActive(clientId)) {
-			throw new NotificationsAlreadyEnabledException();
+
+		if (!hasClient(clientId)) {
+			throw new UnknownKeyException(clientId);
 		}
 		_clients.get(clientId).activateNotifications();
 	}
+
 
 	/**
 	 * Deactivates the Client's Notifications activity
@@ -337,11 +351,13 @@ public class Network implements Serializable {
 	 */
 	public void deactivateClientNotifications(String clientId)
 			throws NotificationsAlreadyDisabledException, UnknownKeyException {
-		if (!isClientNotificationsActive(clientId)) {
-			throw new NotificationsAlreadyDisabledException();
+
+		if (!hasClient(clientId)) {
+			throw new UnknownKeyException(clientId);
 		}
 		_clients.get(clientId).deactivateNotifications();
 	}
+
 
 	/**
 	 * Gets the Notifications of a Client from the Client Map by its id
@@ -353,12 +369,14 @@ public class Network implements Serializable {
 		return client.getNotifications();
 	}
 
+
 	/**
 	 * Clears the notifications of a Client
 	 */
 	public void clearNotifications(String clientId) {
 		_clients.get(clientId).removeNotifications();
 	}
+
 
 	// PAYMENTS AND DEBTS
 
@@ -368,10 +386,11 @@ public class Network implements Serializable {
 	public long getGlobalPayments() {
 		long payments = 0;
 		for (Client client : _clients.values()) {
-			payments += client.getClientPayments();
+			payments += client.getPayments();
 		}
 		return payments;
 	}
+
 
 	/**
 	 * Gets the global debts of a Network
@@ -379,10 +398,11 @@ public class Network implements Serializable {
 	public long getGlobalDebts() {
 		long debts = 0;
 		for (Client client : _clients.values()) {
-			debts += client.getClientDebt();
+			debts += client.getDebt();
 		}
 		return debts;
 	}
+
 
 	/**
 	 * Gets the chosen Terminal's payments
@@ -393,6 +413,7 @@ public class Network implements Serializable {
 		return (long) terminal.getPayments();
 	}
 
+
 	/**
 	 * Gets the chosen Terminal's debt
 	 * 
@@ -401,6 +422,7 @@ public class Network implements Serializable {
 	public long getTerminalDebt(Terminal terminal) {
 		return (long) terminal.getDebt();
 	}
+
 
 	/**
 	 * Gets the desired Client's payments
@@ -413,8 +435,9 @@ public class Network implements Serializable {
 		if (!hasClient(clientId)) {
 			throw new UnknownKeyException(clientId);
 		}
-		return (long) _clients.get(clientId).getClientPayments();
+		return (long) _clients.get(clientId).getPayments();
 	}
+
 
 	/**
 	 * Gets the desired Client's debt
@@ -427,45 +450,38 @@ public class Network implements Serializable {
 		if (!hasClient(clientId)) {
 			throw new UnknownKeyException(clientId);
 		}
-		return (long) _clients.get(clientId).getClientDebt();
+		return (long) _clients.get(clientId).getDebt();
 	}
 
-	/**
-	 * Gets the balance (payments - debt) of the desired client
-	 * 
-	 * @param clientId id of the desired client
-	 */
-	public double getClientBalance(String clientId) {
-		Client client = _clients.get(clientId);
-		return client.getBalance();
-
-	}
 
 	/**
 	 * Gets all the Clients with debt from the Client Map
 	 */
 	public List<Client> getClientsWithDebt() {
-		List<Client> clientsWithDebt = new ArrayList<>(_clients.values());
-		for (Client client : clientsWithDebt) {
-			if (client.getClientDebt() > 0) {
-				clientsWithDebt.remove(client);
+		List<Client> clientsWithDebt = new ArrayList<>();
+		for (Client client : _clients.values()) {
+			if (client.getDebt() > 0) {
+				clientsWithDebt.add(client);
 			}
 		}
+		clientsWithDebt.sort(Comparator.comparing(Client::getDebt).reversed());
 		return clientsWithDebt;
 	}
+
 
 	/**
 	 * Gets all the Clients without debt from the Client Map
 	 */
 	public List<Client> getClientsWithoutDebt() {
-		List<Client> clientsWithoutDebt = new ArrayList<>(_clients.values());
-		for (Client client : clientsWithoutDebt) {
-			if (client.getClientDebt() == 0) {
-				clientsWithoutDebt.remove(client);
+		List<Client> clientsWithoutDebt = new ArrayList<>();
+		for (Client client : _clients.values()) {
+			if (client.getDebt() == 0) {
+				clientsWithoutDebt.add(client);
 			}
 		}
 		return clientsWithoutDebt;
 	}
+
 
 	// COMMUNICATIONS
 
@@ -477,14 +493,25 @@ public class Network implements Serializable {
 		for (Terminal terminal : _terminals.values()) {
 			communications.addAll(terminal.getCommunicationsMade());
 		}
+		communications.sort(Comparator.comparing(Communication::getId));
 		return communications;
 	}
+
+
+	/**
+	 * Updates the number of Communications made 
+	 *  to the id of the last communication made
+	 */
+	void updateLastCommunicationId() {
+		Communication.setIdCounter(getCommunications().size()); 
+	}
+
 
 	/**
 	 * Starts an Interactive Communication from a Terminal
 	 * 
 	 * @param terminal   the chosen terminal
-	 * @param receiverId id of the terminal that recieves the communication
+	 * @param receiverId id of the terminal that receives the communication
 	 * @param type       either "VIDEO" or "VOICE" interactive communication type
 	 * 
 	 * @throws UnknownKeyException                                  if the given
@@ -527,20 +554,24 @@ public class Network implements Serializable {
 		}
 	}
 
+
 	/**
 	 * Ends the current Interactive Communication of a Terminal
 	 * 
 	 * @param terminal the chosen terminal
 	 * @param duration the duration of the interactive communication
 	 * 
-	 * @throws NoOngoingCommunicationException if there is no current ongoing interactive communication
+	 * @throws NoOngoingCommunicationException if there is no current ongoing
+	 *                                         interactive communication
 	 */
 	public void endInteractiveCommunication(Terminal terminal, int duration) throws NoOngoingCommunicationException {
 		terminal.endOngoingCommunication(duration);
 	}
 
+
 	/**
 	 * Sends a Text Communication to another Terminal
+	 * 
 	 * 
 	 * @param terminal   the sender terminal
 	 * @param receiverId id of the receiver terminal
@@ -558,24 +589,28 @@ public class Network implements Serializable {
 		terminal.makeSMS(_terminals.get(receiverId), message);
 	}
 
+
 	/**
 	 * Shows the current ongoing InteractiveCommunication of a Terminal
 	 * 
 	 * @param terminal the chosen terminal
 	 * 
-	 * @throws NoOngoingCommunicationException if there no ongoing interactive communication on
+	 * @throws NoOngoingCommunicationException if there no ongoing interactive
+	 *                                         communication on
 	 *                                         the chosen terminal
 	 */
 	public Communication showOngoingCommunication(Terminal terminal) throws NoOngoingCommunicationException {
 		return terminal.getOngoingCommunication();
 	}
 
+
 	/**
-	 * Gets the cost of a Communication
+	 * Gets the cost of the last Interactive Communication made
 	 */
 	public long getCommunicationCost(Terminal terminal) {
 		return (long) terminal.getLastInteractiveCommunicationCost();
 	}
+
 
 	/**
 	 * Gets the List of Communications made by a Client
@@ -585,12 +620,21 @@ public class Network implements Serializable {
 	 * @throws UnknownKeyException if if the given clientId is not recognized
 	 */
 	public List<Communication> getCommunicationsMadeByClient(String clientId) throws UnknownKeyException {
+		if (!hasClient(clientId)) {
+			throw new UnknownKeyException(clientId);
+		}
+
 		List<Communication> madeCommunications = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
-			madeCommunications.addAll(terminal.getCommunicationsMade());
+			if (terminal.getClientId().compareTo(clientId) == 0) {
+				madeCommunications.addAll(terminal.getCommunicationsMade());
+			}
 		}
+
+		madeCommunications.sort(Comparator.comparing(Communication::getId));
 		return madeCommunications;
 	}
+
 
 	/**
 	 * Gets the List of Communications received by a Client
@@ -599,14 +643,21 @@ public class Network implements Serializable {
 	 * 
 	 * @throws UnknownKeyException if the given clientId is not recognized
 	 */
-	public List<Communication> getCommunicationsRecievedByClient(String clientId) throws UnknownKeyException {
+	public List<Communication> getCommunicationsReceivedByClient(String clientId) throws UnknownKeyException {
+		if (!hasClient(clientId)) {
+			throw new UnknownKeyException(clientId);
+		}
+
 		List<Communication> receivedCommunications = new ArrayList<>();
 		for (Terminal terminal : _terminals.values()) {
-			receivedCommunications.addAll(terminal.getCommunicationsReceived());
-
+			if (terminal.getClientId().compareTo(clientId) == 0) {
+				receivedCommunications.addAll(terminal.getCommunicationsReceived());
+			}
 		}
+		receivedCommunications.sort(Comparator.comparing(Communication::getId));
 		return receivedCommunications;
 	}
+
 
 	/**
 	 * Performs the payment of a Communication made by a Terminal
@@ -621,6 +672,7 @@ public class Network implements Serializable {
 		terminal.pay(communicationId);
 	}
 
+
 	// IMPORT FILE
 
 	/**
@@ -633,9 +685,9 @@ public class Network implements Serializable {
 	 * @throws IOException                if there is an IO error while processing
 	 *                                    the text file
 	 * 
-	 * @throws FileOpenFailedException if the file could not be opened
+	 * @throws FileOpenFailedException    if the file could not be opened
 	 * 
-	 * @throws UnavailableFileException if the file is not available
+	 * @throws UnavailableFileException   if the file is not available
 	 */
 	void importFile(String filename) throws UnrecognizedEntryException, IOException, FileOpenFailedException,
 			UnavailableFileException {
